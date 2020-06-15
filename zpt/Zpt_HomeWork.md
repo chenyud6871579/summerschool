@@ -31,3 +31,4 @@
     密钥会存在用户文件夹下，可以通过``cd ~``来回到用户文件夹下，再输入``cd .ssh/``即可进入ssh文件夹，其中的id_res.pub是公钥，读取之后便获取了ssh密钥
     ssh -T git@github.com 可以查看密钥状态
 
+12.git push
