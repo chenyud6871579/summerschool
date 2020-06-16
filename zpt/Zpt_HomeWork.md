@@ -38,7 +38,7 @@
 15. **git** clone ``url``
     需要提前查看文件夹下是否有git文件夹``ls -a``
     ``echo "clone demo" >> clone.txt``用于在clone.txt中追加一句"clone demo"
-16. git tag
+16. git tag 
     查看所有标签
 17. git tag tagname
     设置tag名称
@@ -218,3 +218,4 @@
 
 5. yum remove httpd                （功能描述：删除httpd）
    
+
