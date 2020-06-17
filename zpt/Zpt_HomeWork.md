@@ -1,6 +1,6 @@
 # 一、Git
 
-## 一.基本语句
+## 1.基本语句
 
 1. git init
    初始化文件夹git环境
@@ -218,4 +218,239 @@
 
 5. yum remove httpd                （功能描述：删除httpd）
    
+
+## 6.安装mysql
+
+1. 将mysql压缩包放于共享文件夹中，进行解压
+
+   ```shell
+   tar -zxvf mysql-5.7....tar.gz
+   ```
+
+2. 移动解压文件夹并重命名
+
+    ```shell
+   mv mysql-5.7... /usr/local/mysql
+   ```
+
+3. 
+
+## 7.安装jdk
+
+1. 搜索jdk
+
+   ```shell
+   yum -y list java*
+   ```
+
+   ![image-20200617114721853](img/image-20200617114721853.png)
+
+2. 下载对应版本
+
+   ```
+   yum -y install 
+   ```
+
+   ![image-20200617114751778](img/image-20200617114751778.png)
+   ![image-20200617114806877](img/image-20200617114806877.png)
+
+3. 导出jar包
+   ![image-20200617115055167](img/image-20200617115055167.png)
+   ![image-20200617115205117](img/image-20200617115205117.png)
+   ![image-20200617115243288](img/image-20200617115243288.png)
+
+   ![image-20200617140311794](img/image-20200617140311794.png)==如果不设置Main class会导致jar中没有主清单属性==
+   
+4. 拷贝jar包至share文件夹并运行
+
+   ```shell
+   java -jar helloWorld.jar
+   ```
+
+   ![image-20200617140427512](img/image-20200617140427512.png)
+
+## 8.配置IP地址
+
+1. 用``ifconfig``查看网络配置
+   ![image-20200617141001920](img/image-20200617141001920.png)
+
+------------
+
+# 三、Python
+
+## 第二章、变量
+
+### ①字符串
+
+1. title()
+   首字母大小
+2. lower()/upper()
+   大小写转换
+3. str1 + str2
+   合并
+4. rstrip()
+   删除空白
+5. replace(a,b)
+   将a换为b
+
+#### ②数字
+
+1. ``3 ** 2``
+   平方运算，得9
+2. str(int)
+   int -> string
+
+## 第三章、列表
+
+### ①原则
+
+1. 索引从0开始
+2. 索引为-1代表最后一个元素
+
+### ②方法
+
+1. append(item)
+   增加item
+2. insert(index,item)
+   在index处插入item，其他元素后移
+3. del(list[index])
+   删除list中index处的元素
+4. pop(index)
+   弹出index处的元素，默认队尾
+5. sort()
+   排序，可以有参数reverse，无返回值
+6. sorted()
+   与sort相同，但是是以返回值的形式
+7. reverse()
+   倒转列表
+8. len(list)
+   获取list长度
+
+## 第四章、操作列表
+
+1. 遍历
+   ``for item in list:``
+
+2. ``range(a,b,len)``
+    a -> b,不包含b,步长为len
+3. min(list)、max(list)、sum(list)
+4. list[a,b]
+   list中第a到b个元素，不包含b，a默认为开头，b默认为结尾，负数同样适用
+5. ==列表复制要用切片方法，不然会捆绑连接==
+
+## 第五章、If
+
+1. 判断关键词
+
+   ```
+   ==
+   !=
+   >=
+   <=
+   and
+   or
+   in
+   not in
+   ```
+
+## 第六章、字典
+
+### ①方法
+
+1. del dic['key']
+   删除键值对
+2. 遍历
+   ``for key,value in dic:``
+3. keys()
+   获取所有key
+4. values()
+   获取所有value
+5. set(list)
+   将list转变为集合（去除重复元素）
+
+## 第七章、输入和循环
+
+### ①输入
+
+1. ``message = input("please input something")``
+2. int(input())
+   可以将输入的数字转为int
+
+## 第八章、函数
+
+### ①参数传递
+
+1. ``def function():``
+   定义函数
+2. ``def function(item = "default"):``
+   默认参数
+3. ``def function(list[:]):``
+   传递列表副本
+4. ``def function(*list):``
+   可接受任意数量参数
+
+## 第九章、类
+
+### ①创建
+
+```python
+class myclass():	//定义类
+	def __init__(self):	//构造函数，self相当于this
+        
+class sonclass(myclsaa):
+    def __init__(self):
+        super.__init__()
+```
+
+## 第十章、文件与异常
+
+### ①读取文件
+
+1. open(filename)
+
+   ```python
+   with open('demo.txt') as demo
+   for line in demo:
+       print(line.rstrip()) #除去末尾换行
+   lines = demo.readlines()
+   demo.close()
+   ```
+
+### ②写入文件
+
+1. with open(dilename,'w') as demo
+   demo.write("hello")
+
+2. 第二个实参：
+
+   ```
+   r	读取
+   w	写入
+   a	附加
+   r+	可读可写
+   ```
+
+### ③异常
+
+```python
+try:
+    #执行语句
+except Exception:
+    #出现异常
+else:
+    #没有异常
+```
+
+1. ``pass``语句
+   在except中可以什么都不做
+2. json.dump(object,file)
+   将object存入file中
+3. json.load(file)
+
+## 第十一章、测试函数
+
+### ①单元测试
+
+1. 导入模块unittest
+   ![image-20200617162859049](img/image-20200617162859049.png)
 
