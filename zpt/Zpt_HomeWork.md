@@ -458,9 +458,7 @@ else:
 
 # 四、外星人入侵
 
-代码文件在==alien_invasion==文件夹中，运行==alien_invasion.py==即可看到效果
-
-[alien_invasion.py文件链接](alien_invasion/alien_invasion.py)
+代码文件在[==alien_invasion==](alien_invasion/)文件夹中，运行[==alien_invasion.py==](alien_invasion/alien_invasion.py)即可看到效果
 
 ## 1.飞船
 
@@ -479,9 +477,9 @@ else:
 
 ![image-20200619012822746](img/image-20200619012822746.png)
 
-# 五、数据可视化
+# 五、生成数据
 
-代码文件在==data_visualization==文件夹中
+代码文件在[==data_visualization==](data_visualization/)文件夹中
 
 ## ①matplotlib
 
@@ -569,3 +567,103 @@ plt.axes().get_yaxis().set_visible(False)
 [die_visual.py](data_visualization/die_visual.py)
 
 ![image-20200619104612984](img/image-20200619104612984.png)
+
+# 六、下载数据
+
+代码文件在[==data_catch==](data_catch/)文件夹中
+
+## ①CSV
+
+[highs_lows.py](data_catch/highs_lows.py)
+
+### 1.获取索引及值
+
+``for index,value in enumerate(list):``
+
+### 2.获取图像
+
+![image-20200619111850365](img/image-20200619111850365.png)
+
+### 3.自适应格式
+
+```python
+fig.autofmt_xdate()
+```
+
+### 4.区域着色
+
+```python
+plt.fill_between(dates,highs,lows,facecolor='blue',alpha=0.1)
+#facecolor -- 填充区域颜色
+#alpha -- 透明度，1表示完全不透明
+```
+
+![image-20200619112007804](img/image-20200619112007804.png)
+
+### 5.异常检查
+
+```python
+try:
+    high = int(row[1])
+    current_date = datetime.strptime(row[0],"%Y-%m-%d")
+    low = int(row[3])
+except ValueError:
+    print(current_date,' -> missing data')
+else:
+    highs.append(high)
+    dates.append(current_date)
+    lows.append(low)
+```
+
+
+
+![image-20200619112624103](img/image-20200619112624103.png)
+
+![image-20200619112719644](img/image-20200619112719644.png)
+
+## ②JSON
+
+[world_population.py](data_catch/world_population.py)
+
+### 1.下载数据
+
+==data.okfn.org==
+
+![image-20200619113815054](img/image-20200619113815054.png)
+
+### 2.预览数据
+
+![image-20200619113911581](img/image-20200619113911581.png)
+
+### 3.国别码
+
+```python
+from pygal_maps_world.i18n import COUNTRIES
+
+def get_country_code(country_name):
+    for code,name in COUNTRIES.items():
+        if name == country_name:
+            return code
+    return None
+```
+
+### 4.世界地图
+
+```python
+import pygal
+import pygal_maps_world
+wm = pygal_maps_world.maps.World()
+```
+
+![image-20200619132420729](img/image-20200619132420729.png)
+
+### 5.分组
+
+### ![image-20200619132835261](img/image-20200619132835261.png)6.切换基色
+
+```python
+from pygal.style import RotateStyle
+wm_style = RotateStyle('#336699')
+wm = pygal_maps_world.maps.World(style=wm_style)
+```
+
