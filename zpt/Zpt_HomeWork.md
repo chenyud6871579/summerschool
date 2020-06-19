@@ -460,6 +460,8 @@ else:
 
 代码文件在==alien_invasion==文件夹中，运行==alien_invasion.py==即可看到效果
 
+[alien_invasion.py文件链接](alien_invasion/alien_invasion.py)
+
 ## 1.飞船
 
 成果图：
@@ -473,6 +475,97 @@ else:
 
 ## 3.开始按钮
 
-成 果图：
+成果图：
 
 ![image-20200619012822746](img/image-20200619012822746.png)
+
+# 五、数据可视化
+
+代码文件在==data_visualization==文件夹中
+
+## ①matplotlib
+
+### 1.折线图
+
+[mpl_squares.py文件链接](data_visualization/mpl_squares.py)
+
+```python
+import matplotlib.pyplot as plt
+
+input_values = [1,2,3,4,5]
+squares = [1,4,9,16,25]
+plt.plot(input_values,squares,linewidth=5)
+
+#设置图表标题
+plt.title("Square Number",fontsize=24)
+plt.xlabel("Value",fontsize=14)
+plt.ylabel("Square of Value",fontsize=14)
+
+#设置刻度大小
+plt.tick_params(axis='both',labelsize=14)
+
+plt.show()
+```
+
+![image-20200619094742752](img/image-20200619094742752.png)
+
+### 2.散点图
+
+[scatter_squares.py文件链接](data_visualization/scatter_squares.py)
+
+![image-20200619100555359](img/image-20200619100555359.png)
+
+### 3.自动计算
+
+```python
+x_values = list(range(1,1001))
+y_values = [x**2 for x in x_values]
+```
+
+![image-20200619100950346](img/image-20200619100950346.png)
+
+### 4.删除轮廓
+
+plt.scatter(x_values,y_values,==edgecolor='none'==,s=40)
+
+### 5.自定义颜色
+
+plt.scatter(x_values,y_values,==c=(0,0,0.8)==,s=40)
+
+### 6.颜色映射
+
+plt.scatter(x_values,y_values,==c=y_values,cmap=plt.cm.Blues,==s=40)
+
+![image-20200619101405816](img/image-20200619101405816.png)
+
+### 7.自动保存
+
+```python
+plt.savefig('squares_plot.png',bbox_inches='tight')
+#第二个实参表示是否裁剪空白部分
+```
+
+## ②随机漫步
+
+[random_walk.py](visualization/random_walk.py)
+
+[rw_visual.py](visualization/rw_visual.py)
+
+![image-20200619102911661](img/image-20200619102911661.png)
+
+#### 隐藏坐标轴
+
+```python
+plt.axes().get_xaxis().set_visible(False)
+plt.axes().get_yaxis().set_visible(False)
+```
+
+![image-20200619103120772](img/image-20200619103120772.png)
+
+## ③模拟掷骰子
+
+[die.py](data_visualization/die.py)
+
+[die_visual.py](data_visualization/die_visual.py)
+
+![image-20200619104612984](img/image-20200619104612984.png)
