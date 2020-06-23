@@ -667,3 +667,38 @@ wm_style = RotateStyle('#336699')
 wm = pygal_maps_world.maps.World(style=wm_style)
 ```
 
+# 七、API
+
+# 八、Hadoop
+
+## ①安装&WordCount
+
+1. 下载
+
+2. 解压
+
+   ```shell
+   tar -zxvf hadoop-3.2.1.tar.gz
+   ```
+
+3. 配置环境
+
+   ```shell
+   vim /etc/profile
+   ```
+
+   ![image-20200623202832548](img/image-20200623202832548.png)
+
+4. 运行Hadoop
+
+![image-20200623202854598](img/image-20200623202854598.png)
+
+5. 运行WordCount
+   写输入文件
+   ![image-20200623233141204](img/image-20200623233141204.png)
+   输入语句
+   ![image-20200623233228839](img/image-20200623233228839.png)
+   查看结果
+   ![image-20200623233255588](img/image-20200623233255588.png)
+
+## ②HDFS
