@@ -669,7 +669,44 @@ wm = pygal_maps_world.maps.World(style=wm_style)
 
 # 七、API
 
-# 八、Hadoop
+# 八、Linux
+
+## ①主机虚拟机互ping
+
+在主机模式下，出现了主机（windows）可以ping虚拟机，但是虚拟机无法ping主机的问题
+
+1. 打开防火墙设置，进入高级设置
+
+   ![image-20200624110343630](img/image-20200624110343630.png)
+
+2. 打开此入站规则
+   ![image-20200624110447205](img/image-20200624110447205.png)
+
+3. 成功
+   主机ping虚拟机
+   ![image-20200624110613138](img/image-20200624110613138.png)
+   虚拟机ping主机
+   ![image-20200624110652582](img/image-20200624110652582.png)
+
+## ②安装Xshell
+
+1. 安装
+   ![image-20200624111144141](img/image-20200624111144141.png)
+2. 配置
+   ![image-20200624112451326](img/image-20200624112451326.png)
+3. 输入用户名密码（root）
+   ![image-20200624112736606](img/image-20200624112736606.png)
+
+## ③安装Xftp5
+
+1. 配置
+   ![image-20200624113225747](img/image-20200624113225747.png)
+2. 调整乱码
+   ![image-20200624113408225](img/image-20200624113408225.png)
+   ![image-20200624113444832](img/image-20200624113444832.png)
+   ![image-20200624113457472](img/image-20200624113457472.png)
+
+# 九、Hadoop
 
 ## ①安装&WordCount
 
@@ -701,4 +738,100 @@ wm = pygal_maps_world.maps.World(style=wm_style)
    查看结果
    ![image-20200623233255588](img/image-20200623233255588.png)
 
-## ②HDFS
+## ②HDFS配置
+
+1. 配置core-site.xml
+   ==代码中的/opt/module/hadoop-2.7.2/data/tmp一定要跟安装路径相匹配，因为在格式化NameNode时，文件会存至此文件夹==
+
+   ```xml
+   <!-- 指定HDFS中NameNode的地址 -->
+   <property>
+   <name>fs.defaultFS</name>
+       <value>hdfs://hadoop101:9000</value>
+   </property>
+   
+   <!-- 指定Hadoop运行时产生文件的存储目录 -->
+   <property>
+   	<name>hadoop.tmp.dir</name>
+   	<value>/opt/module/hadoop-2.7.2/data/tmp</value>
+   </property>
+   ```
+
+2. 配置hadoop-env.sh
+
+   ```sh
+   ##配置自己的JAVA_HOME
+   export JAVA_HOME=/opt/module/jdk1.8.0_144
+   ```
+
+3. 配置hdfs-site.xml
+
+   ```xml
+   <!-- 指定HDFS副本的数量 -->
+   <property>
+   	<name>dfs.replication</name>
+   	<value>1</value>
+   </property>
+   ```
+
+   -------------
+
+## ③启动集群
+
+1. 格式化NameNode
+
+   ```shell
+   $ bin/hdfs namenode -format
+   ```
+
+2. 启动NameNode
+
+   ```shell
+   [root@hadoop6 sbin]# hdfs --daemon start namenode
+   ```
+
+3. 查看是否启动成功
+
+   ```shell
+   [root@hadoop6 sbin]# jps
+   6065 NameNode
+   6083 Jps
+   ```
+
+4. 启动datanode
+
+   ```shell
+   [root@hadoop6 sbin]# hdfs --daemon start datanode
+   ```
+
+5. 查看是否启动成功
+
+   ```shell
+   [root@hadoop6 sbin]# jps
+   6176 DataNode
+   6343 NameNode
+   6361 Jps
+   ```
+
+## ④进入Hadoop管理页面
+
+此处需要IP地址+端口，ip为虚拟机ip，端口 = Hadoop版本 大于 3 ？ 9870 ：50070
+
+1. 在虚拟机中打开浏览器输入``192.168.100.130:9870``![image-20200624140046223](img/image-20200624140046223.png)
+
+2. 调整防火墙
+
+   ```shell
+   [root@hadoop6 sbin]# service iptables restart
+   iptables：将链设置为政策 ACCEPT：filter                    [确定]
+   iptables：清除防火墙规则：                                 [确定]
+   iptables：正在卸载模块：                                   [确定]
+   iptables：应用防火墙规则：                                 [确定]
+   [root@hadoop6 sbin]# service iptables stop
+   iptables：将链设置为政策 ACCEPT：filter                    [确定]
+   iptables：清除防火墙规则：                                 [确定]
+   iptables：正在卸载模块：      
+   ```
+
+3. 在主机中打开``192.168.100.130``，成功
+   ![image-20200624140140903](img/image-20200624140140903.png)
