@@ -738,7 +738,11 @@ wm = pygal_maps_world.maps.World(style=wm_style)
    查看结果
    ![image-20200623233255588](img/image-20200623233255588.png)
 
-## ②HDFS配置
+## ②启动HDFS并运行MapReduce
+
+所需条件：NameNode、DataNode
+
+### 1.配置
 
 1. 配置core-site.xml
    ==代码中的/opt/module/hadoop-2.7.2/data/tmp一定要跟安装路径相匹配，因为在格式化NameNode时，文件会存至此文件夹==
@@ -776,13 +780,21 @@ wm = pygal_maps_world.maps.World(style=wm_style)
 
    -------------
 
-## ③启动集群
+### 2.启动集群
 
-1. 格式化NameNode
+1. 格式化NameNode（具体介绍，BV1cW411r7c5  P26）
 
    ```shell
    $ bin/hdfs namenode -format
    ```
+
+   要想重新格式化，需要
+
+   1. 关闭所有的node
+
+   2. 删除data和logs文件夹
+
+      ![image-20200626201410623](img/image-20200626201410623.png)
 
 2. 启动NameNode
 
@@ -813,7 +825,7 @@ wm = pygal_maps_world.maps.World(style=wm_style)
    6361 Jps
    ```
 
-## ④进入Hadoop管理页面
+### 3.进入Hadoop HDFS页面
 
 此处需要IP地址+端口，ip为虚拟机ip，端口 = Hadoop版本 大于 3 ？ 9870 ：50070
 
@@ -835,3 +847,63 @@ wm = pygal_maps_world.maps.World(style=wm_style)
 
 3. 在主机中打开``192.168.100.130``，成功
    ![image-20200624140140903](img/image-20200624140140903.png)
+
+### 4.HDFS页面操作
+
+1. 创建新文件夹
+
+   ```shell
+   [root@hadoop6 bin]# hdfs dfs -mkdir -p /user/zpt/input4
+   ```
+
+2. 上传文件至HDFS
+
+   ```shell
+   [root@hadoop6 hadoop-3.2.1]# bin/hdfs dfs -put wcinput/wc.input /user/zpt/input
+   ```
+
+   ![image-20200626193347525](img/image-20200626193347525.png)
+
+3. 查看HDFS文件
+
+   ```shell
+   bin/hdfs dfs -cat /user/zpt/output1/*
+   ```
+
+## ③启动YARN并运行MapReduce
+
+所需条件：NameNode、DataNode、
+
+### 1.配置
+
+1. 配置yarn_env.sh
+   ![image-20200626202814949](img/image-20200626202814949.png)
+2. 配置yarn-site.xml
+   ![image-20200626203721857](img/image-20200626203721857.png)
+3. 配置maperd-env.sh
+   ![image-20200626203948646](img/image-20200626203948646.png)
+4. 配置mapred-site.xml
+   ![image-20200626204524847](img/image-20200626204524847.png)
+
+### 2.启动+测试
+
+1. 启动resourcemanager
+
+   ```shell
+   [root@hadoop6 sbin]# yarn --daemon start resourcemanager
+   ```
+
+2. 启动nodemanager
+
+   ```shell
+   [root@hadoop6 sbin]# yarn --daemon start nodemanager
+   ```
+
+3. 查看进程
+   ![image-20200626205220143](img/image-20200626205220143.png)
+
+4. 进入http://192.168.100.130:8088/cluster
+   ![image-20200626205423795](img/image-20200626205423795.png)
+
+### 3.在YARN中执行wordcount
+
