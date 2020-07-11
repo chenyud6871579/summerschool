@@ -11,6 +11,4 @@
     <modules>
         <module>douban-thrift-python-service</module>
     </modules>
-
-
 </project>
