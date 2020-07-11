@@ -1,4 +1,17 @@
-## 1.本地库找不到
+
+
+```
+开启debug模式：
+export HADOOP_ROOT_LOGGER=DEBUG,console
+关闭debug模式：
+export HADOOP_ROOT_LOGGER=INFO,console
+```
+
+
+
+
+
+## 1.WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 
 代码：
 
@@ -79,3 +92,49 @@ debug：
 2020-06-26 20:59:15,950 DEBUG util.ShutdownHookManager: ShutdownHookManger completed shutdown.
 ```
 
+## 2.(OK)hadoop6: Permission denied (publickey,gssapi-keyex,gssapi-with-mic,password).Stopping datanodes
+
+![image-20200627105452989](img/image-20200627105452989.png)
+
+解决方案：
+
+![image-20200627105612139](img/image-20200627105612139.png)
+
+```shell
+[root@hadoop6 ~]# ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+fd:f7:57:a3:81:1f:80:33:a9:21:3c:d1:eb:b2:49:48 root@hadoop6
+The key's randomart image is:
++--[ RSA 2048]----+
+|      .          |
+|     . .         |
+|    . . . o      |
+|   E + o * .     |
+|  . . + S + o    |
+|   . o o   o o ..|
+|    . +     o = o|
+|     o       + ..|
+|                o|
++-----------------+
+[root@hadoop6 ~]# cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+[root@hadoop6 ~]# chmod 0600 ~/.ssh/authorized_keys
+```
+
+## 3.(OK)localhost: Warning: Permanently added 'localhost' (RSA) to the list of known hosts.
+Stopping secondary namenodes [hadoop6]
+
+![image-20200627113604031](img/image-20200627113604031.png)
+
+解决方案：
+
+![image-20200627113646843](img/image-20200627113646843.png)
+
+结果：
+
+![image-20200627113708527](img/image-20200627113708527.png)

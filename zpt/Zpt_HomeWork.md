@@ -867,8 +867,16 @@ wm = pygal_maps_world.maps.World(style=wm_style)
 3. 查看HDFS文件
 
    ```shell
-   bin/hdfs dfs -cat /user/zpt/output1/*
+   bin/hdfs dfs -cat /user/zpt/output1/
    ```
+   
+4. 运行wordcount
+
+   ```shell
+   [root@hadoop6 hadoop-3.2.1]# bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.2.1.jar wordcount /user/zpt/input1/ /user/zpt/output
+   ```
+
+   
 
 ## ③启动YARN并运行MapReduce
 
@@ -906,4 +914,37 @@ wm = pygal_maps_world.maps.World(style=wm_style)
    ![image-20200626205423795](img/image-20200626205423795.png)
 
 ### 3.在YARN中执行wordcount
+
+```
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.2.1.jar wordcount /user/zpt/input /user/zpt/output
+```
+
+
+
+## ④其他
+
+1. 配置start-all.sh & stop-all.sh
+
+   ```shell
+   ##start-dfs.sh，stop-dfs.sh两个文件顶部添加以下参数
+   HDFS_NAMENODE_USER=root
+   HDFS_DATANODE_USER=root
+   HDFS_SECONDARYNAMENODE_USER=root
+   YARN_RESOURCEMANAGER_USER=root
+   YARN_NODEMANAGER_USER=root
+   
+   ##start-yarn.sh，stop-yarn.sh顶部也需添加以下
+   YARN_RESOURCEMANAGER_USER=root
+   HADOOP_SECURE_DN_USER=yarn
+   YARN_NODEMANAGER_USER=root
+   ```
+
+2. 关闭safemode
+
+   ```shell
+   #关闭safenode
+   hdfs dfsadmin -safemode leave
+   ```
+
+   
 
