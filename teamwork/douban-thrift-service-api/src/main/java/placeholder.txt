@@ -1,0 +1,1 @@
+此处接收 douban.thrift 生成的 Java 文件

@@ -1,5 +1,13 @@
-# Mission
+# 周日
+① 完善 douban.thrift 文件
+② 接口服务待定
+③ 新的 module（Maven）
+    它的 pom.xml 文件可以共享，但还需要添加 <dependency>
+    它的 .iml文件（自行生成）中，type="JAVA_MODULE"
+
+# 周一
 大家加油呀
 
 # Tips
 更改设置之后，如果没有反应，可以尝试：File -> Invalidate Caches / Restart
+查看 File -> Settings -> Build, Execution, Deployment -> Build Tools -> Maven, 确认自己使用的自定义的 Maven 仓库
