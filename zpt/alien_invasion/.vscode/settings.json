@@ -1,0 +1,5 @@
+{
+    "python.linting.pylintArgs": [ "----extension-pkg-whitelist=1xml" ],
+    "python.pythonPath": "C:\\Users\\Asus\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "git.ignoreLimitWarning": true
+}
