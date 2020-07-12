@@ -1,2 +1,5 @@
-// Tips
+# Mission
+大家加油呀
+
+# Tips
 更改设置之后，如果没有反应，可以尝试：File -> Invalidate Caches / Restart
