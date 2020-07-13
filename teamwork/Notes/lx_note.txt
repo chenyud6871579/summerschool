@@ -6,7 +6,8 @@
     它的 .iml文件（自行生成）中，type="JAVA_MODULE"
 
 # 周一
-大家加油呀
+
+# 周二
 
 # Tips
 更改设置之后，如果没有反应，可以尝试：File -> Invalidate Caches / Restart
