@@ -5,9 +5,25 @@
     它的 pom.xml 文件可以共享，但还需要添加 <dependency>
     它的 .iml文件（自行生成）中，type="JAVA_MODULE"
 
+
 # 周一
+抓取100部豆瓣高分电影（spider.py）：
+    ① 电影名称
+    ② 该电影的豆瓣评分
+    ③ 该电影的豆瓣评论总数
+
+需要注意的问题：
+    ① 统一把 chromedriver.exe 放到D盘根目录下
+    ② 更新文件之后，可能需要安装 BeautifulSoup 和 selenium 等 Python 包
+    ③ 运行时出现找不到 requests 的报错，解决方案：
+        douban-thrift-python-service 文件夹 -> Open Module Settings -> SDKs -> Packages -> 右边的加号“+” -> 安装 requests
+    ④ 安装完成之后，建议 File -> Invalidate Caches / Restart
+    ⑤ 网络卡顿可能会导致报错
+
 
 # 周二
+MongoDB
+
 
 # Tips
 更改设置之后，如果没有反应，可以尝试：File -> Invalidate Caches / Restart
