@@ -22,7 +22,7 @@
 
 
 # 周二
-MongoDB
+安装 pymongo
 
 
 # Tips

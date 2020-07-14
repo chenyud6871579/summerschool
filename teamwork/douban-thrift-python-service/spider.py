@@ -56,7 +56,7 @@ def get_list(url, pages):
     return id_list
 
 
-def create_file(num):
+def get_info(num):
     pages_num = math.ceil(num / 20)
     id_list = get_list(main_page_url, pages_num)
     information = []
@@ -75,4 +75,4 @@ def create_file(num):
 
 
 if __name__ == "__main__":
-    create_file(100)
+    get_info(100)
