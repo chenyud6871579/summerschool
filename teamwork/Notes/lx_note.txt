@@ -23,16 +23,20 @@
 
 # 周二
 MongoDB 操作:
-    ① 在虚拟机的 projectdata 文件夹下创建 mongo 文件夹，在 mongo 文件夹下创建 data 文件夹，
-    在 data 文件夹下创建 db 文件夹
+    ① 在虚拟机的 projectdata 文件夹下创建 mongo 文件夹，在 mongo 文件夹下创建 data 文件夹，在 data 文件夹下创建 db 文件夹
+
     ② 输入 docker run --name mymongo -p 27017:27017 -v /home/admin/projectdata/mongo/data/db:/data/db -d mongo
     把 admin 改成自己的用户名
+
     ③ 输入 docker exec -it mymongo bash
     进入 mymongo
+
     ④ 输入 mongo
     开启 mongo 服务
+
     ⑤ 输入 use douban
     创建/切换 douban 数据库，将会显示 switched to db douban
+
     ⑥ 输入 db.createCollection('movies')
     创建 movies 表，将会显示 { "ok" : 1 }
 
