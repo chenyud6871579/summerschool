@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 /teamwork/*.iml
 /teamwork/.idea
-/teamwork/config.py
+/teamwork/douban-thrift-python-service/config.py
 =======
 *.iml
 misc.xml
