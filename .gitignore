@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 /teamwork/*.iml
 /teamwork/.idea
+/teamwork/config.py
 =======
 *.iml
 misc.xml
