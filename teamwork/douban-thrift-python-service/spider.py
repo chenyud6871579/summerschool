@@ -75,4 +75,4 @@ def get_info(num):
 
 
 if __name__ == "__main__":
-    get_info(100)
+    get_info(3)
