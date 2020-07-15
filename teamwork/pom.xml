@@ -11,6 +11,7 @@
 
     <modules>
         <module>douban-thrift-service-api</module>
+        <module>user-edge-service</module>
     </modules>
 
 </project>

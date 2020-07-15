@@ -1,92 +1,32 @@
-import requests
-import time
-import math
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-import pymongo
-import config
-
-requests_headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                                  "AppleWebKit/537.36 (KHTML, like Gecko) "
-                                  "Chrome/83.0.4103.116 Safari/537.36"}
-
-main_page_url = "https://movie.douban.com/explore#!type=movie&tag=%E8%B1%86%E7%93%A3%E9%AB%98%E5%88%86" \
-                "&sort=recommend&page_limit=20&page_start=0"
-
-
-def get_detail(id):
-    id = str(id)
-    url = "https://movie.douban.com/subject/" + id
-    web_data = requests.get(url, headers=requests_headers)
-    soup = BeautifulSoup(web_data.text, "html.parser")
-
-    # 电影标题
-    title_info = soup.select_one("#content > h1 > span:nth-child(1)").text
-    title = title_info.split()[0]
-
-    # 电影评分
-    score = soup.select_one("#interest_sectl > div.rating_wrap.clearbox > div.rating_self.clearfix > strong").text
-
-    # 电影评论数量
-    comment_info = soup.select_one("#comments-section > div.mod-hd > h2 > span > a").text
-    comment_num = comment_info.split()[1]
-
-    return title, score, comment_num
-
-
-def get_list(url, pages):
-    id_list = []
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path=r"D:\chromedriver.exe", options=chrome_options)
-    driver.get(url)
-    time.sleep(1)
-
-    get_more_btn = driver.find_element(By.CSS_SELECTOR, "#content > div > div.article > div > div.list-wp > a")
-    for i in range(pages):
-        get_more_btn.click()
-        time.sleep(3)
-
-    movies = driver.find_elements(By.CSS_SELECTOR, "#content > div > div.article > div > div.list-wp > div > a")
-    for item in movies:
-        id = item.find_element(By.TAG_NAME, "div").get_attribute("data-id")
-        id_list.append(id)
-
-    driver.quit()
-    return id_list
-
-
-def get_info(num, ip, db, table):
-    my_client = pymongo.MongoClient(ip)
-    my_db = my_client[db]
-    my_table = table
-
-    print("开始抓取豆瓣高分电影")
-    pages_num = math.ceil(num / 20)
-    id_list = get_list(main_page_url, pages_num)
-
-    my_db[my_table].delete_many({})
-    for index in range(num):
-        id = id_list[index]
-        information = get_detail(id)
-        movie_info = {
-            'id': index + 1,
-            'name': information[0],
-            'score': information[1],
-            'num': information[2],
-        }
-        my_db[my_table].insert(movie_info)
-        print("已完成" + str((index + 1) * 100 / num) + "%")
-
-
+from thrift.protocol import TBinaryProtocol
+from thrift.server import TServer
+from thrift.transport import TSocket, TTransport
+from api import DoubanService
+from spider import get_info
 
 class DouBanServiceHandler:
-
     def getInfo(self, num, ip, db, table):
-        return 0
+        # 测试用，还未进行函数调用测试
+        print("num",num)
+        print("ip",ip)
+        print("db",db)
+        print("table",table)
+        # get_info(num, ip, db, table)
 
 if __name__ == "__main__":
-
-    get_info(100, config.ip, config.db, config.table)
+    # 1. create a Thrift Server's handle function
+    handler = DouBanServiceHandler()
+    # from message.api import MessageService
+    processor = DoubanService.Processor(handler)
+    # 2. create a Thrift Server's ServerSocket
+    server_socket = TSocket.TServerSocket(host='127.0.0.1', port=9090)
+    # server_socket = TSocket.TServerSocket(None, port=9090)
+    # 3. create a Thrift Server's Transport --- 帧传输方式
+    transport_factory = TTransport.TFramedTransportFactory()
+    # 4. create a Thrift Server's Protocal  --- 二进制传输协议
+    protocal_factory = TBinaryProtocol.TBinaryProtocolFactory()
+    # 5. create a Thrift Server             谁处理(who)、监听那个端口(where)、传输方式(how)、传输协议(protocal)
+    thrift_server = TServer.TSimpleServer(processor, server_socket, transport_factory, protocal_factory)
+    print("Spider Thrift Server run...")
+    thrift_server.serve()
+    print("Spider Thrift Server exit!")
