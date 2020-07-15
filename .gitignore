@@ -2,6 +2,7 @@
 /teamwork/*.iml
 /teamwork/.idea
 /teamwork/douban-thrift-python-service/config.py
+/teamwork/douban-thrift-python-service/douban/config.py
 =======
 *.iml
 misc.xml
