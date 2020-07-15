@@ -23,8 +23,6 @@ service spiderService{
     # run spider
     void getData();
 
-    # update data --
-    void updateData();
 }
 
 2. data.thrift

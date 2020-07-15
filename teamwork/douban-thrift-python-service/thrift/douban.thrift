@@ -4,10 +4,7 @@ namespace java com.test.thrift.douban
 namespace py douban.api
 
 # 定义服务，给出接口名称
-service DoubanService
-{
-    # 服务1(待定)
-    bool spider1()
-    # 服务2(待定)
-    bool spider2()
+service DoubanService{
+    # run spider
+    void getInfo(1:i32 num, 2:string ip, 3:string db, 4:string table);
 }
