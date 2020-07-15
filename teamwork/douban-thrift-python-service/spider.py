@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+import pymongo
 
 requests_headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                                   "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -45,7 +46,7 @@ def get_list(url, pages):
     get_more_btn = driver.find_element(By.CSS_SELECTOR, "#content > div > div.article > div > div.list-wp > a")
     for i in range(pages):
         get_more_btn.click()
-        time.sleep(1)
+        time.sleep(3)
 
     movies = driver.find_elements(By.CSS_SELECTOR, "#content > div > div.article > div > div.list-wp > div > a")
     for item in movies:
@@ -56,23 +57,24 @@ def get_list(url, pages):
     return id_list
 
 
-def get_info(num):
+def get_info(num, ip, db, table):
+    my_client = pymongo.MongoClient(ip)
+    my_db = my_client[db]
+    my_table = table
+
+    print("开始抓取豆瓣高分电影")
     pages_num = math.ceil(num / 20)
     id_list = get_list(main_page_url, pages_num)
-    information = []
-    print("开始抓取豆瓣高分电影")
 
+    my_db[my_table].delete_many({})
     for index in range(num):
         id = id_list[index]
-        information.append(get_detail(id))
+        information = get_detail(id)
+        movie_info = {
+            'id': index + 1,
+            'name': information[0],
+            'score': information[1],
+            'num': information[2],
+        }
+        my_db[my_table].insert(movie_info)
         print("已完成" + str((index + 1) * 100 / num) + "%")
-
-    for index in range(num):
-        print(information[index])
-        # print(information[index][0])
-        # print(information[index][1])
-        # print(information[index][2])
-
-
-if __name__ == "__main__":
-    get_info(100)

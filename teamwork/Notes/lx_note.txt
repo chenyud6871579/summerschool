@@ -40,9 +40,27 @@ MongoDB 操作:
     ⑥ 输入 db.createCollection('movies')
     创建 movies 表，将会显示 { "ok" : 1 }
 
+
+# 周三
 IDEA 操作：
-    安装 pymongo
-    在 douban-thrift-python-service 文件夹下创建 config.py
+    ① 安装 pymongo
+    ② 在 douban-thrift-python-service 文件夹下创建 config.py
+    ③ 在 config.py 中复制并运行以下代码：
+    ####################################
+    from spider import get_info
+
+    # 虚拟机的ip地址（填写自己的）
+    ip = "192.168.1.70"
+
+    # 在mongo中创建的新数据库（尽量保持一致）
+    db = "douban"
+
+    # 在新数据库中创建的新表（尽量保持一致）
+    table = "movies"
+
+    if __name__ == "__main__":
+        get_info(100, ip, db, table)
+    ####################################
 
 
 # Tips
