@@ -44,7 +44,7 @@ MongoDB 操作:
 # 周三
 IDEA 操作：
     ① 安装 pymongo
-    ② 在 douban-thrift-python-service 文件夹下创建 config.py
+    ② 在 douban-thrift-python-service / douban 下创建 config.py
     ③ 在 config.py 中复制并运行以下代码：
     ####################################
     from spider import get_info
