@@ -1,17 +1,17 @@
 from thrift.protocol import TBinaryProtocol
 from thrift.server import TServer
 from thrift.transport import TSocket, TTransport
-from api import DoubanService
-from spider import get_info
+from douban.api import DoubanService
+from douban.spider import get_info
 
 class DouBanServiceHandler:
     def getInfo(self, num, ip, db, table):
         # 测试用，还未进行函数调用测试
-        print("num",num)
-        print("ip",ip)
-        print("db",db)
-        print("table",table)
-        # get_info(num, ip, db, table)
+        # print("num",num)
+        # print("ip",ip)
+        # print("db",db)
+        # print("table",table)
+        get_info(num, ip, db, table)
 
 if __name__ == "__main__":
     # 1. create a Thrift Server's handle function

@@ -1,5 +1,6 @@
 package com.test.user.thrift;
 
+import com.test.thrift.data.DataService;
 import org.apache.thrift.TServiceClient;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -21,10 +22,10 @@ public class ServiceProvider {
     private int spiderServerPort;
 
     @Value("${thrift.user.ip}")
-    private String userServerIp;
+    private String dataServerIp;
 
     @Value("${thrift.user.port}")
-    private int userServerPort;
+    private int dataServerPort;
 
     //声明枚举类型，完成服务类型的区分
     private enum ServiceType {
@@ -58,7 +59,7 @@ public class ServiceProvider {
         // 判断服务类型，并根据服务类型返回不同的客户端
         switch (serverType) {
             case USER:
-                result = null;
+                result = new DataService.Client(protocol);
                 break;
             case SPIDER:
                 result = new DoubanService.Client(protocol);
@@ -67,10 +68,10 @@ public class ServiceProvider {
         return (T) result;
     }
 
-//    //获取用户服务 ThriftServer 的用户客户端
-//    public UserService.Client getUserService() {
-//        return getService(serverIp, serverPort, ServiceType.USER);
-//    }
+    //获取用户服务 ThriftServer 的用户客户端
+    public DataService.Client getUserService() {
+        return getService(dataServerIp, dataServerPort, ServiceType.USER);
+    }
 
     public DoubanService.Client getDoubanService(){
         return getService(spiderServerIp,spiderServerPort,ServiceType.SPIDER);

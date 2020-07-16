@@ -12,6 +12,8 @@
     <modules>
         <module>douban-thrift-service-api</module>
         <module>user-edge-service</module>
+        <module>data-thrift-service-api</module>
+        <module>data-thrift-service</module>
     </modules>
 
 </project>
