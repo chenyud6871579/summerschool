@@ -25,31 +25,7 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public Movie getMovie(){
         String name = "我不是药神";
-        System.out.println("开始连接 MongoDB");
-        MongoClient mongoClient = new MongoClient(ipAddress,ipHost);
-        System.out.println("连接成功");
-        try {
-            MongoDatabase admindb = mongoClient.getDatabase(databaseName);
-
-            //获取集合
-            MongoCollection<Document> Test = admindb.getCollection(tableName);
-
-            //获取文档 FindItersble 是一个迭代器，通过他来遍历文档
-            FindIterable<Document> documents = Test.find();
-
-            //循环遍历
-            for (Document document:documents) {
-                System.out.println(document.getString(keyName));
-                name = document.getString(keyName);
-                Movie movie = new Movie(document.getString("name"),document.getInteger("num"),document.getDouble("score"));
-            }
-        }catch (MongoException e){
-            System.out.printf("SOMETHING WRONG");
-        }finally {
-            //关闭连接
-            mongoClient.close();
-        }
-        Movie movie = new Movie(name,23,3.5);
+        Movie movie = new Movie(name,2376,9.5);
         return movie;
     }
 
@@ -86,12 +62,6 @@ public class MovieDaoImpl implements MovieDao {
             mongoClient.close();
         }
 
-//        Movie movie1 = new Movie("我不是药神",23,3.5);
-//        Movie movie2 = new Movie("我不是药神",23,3.5);
-//        Movie movie3 = new Movie("我不是药神",23,3.5);
-//        movieList.add(movie1);
-//        movieList.add(movie2);
-//        movieList.add(movie3);
         return movieList;
     }
 }

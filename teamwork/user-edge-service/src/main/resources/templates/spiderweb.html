@@ -2,9 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ECharts</title>
-    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <title>乘风破浪的程序猿</title>
+<!--    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>-->
+<!--    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
+    <script src="/js/echarts.common.js"></script>
+    <script src="/js/jquery.min.js"></script>
 </head>
 <body  style="background-color:black">
 <h1 style="color:#CCC;  margin-top:50px;margin-left:100px">可视化图表</h1>
@@ -52,10 +54,13 @@
         // 2. 填充数据 = 数据从本地的json数据文件中获取
         $.ajax({
             type : 'get',
-            url : 'data1.json',
+            url : '/user/movielist',
             dataType : "json",
             success : function (result) {
+
+                console.log("result",result)
                 $.each(result, function (index, item) {
+
 
                         names.push(item.movieName)
                         nums.push(item.movieStars)
@@ -152,17 +157,6 @@
     localDataAndShow();
 
 </script>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>ECharts</title>
-    <!-- 引入 echarts.js -->
-    <script src="/js/echarts.min.js"></script>
-    <!-- 引入 jquery.js -->
-    <script src="/js/jquery.min.js"></script>
-</head>
-<body>
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <div id="main1" style="width: 600px;height:400px;margin-left:550px;margin-top:50px"></div>
@@ -201,7 +195,7 @@
         // 2. 填充数据 = 数据从本地的json数据文件中获取
         $.ajax({
             type : 'get',
-            url : 'data1.json',
+            url : '/user/movielist',
             dataType : "json",
             success : function (result) {
                 $.each(result, function (index, item) {
@@ -266,5 +260,6 @@
     localDataAndShow();
 
 </script>
+
 </body>
 </html>

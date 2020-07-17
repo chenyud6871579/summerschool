@@ -217,3 +217,44 @@ service DataService{
 5. ![image-20200716012951754](img/image-20200716012951754.png)
 6. 这样的效果说明目前一切顺利，爬虫函数还未调试，因为本地环境有密码
 
+
+
+# Day Six
+
+## 1.需要做的配置
+
+1. user-edge-service中的application.properties
+
+   > ```properties
+   > douban.ip = 192.168.241.7
+   > spring.data.mongodb.uri = mongodb://admin:@192.168.241.7:27017/douban
+   > ```
+   >
+   > 这两项里面的ip地址换成自己的
+
+## 2.开启服务
+
+1. user-edge-service中的==ServiceApplication==
+2. douban-thrift-python-service中的==douban_handler.py==
+3. data-thrift-service中的==ApplicationService==
+
+## 3.RequestMapping列表
+
+> 前缀	localhost:8080
+
+> /user/movie	---	返回一个本地电影信息的 JSON 数据
+>
+> /user/movielist	---	返回**虚拟机**中 mongodb 中 **douban** 数据库中 **teamwork** 表中的所有电影信息的 JSON 数据
+
+> /spider	---	爬取数据并存储至**虚拟机**中 mongodb 中 **douban** 数据库中 **teamwork** 表中
+
+> /index	---	显示数据展示页面
+
+## 4.实例
+
+开启三个服务之后，输入
+
+> http://localhost:8080/index
+
+![image-20200717202626590](img/image-20200717202626590.png)
+
