@@ -1,0 +1,1 @@
+thrift.exe --gen java -out ../java data.thrift

@@ -1,11 +1,11 @@
-package com.test.user;
+package com.test.data;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication()
-public class ServiceApplication {
+@SpringBootApplication(scanBasePackages = "com")
+public class ApplicationService {
     public static void main(String[] args) {
-        SpringApplication.run(ServiceApplication.class);
+        SpringApplication.run(ApplicationService.class);
     }
 }
