@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body  style="background-color:black">
+<h1 style="color:#CCC;  margin-top:50px;margin-left:100px">可视化图表</h1>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 800px;height:450px;margin-left:450px;margin-top:150px;" ></div>
+<script type="text/javascript" align="center">
+    // 创建函数，完成从本地获取json数据，并ECharts显示
+    function localDataAndShow() {
+        // 0 - 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 1. 指定图表的配置项
+        myChart.setOption({
+                title: {
+                    text: '                                   电影的评分和短评数',
+                    show:true,
+                    padding:20,
+                    textStyle:{
+                        color:'#f5c518'
+                    },
+                },
+                backgroundColor: 'black',
+                tooltip: {trigger:'axis'},
+
+
+                xAxis: {
+                    data: []
+                },
+                dataZoom:[
+                    {
+                        type: 'slider',
+                        start: 0,
+                        end: 30
+                    }
+                ],
+                yAxis: {},
+            }
+        );
+        myChart.showLoading();
+
+        var names = [];
+        var nums = [];
+        var res = [];
+
+        // 2. 填充数据 = 数据从本地的json数据文件中获取
+        $.ajax({
+            type : 'get',
+            url : 'data1.json',
+            dataType : "json",
+            success : function (result) {
+                $.each(result, function (index, item) {
+
+                        names.push(item.movieName)
+                        nums.push(item.movieStars)
+                        res.push(item.commentNumber)
+                    }
+                );
+
+
+                myChart.hideLoading();
+                myChart.setOption({
+
+                    xAxis: {
+                        name:'电影名',
+                        data: names,
+
+                        nameGap:20,
+                        axisLine:{
+                            lineStyle:{
+                                color:'#f5c518'
+                            }
+
+                        }
+                    },
+                    yAxis: [{
+                        name:'电影短评数',
+                        type:'value',
+                        nameLocation:'end',
+                        nameGap:20,
+                        axisLine:{
+                            lineStyle:{
+                                color:'#f5c518'
+                            }
+
+                        }},{
+                        name:'电影评分',
+                        type:'value',
+                        nameLocation:'end',
+                        nameGap:20,
+                        axisLine:{
+                            lineStyle:{
+                                color:'white'
+                            }
+
+                        }
+                    }],
+
+                    series: [
+                        {
+                            name:'评分',
+                            type:'bar',
+                            data:nums ,
+                            color:'#d48265',
+                            yAxisIndex: 1,
+                            itemStyle:{
+                                barBorderRadius: [9, 9, 9, 9]
+                            }
+                        },
+                        {
+                            name:'评分',
+                            type:'line',
+                            data:nums ,
+                            yAxisIndex: 1,
+                            color:'#8dc1a9'
+                        },
+
+                        {
+                            name:'电影短评',
+                            type:'bar',
+                            data:res ,
+                            color:'#CCC',
+                            itemStyle:{
+                                barBorderRadius: [9, 9, 9, 9]
+                            }
+
+                        },
+                        {
+                            name:'电影短评',
+                            type:'line',
+                            data:res ,
+                            color:'#EFE3A4',
+
+                        }
+                    ]
+
+                });
+            },
+            error : function (errorMessage) {
+                alert("Data is Error.");
+                myChart.hideLoading();
+            }
+        });
+    };
+
+    localDataAndShow();
+
+</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="/js/echarts.min.js"></script>
+    <!-- 引入 jquery.js -->
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main1" style="width: 600px;height:400px;margin-left:550px;margin-top:50px"></div>
+<script type="text/javascript">
+    // 创建函数，完成从本地获取json数据，并ECharts显示
+    function localDataAndShow() {
+        // 0 - 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main1'));
+
+        // 1. 指定图表的配置项
+        myChart.setOption({
+                title: {
+                    text: '电影短评数(标签在鼠标悬停时出现)',
+                    textStyle:{
+                        color:'#f5c518'
+
+                    },
+                },
+                tooltip: {},
+
+
+                series: [{
+
+                    radius: '85%',
+                    type: 'pie',
+                    data: []
+                }]
+            }
+        );
+        myChart.showLoading();
+
+        var names = [];
+        var nums = [];
+
+
+        // 2. 填充数据 = 数据从本地的json数据文件中获取
+        $.ajax({
+            type : 'get',
+            url : 'data1.json',
+            dataType : "json",
+            success : function (result) {
+                $.each(result, function (index, item) {
+
+                        names.push(item.movieName);
+                        names.push(item.commentNumber);
+                    }
+                );
+
+
+                myChart.hideLoading();
+                myChart.setOption({
+                    series: {
+                        data: names,
+                        name:names[0],
+                        roseType: 'angle',
+                        type: 'pie',
+                        center: ["40%", "60%"],
+                        radius: ['60%', '80%'],
+                        minAngle: 10,  // 设置每块扇形的最小占比
+                        avoidLabelOverlap: false,
+                        legendHoverLink :true,
+                        hoverAnimation: true,
+                        silent: false,
+                        label: {
+                            normal: {
+                                show: true,
+                                formatter: "{d}% ",
+                                textStyle: {
+                                    fontSize: this.standSize / 150,
+                                    color: "#fff"
+                                },
+                            },
+                        },
+                        labelLine: {
+                            normal: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.3)'
+                                },
+                                smooth: 0.2,
+                                length: this.standSize / 50,
+                                length2: this.standSize / 100,
+                            }
+                        },
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 200,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                    }
+
+                });
+            },
+            error : function (errorMessage) {
+                alert("Data is Error.");
+                myChart.hideLoading();
+            }
+        });
+    };
+
+    localDataAndShow();
+
+</script>
+</body>
+</html>
