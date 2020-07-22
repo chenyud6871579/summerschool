@@ -3,7 +3,9 @@
 /teamwork/.idea
 /teamwork/douban-thrift-python-service/config.py
 /teamwork/douban-thrift-python-service/douban/config.py
-=======
+/CDA/spider-python-service/*.iml
+/CDA/.idea
+/CDA/*.yml
 *.iml
 misc.xml
 >>>>>>> 488aac002f8ce403c75aec1e2856c7d5dec6fde0

@@ -8,6 +8,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Component
 public class MovieDaoImpl implements MovieDao {
+
 
     private String ipAddress = "192.168.241.7";
     private int ipHost = 27017;
@@ -25,8 +27,7 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public Movie getMovie(){
         String name = "我不是药神";
-        Movie movie = new Movie(name,2376,9.5);
-        return movie;
+        return new Movie(name,2376,9.5);
     }
 
     @Override
