@@ -6,6 +6,7 @@
 /CDA/*.iml
 /CDA/.idea
 /CDA/*.yml
+/CDA/spider-thrift-service/config.py
 *.iml
 misc.xml
 >>>>>>> 488aac002f8ce403c75aec1e2856c7d5dec6fde0
