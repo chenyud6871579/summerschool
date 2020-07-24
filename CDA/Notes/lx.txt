@@ -20,3 +20,33 @@ if __name__ == "__main__":
 
 
 # DAY 2
+注：如果某日数据库中不存在某个国家/省（直辖市）/市（直辖市的区）的信息，
+则表示该地区从 2019年12月1日 至当日未曾出现感染者
+
+Globe 表：
+date		时间（日）
+country		国家
+countryCode	国家代码
+confirmed	确诊人数
+suspected	疑似人数
+cured		治愈人数
+dead		死亡人数
+
+China 表：
+date		时间（日）
+province	省/直辖市
+confirmed	确诊人数
+suspected	疑似人数
+cured		治愈人数
+dead		死亡人数
+
+Beijing 表：
+date		时间（日）
+city		区
+confirmed	确诊人数
+suspected	疑似人数
+cured		治愈人数
+dead		死亡人数
+
+
+# DAY 3
