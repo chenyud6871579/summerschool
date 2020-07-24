@@ -1,6 +1,6 @@
 # DAY 1
 在 spider-thrift-service 文件夹下创建 config.py，复制并运行以下代码：
-####################################
+################################################
 from spider import get_info
 
 # 虚拟机的ip地址（填写自己的）
@@ -10,8 +10,43 @@ ip = "192.168.1.70"
 db = "covid-19"
 
 # 在新数据库中创建的新表（尽量保持一致）
-table = "teamdata"
+table1 = "Globe"
+table2 = "China"
+table3 = "Beijing"
 
 if __name__ == "__main__":
-    get_info(ip, db, table)
-####################################
+    get_info(ip, db, table1, table2, table3)
+################################################
+
+
+# DAY 2
+注：如果某日数据库中不存在某个国家/省（直辖市）/市（直辖市的区）的信息，
+则表示该地区从 2019年12月1日 至当日未曾出现感染者
+
+Globe 表：
+date		时间（日）
+country		国家
+countryCode	国家代码
+confirmed	确诊人数
+suspected	疑似人数
+cured		治愈人数
+dead		死亡人数
+
+China 表：
+date		时间（日）
+province	省/直辖市
+confirmed	确诊人数
+suspected	疑似人数
+cured		治愈人数
+dead		死亡人数
+
+Beijing 表：
+date		时间（日）
+city		区
+confirmed	确诊人数
+suspected	疑似人数
+cured		治愈人数
+dead		死亡人数
+
+
+# DAY 3
