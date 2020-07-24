@@ -1,6 +1,6 @@
 # DAY 1
 在 spider-thrift-service 文件夹下创建 config.py，复制并运行以下代码：
-####################################
+################################################
 from spider import get_info
 
 # 虚拟机的ip地址（填写自己的）
@@ -10,8 +10,13 @@ ip = "192.168.1.70"
 db = "covid-19"
 
 # 在新数据库中创建的新表（尽量保持一致）
-table = "teamdata"
+table1 = "Globe"
+table2 = "China"
+table3 = "Beijing"
 
 if __name__ == "__main__":
-    get_info(ip, db, table)
-####################################
+    get_info(ip, db, table1, table2, table3)
+################################################
+
+
+# DAY 2
