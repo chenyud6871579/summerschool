@@ -1,0 +1,48 @@
+img
+{
+    width: 100%;
+}
+
+.guide
+{
+    position: relative;
+    float: left;
+    width: 100%;
+    padding-top: 100vh;
+    background-position: center center;
+    background-size: cover;
+    overflow: hidden
+}
+
+.have_more
+{
+    position: absolute;
+    top: 0;
+    max-width: 500px;
+    color: white;
+    margin-left: 10%;
+    padding-top: 450px;
+}
+
+.btn
+{
+    background-color: transparent;
+    color: white;
+    width: 200px;
+}
+
+.btn_more
+{
+    margin-top: 18px;
+}
+
+.info
+{
+    margin-left: 5%;
+    width: 90%;
+}
+
+.info_title
+{
+    padding-left: 15px;
+}
