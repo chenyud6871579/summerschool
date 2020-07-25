@@ -1,4 +1,4 @@
 package com.wind.dao;
 
-public class DataDao {
+public interface DataDao {
 }
