@@ -45,4 +45,25 @@ img
 .info_title
 {
     padding-left: 15px;
+    padding-top: 60px;
+    padding-bottom: 20px;
+}
+
+.info-item
+{
+    height: 430px;
+    background-color: rgb(240, 240, 240)
+}
+
+.info-text
+{
+    text-align: center;
+    vertical-align: center;
+    color: gray;
+}
+
+.member
+{
+    padding-top: 50px;
+    height: 300px;
 }
