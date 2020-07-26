@@ -5,7 +5,7 @@
 /teamwork/douban-thrift-python-service/douban/config.py
 /CDA/*.iml
 /CDA/.idea
-/CDA/*.yml
+/CDA/user-thrift-service/src/main/resources/*.yml
 /CDA/spider-thrift-service/config.py
 *.iml
 misc.xml

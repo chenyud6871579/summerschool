@@ -2,23 +2,18 @@
 namespace java com.wind.service.thrift.data
 
 struct DataBlock{
-    1:i32 id,
-    2:string username,
-    3:string password,
-    4:string realName,
-    5:string mobile,
-    6:string email
+    1:string name,
+    2:list<i32> confirmedList,
+    3:list<i32> radarNumber
+}
+
+enum DataType{
+    BEIJING = 0,
+    CHINA = 1,
+    GLOBE = 2
 }
 
 # statement user_service's interface
 service UserService{
-
-    # registered
-    void registerUser(1:UserInfo userInfo);
-
-    # get user by name
-    UserInfo getUserByName(1:string username);
-
-    # get user by id
-    UserInfo getUserById(1:i32 id);
+    list<DataBlock> getDataBlock(1:DataType type)
 }

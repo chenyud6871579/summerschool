@@ -16,6 +16,19 @@ def get_info(ip, db, table1, table2, table3):
     my_db[table2].delete_many({})
     my_db[table3].delete_many({})
     json_info = json.loads(information.T.to_json()).values()
+
+    file = open("tem.json","w",encoding="utf-8")
+    try:
+        json.dump(json_info,file,ensure_ascii=False)
+    except:
+        print("1 failed")
+        pass
+
+    try:
+        json.dump(information.T.to_json(),file,ensure_ascii=False)
+    except:
+        print("2 failed")
+        pass
     my_db[table1].insert(json_info)
     print("保存完成")
 
