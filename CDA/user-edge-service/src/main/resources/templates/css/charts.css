@@ -19,6 +19,11 @@ body
     margin-top: 20px;
 }
 
+.tog_page_a:link
+{
+    color:white;
+}
+
 .table_1
 {
     background-color: gray;
