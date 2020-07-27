@@ -7,3 +7,27 @@ body
 {
     height: 50px;
 }
+
+.contents{
+    margin-top: 50px;
+}
+.tog_page{
+    position: fixed;
+    margin-top: 50px;
+}
+
+.table_1{
+    background-color: red;
+    height: 500px;
+}
+.table_2_t{
+    height: 500px;
+}
+.table_2_1{
+    background-color: green;
+    height: 200px;
+}
+.table_2_2{
+    background-color: yellow;
+    height: 250px;
+}
