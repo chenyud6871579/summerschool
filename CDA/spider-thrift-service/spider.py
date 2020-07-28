@@ -17,23 +17,23 @@ def get_info(ip, db, table1, table2, table3):
     my_db[table3].delete_many({})
     json_info = json.loads(information.T.to_json()).values()
 
-    file = open("tem.json", "w", encoding="utf-8")
-    try:
-        json.dump(json_info, file, ensure_ascii=False)
-    except:
-        print("1 failed")
-        pass
-
-    try:
-        json.dump(information.T.to_json(), file, ensure_ascii=False)
-    except:
-        print("2 failed")
-        pass
+    # file = open("tem.json", "w", encoding="utf-8")
+    # try:
+    #     json.dump(json_info, file, ensure_ascii=False)
+    # except:
+    #     print("1 failed")
+    #     pass
+    #
+    # try:
+    #     json.dump(information.T.to_json(), file, ensure_ascii=False)
+    # except:
+    #     print("2 failed")
+    #     pass
 
     my_db[table1].insert(json_info)
     print("保存完成")
 
-    print("正在整理世界疫情信息")
+    print("正在清洗世界疫情信息")
     my_db[table1].delete_many(
         {
             "country": "钻石公主号邮轮"
@@ -188,9 +188,9 @@ def get_info(ip, db, table1, table2, table3):
             }
         }
     )
-    print("整理完成")
+    print("清洗完成")
 
-    print("正在整理中国疫情信息")
+    print("正在清洗中国疫情信息")
     my_db[table2].insert(
         my_db[table1].find(
             {
@@ -233,9 +233,9 @@ def get_info(ip, db, table1, table2, table3):
         upsert=False,
         multi=True
     )
-    print("整理完成")
+    print("清洗完成")
 
-    print("正在整理北京疫情信息")
+    print("正在清洗北京疫情信息")
     my_db[table3].insert(
         my_db[table2].find(
             {
@@ -286,4 +286,65 @@ def get_info(ip, db, table1, table2, table3):
         upsert=False,
         multi=True
     )
+    print("清洗完成")
+
+    print("正在整理世界疫情信息")
+    my_db["Globe_new"].delete_many({})
+    my_db["Globe_new"].insert(my_db[table1].aggregate([
+        {
+            '$sort': {"date": 1, "country": 1}
+        },
+        {
+            '$group':
+            {
+                "_id": "$country",
+                "name": {'$first': "$countryCode"},
+                "date": {'$push': "$date"},
+                "confirmed": {'$push': "$confirmed"},
+                "suspected": {'$push': "$suspected"},
+                "cured": {'$push': "$cured"},
+                "dead": {'$push': "$dead"}
+            }
+        }
+    ]))
+    print("整理完成")
+
+    print("正在整理中国疫情信息")
+    my_db["China_new"].delete_many({})
+    my_db["China_new"].insert(my_db[table2].aggregate([
+        {
+            '$sort': {"date": 1, "province": 1}
+        },
+        {
+            '$group':
+            {
+                "_id": "$province",
+                "date": {'$push': "$date"},
+                "confirmed": {'$push': "$confirmed"},
+                "suspected": {'$push': "$suspected"},
+                "cured": {'$push': "$cured"},
+                "dead": {'$push': "$dead"},
+            }
+        }
+    ]))
+    print("整理完成")
+
+    print("正在整理北京疫情信息")
+    my_db["Beijing_new"].delete_many({})
+    my_db["Beijing_new"].insert(my_db[table3].aggregate([
+        {
+            '$sort': {"date": 1, "city": 1}
+        },
+        {
+            '$group':
+            {
+                "_id": "$city",
+                "date": {'$push': "$date"},
+                "confirmed": {'$push': "$confirmed"},
+                "suspected": {'$push': "$suspected"},
+                "cured": {'$push': "$cured"},
+                "dead": {'$push': "$dead"},
+            }
+        }
+    ]))
     print("整理完成")
