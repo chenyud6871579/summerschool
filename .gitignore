@@ -6,6 +6,7 @@
 /CDA/*.iml
 /CDA/.idea
 /CDA/user-thrift-service/src/main/resources/*.yml
+/CDA/user-thrift-service/target/classes/application.yml
 /CDA/spider-thrift-service/config.py
 *.iml
 misc.xml

@@ -19,11 +19,6 @@
     <!-- 老陈引入的jquery -->
     <!-- <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script> -->
 
-
-
-
-
-
     <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
     <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
     <!--[if lt IE 9]>
@@ -94,16 +89,14 @@
                 <div class="col-md-8 radar">
                     <!-- 雷达图 -->
                     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-                    <div id="main" style="width: 600px;height:400px;" style="float: right"></div>
+                    <div id="radar" style="height: 100%;" style="float: right"></div>
                     <script type="text/javascript">
-                        var myChart = echarts.init(document.getElementById('main'));
-
+                        var myRadar = echarts.init(document.getElementById('radar'));
                         var radarList = [1, 2, 3, 4, 5]
-
 
                         option = {
                             //背景
-                            backgroundColor: 'rgb(64,74,89)',
+                            backgroundColor: 'rgb(50, 50, 50)',
                             //组件yi：图片下载查看数据
                             toolbox: {
                                 show: true,
@@ -115,14 +108,16 @@
                             },
                             //题目
                             title: {
-                                text: '北京市疫情',
+                                //text: '北京市疫情',
                                 textStyle: { color: ' #EFE3A4' }
 
                             },
                             tooltip: {},
                             legend: {
                                 data: ['北京市疫情'],
-                                textStyle: { color: ' #EFE3A4' }
+                                textStyle: { color: ' #EFE3A4' },
+                                top: 10,
+                                left: 0
                             },
                             radar: {
                                 // shape: 'circle',
@@ -157,24 +152,16 @@
                                 ]
                             }]
                         }
-                        myChart.setOption(option)
-
-
-
-
-
-
-
-
+                        myRadar.setOption(option)
                     </script>
                 </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-12 line">
                     <!-- 折线图 -->
                     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-                    <div id="main1" style="width: 600px;height:400px;"></div>
+                    <div id="line" style="height: 100%;"></div>
                     <script type="text/javascript">
-                        var myChart = echarts.init(document.getElementById('main'));
+                        var myLine = echarts.init(document.getElementById('line'));
 
                         var confirmed = [1,
                             1,
@@ -565,7 +552,7 @@
                         option = {
                             //背景色
                             //   backgroundColor: 'black',
-                            backgroundColor: 'rgb(64,74,89)',
+                            backgroundColor: 'rgb(50, 50, 50)',
                             //工具栏一号保存恢复查看原来的数据
                             toolbox: {
                                 show: true,
@@ -583,7 +570,7 @@
                             },
                             //标题 
                             title: {
-                                text: '北京市疫情',
+                                //text: '北京市疫情',
                                 //字体颜色
                                 textStyle: { color: ' #EFE3A4' }
 
@@ -650,17 +637,11 @@
                                 itemStyle: { normal: { color: ' rgba(221,107,102,1)' } }
                             }]
                         }
-                        myChart.setOption(option);
-
+                        myLine.setOption(option);
                     </script>
-
-
                 </div>
             </div>
         </div>
-
     </div>
 </body>
-
-
 </html>
