@@ -7,6 +7,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.sun.javafx.collections.MappingChange;
 import com.wind.service.thrift.data.DataBlock;
 import com.wind.service.thrift.data.DataType;
 import com.wind.service.thrift.data.UserService;
@@ -25,9 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.OutputStream;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class UserServiceImpl implements UserService.Iface {
@@ -92,6 +91,8 @@ public class UserServiceImpl implements UserService.Iface {
 
         List<OutDataBean> result = new ArrayList<>();
 
+        Map<String,OutDataBean> mapResult = new HashMap<>();
+
         System.out.println("开始连接 MongoDB");
         MongoClient mongoClient = new MongoClient(ipAddress,ipHost);
         System.out.println("连接成功");
@@ -114,10 +115,11 @@ public class UserServiceImpl implements UserService.Iface {
                 outDataBean.setConfirmed((List<Integer>) document.get("confirmed"));
                 outDataBean.setDate((List<Integer>) document.get("date"));
                 outDataBean.setSuspected((List<Integer>) document.get("suspected"));
-                outDataBean.setCured((List<Integer>) document.get("dured"));
+                outDataBean.setCured((List<Integer>) document.get("cured"));
                 outDataBean.setDead((List<Integer>) document.get("dead"));
                 System.out.println(JSON.toJSONString(outDataBean));
                 result.add(outDataBean);
+                mapResult.put((String)document.get("_id"),outDataBean);
 //                for (String item:document.keySet()){
 //                    System.out.println(item + " : " + document.get(item));
 //                }
@@ -131,7 +133,7 @@ public class UserServiceImpl implements UserService.Iface {
             mongoClient.close();
         }
 
-        return JSON.toJSONString(result);
+        return JSON.toJSONString(mapResult);
     }
 
 //    @Override
