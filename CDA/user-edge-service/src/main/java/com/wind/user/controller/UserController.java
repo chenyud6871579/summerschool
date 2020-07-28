@@ -10,6 +10,7 @@ import org.apache.thrift.TException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -21,26 +22,27 @@ public class UserController {
     @Resource
     private ServiceProvider serviceProvider;
 
-    @RequestMapping(value = "/beijing", method = RequestMethod.GET)
+    @RequestMapping(value = "/data", method = RequestMethod.GET)
     @ResponseBody
-    public List<DataBlock> getBeijing() throws TException {
-        UserService.Iface  userService = serviceProvider.getUserService();
-//        List<DataBlock> result = null;
-//        try {
-//            result = userService.getDataBlock(DataType.BEIJING);
-//        } catch (TException e) {
-//            System.out.println("获取失败");
-//            e.printStackTrace();
-//            return null;
-//        }
-        List<DataBlock> result = userService.getDataBlock(DataType.BEIJING);
+    public String getBeijing(@RequestParam("type") String type) throws TException {
+        DataType datatype = null;
+        if (type.equals("beijing")){
+            datatype = DataType.BEIJING;
+        }else if (type.equals("globe")){
+            datatype = DataType.GLOBE;
+        }else if (type.equals("china")){
+            datatype = DataType.CHINA;
+        }else {
+            return "WRONG INPUT";
+        }
+        UserService.Iface userService = serviceProvider.getUserService();
+        String result = userService.getData(datatype);
         return result;
     }
 
     @RequestMapping(value = "/shanghai")
     @ResponseBody
     public String getShanghai() throws TException {
-//        UserService.Iface userService = serviceProvider.getUserService();
         return "hi";
     }
 }

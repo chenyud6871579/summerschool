@@ -1,9 +1,12 @@
 # RequestMapping 列表
 
-| Key     | Value          |
-| ------- | -------------- |
-| IP+端口 | localhost:8080 |
-| 首页    | /index         |
+| Key              | Value              |
+| ---------------- | ------------------ |
+| IP+端口          | localhost:8080     |
+| 首页             | /index             |
+| 获取北京疫情数据 | /data?type=beijing |
+| 获取中国疫情数据 | /data?type=china   |
+| 获取世界疫情数据 | /data?type=globe   |
 
 # Day 1
 
@@ -37,3 +40,31 @@
 >
 > 将需要添加的 HTML 页面放进 templates 中
 
+
+
+# Day 5
+
+## 1.完成了数据的提供
+
+## ==注意==！ 需要在==user-thrift-service==中添加配置文件
+
+> 文件名：application.yml
+>
+> 文件内容：
+>
+> ```yml
+> mymongo:
+>   address: 192.168.241.7
+>   host: 27017
+>   database: covid-19-new
+>   container:
+>     beijing: Beijing_new
+>     china: China_new
+>     globe: Globe_new
+> ```
+>
+> 截图：
+>
+> ![image-20200728123938535](img/image-20200728123938535.png)
+>
+> ![image-20200728123945513](img/image-20200728123945513.png)

@@ -40,7 +40,7 @@ public class ServiceProvider {
         // 1. 声明一个Socket， 用来连接ServerSocket
         TSocket socket = null;
         try {
-            socket = new TSocket(ip, port, 3000);
+            socket = new TSocket(ip, port, 30000);
         } catch (Exception e) {
             System.out.println("连接 serverSocket超时");
         }

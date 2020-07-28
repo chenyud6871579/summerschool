@@ -15,5 +15,6 @@ enum DataType{
 
 # statement user_service's interface
 service UserService{
-    list<DataBlock> getDataBlock(1:DataType type)
+    list<DataBlock> getDataBlock(1:DataType type);
+    string getData(1:DataType type);
 }
