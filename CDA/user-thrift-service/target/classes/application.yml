@@ -1,7 +1,7 @@
 mymongo:
-  address: 192.168.241.7
+  address: 192.168.204.137
   host: 27017
-  database: covid-19-new
+  database: covid-19
   container:
     beijing: Beijing_new
     china: China_new
