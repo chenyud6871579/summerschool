@@ -1,6 +1,7 @@
 package com.wind.user.thrift;
 
 import com.wind.service.thrift.data.UserService;
+import com.wind.service.thrift.windmr.WindMRService;
 import com.wind.thrift.spider.SpiderService;
 import org.apache.thrift.TServiceClient;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -26,10 +27,17 @@ public class ServiceProvider {
     @Value("${thrift.user.port}")
     private int userServerPort;
 
+    @Value("${thrift.mapreduce.ip}")
+    private String mrServerIp;
+
+    @Value("${thrift.mapreduce.port}")
+    private int mrServerPort;
+
     //声明枚举类型，完成服务类型的区分
     private enum ServiceType {
         USER,
-        SPIDER
+        SPIDER,
+        MAPREDUCE
     }
 
     // 获取远程服务的代码 -> ip port 服务类型信息
@@ -68,6 +76,8 @@ public class ServiceProvider {
             case SPIDER:
                 result = new SpiderService.Client(protocol);
                 break;
+            case MAPREDUCE:
+                result = new WindMRService.Client(protocol);
         }
         return (T) result;
     }
@@ -81,5 +91,8 @@ public class ServiceProvider {
         return getService(spiderServerIp,spiderServerPort,ServiceType.SPIDER);
     }
 
+    public WindMRService.Iface getMRService(){
+        return getService(mrServerIp,mrServerPort,ServiceType.MAPREDUCE);
+    }
 
 }

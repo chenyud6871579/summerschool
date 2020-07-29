@@ -116,6 +116,19 @@ public class OutDataBean {
                 '}';
     }
 
+    public String myToString(){
+        return "{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", date=" + date +
+                ", confirmed=" + confirmed +
+                ", cured=" + cured +
+                ", dead=" + dead +
+                ", suspected=" + suspected +
+                ", radarList=" + radarList +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,106 +1,37 @@
-//import com.alibaba.fastjson.JSON;
-//import com.mongodb.BasicDBObject;
-//import com.mongodb.DBObject;
-//import com.wind.user.UserApplication;
-////import com.wind.user.dao.DataDao;
-////import com.wind.user.pojo.BeijingData;
-////import com.wind.user.pojo.ChinaData;
-////import com.wind.user.pojo.GlobeData;
-//import org.apache.commons.beanutils.BeanUtils;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.data.mongodb.core.MongoTemplate;
-//import org.springframework.data.mongodb.core.aggregation.Aggregation;
-//import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-//import org.springframework.test.context.junit4.SpringRunner;
-//
-//import javax.annotation.Resource;
-//import java.lang.reflect.Field;
-//import java.lang.reflect.InvocationTargetException;
-//import java.util.ArrayList;
-//import java.util.Iterator;
-//import java.util.List;
-//import java.util.Map;
-//
-//class DataBean{
-//    private String name;
-//    private List<Integer> confirmed;
-//    private List<Integer> radar;
-//
-//    public DataBean(String name, List<Integer> confirmed) {
-//        this.name = name;
-//        this.confirmed = confirmed;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public List<Integer> getConfirmed() {
-//        return confirmed;
-//    }
-//
-//    public void setConfirmed(List<Integer> confirmed) {
-//        this.confirmed = confirmed;
-//    }
-//
-//    public List<Integer> getRadar() {
-//        return radar;
-//    }
-//
-//    public void setRadar(List<Integer> radar) {
-//        this.radar = radar;
-//    }
-//
-//    public DataBean() {
-//    }
-//
-//    public DataBean(String name, List<Integer> confirmed, List<Integer> radar) {
-//        this.name = name;
-//        this.confirmed = confirmed;
-//        this.radar = radar;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "DataBean{" +
-//                "name='" + name + '\'' +
-//                ", confirmed=" + confirmed +
-//                ", radar=" + radar +
-//                '}';
-//    }
-//}
-//
+import com.alibaba.fastjson.JSON;
+import com.wind.user.UserApplication;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes = UserApplication.class)
-//public class MongoTest {
-//
-////    @Resource
-////    private DataDao<BeijingData> dataDaoBeijing;
-////    @Resource
-////    private DataDao<ChinaData> dataDaoChina;
-////    @Resource
-////    private DataDao<GlobeData> dataDaoGlobe;
-//    @Resource
-//    private MongoTemplate mongoTemplate;
-//
-//
-//
-////    @Test
-////    public void findAll_Base(){
-////        List<BeijingData> beijingData = dataDaoBeijing.findAll(BeijingData.class);
-////        List<ChinaData> chinaData = dataDaoChina.findAll(ChinaData.class);
-////        List<GlobeData> globeData = dataDaoGlobe.findAll(GlobeData.class);
-////        System.out.println("BeijingData - " + beijingData.size());
-////        System.out.println("chinaData - " + chinaData.size());
-////        System.out.println("globeData - " + globeData.size());
-////    }
-//
+public class MongoTest {
+
+
+
+//    @Test
+//    public void findAll_Base(){
+//        List<BeijingData> beijingData = dataDaoBeijing.findAll(BeijingData.class);
+//        List<ChinaData> chinaData = dataDaoChina.findAll(ChinaData.class);
+//        List<GlobeData> globeData = dataDaoGlobe.findAll(GlobeData.class);
+//        System.out.println("BeijingData - " + beijingData.size());
+//        System.out.println("chinaData - " + chinaData.size());
+//        System.out.println("globeData - " + globeData.size());
+//    }
+
 //    @Test
 //    public void group_sun() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 //        Aggregation aggregation1 = Aggregation.newAggregation(
@@ -132,22 +63,35 @@
 //        }
 //        System.out.println(JSON.toJSONString(result));
 //    }
-//
-//
-//    public static <T> T dbObject2Bean(DBObject dbObject, T bean) throws IllegalAccessException,
-//            InvocationTargetException, NoSuchMethodException {
-//        if (bean == null) {
-//            return null;
-//        }
-//        Field[] fields = bean.getClass().getDeclaredFields();
-//        for (Field field : fields) {
-//            String varName = field.getName();
-//            Object object = dbObject.get(varName);
-//            if (object != null) {
-////                BeanUtils.setProperty(bean, varName, object);
-//            }
-//        }
-//        return bean;
-//    }
-//
-//}
+
+    @Test
+    public void writeOutFile() {
+//        System.out.println("用户的当前工作目录:"+System.getProperty("user.dir"));
+        String parent = new File(System.getProperty("user.dir")).getParent();
+//        System.out.println(parent);
+        // 提供FileWriter的对象，用于数据写出
+        // 第二个参数，是否追加
+        FileWriter fw = null;
+        try {
+            // 提供File类对象，指明写出文件
+            File file = new File(parent + "\\mapreduce-thrift-service\\input\\" + "hello1.txt");
+            if(file.exists())
+                file.delete();
+            fw = new FileWriter(file, true);
+            // 写出
+            fw.write("I have a dream!\n");
+            fw.write("You need to have a dream too!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(fw != null)
+                    fw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+}
