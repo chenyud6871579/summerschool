@@ -21,19 +21,56 @@
 
     <script>
         window.onload = function () {
-            var progress = 0;
-            var box1 = document.getElementById("box1");
-            box1.onclick = function () {
-                progress += 10;
-                flushProgressBar("progressBar", "progressText", progress, "正在运行" + String(progress));
-            }
 
-            function flushProgressBar(progressBarId, progressTextId, progress, message) {
+            function flushProgressBar(progressBarId, progressTextId, progress, message, setIntervalId) {
                 var progressBar = document.getElementById(progressBarId);
                 var progressText = document.getElementById(progressTextId);
                 progressBar.style.width = String(progress) + "%";
                 progressText.innerHTML = message;
+                if(progress == 100){
+                    progressBar.classList.remove("active")
+                    progressBar.classList.add("progress-bar-success")
+                    clearInterval(setIntervalId);
+                    $.ajax(
+                        {
+                            type:'get',
+                            url:'/progress/spider/zero'
+                        }
+                    )
+                }
             }
+
+            var spiderButton = document.getElementById("spiderButton");
+            spiderButton.onclick = function(){
+                $.ajax({
+                    type:"get",
+                    url:"/spider/status",
+                    success:function (result) {
+                        console.log(result)
+                        if(result == "true"){
+                            $.ajax({
+                                type:"get",
+                                url:"/spider",
+                            });
+
+                            var setId = setInterval(function flush(){
+                                $.ajax({
+                                    type: "get",
+                                    url: "/progress/spider/how",
+                                    dataType:"json",
+                                    success: function (response) {
+                                        console.log(response)
+                                        flushProgressBar("progressBar", "progressText", parseInt(response[0]), response[1],setId);
+                                    }
+                                })
+                            },1000);
+                        }
+                    }
+                })
+
+
+                }
+
         }
     </script>
     <style>
@@ -139,7 +176,7 @@
                 <h5 style="color: gray;">我们一直致力于为广大客户提供用心的优质项目和相关服务！</h5>
                 <!-- Button trigger modal -->
                 <br>
-                <button type="button" class="btn btn1" data-toggle="modal" data-target="#myModal1">
+                <button id="spiderButton" type="button" class="btn btn1" data-toggle="modal" data-target="#myModal1">
                     获取数据
                 </button>
                 &nbsp;&nbsp;&nbsp;
@@ -157,12 +194,11 @@
                                 <h4 class="modal-title" id="myModalLabel1">获取数据</h4>
                             </div>
                             <div class="modal-body">
-                                <div id="box1"></div>
                                 <div class="progress">
                                     <div id="progressBar" class="progress-bar progress-bar-striped active"
                                         role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="60"
                                         style="width: 0%;">
-                                        <span id="progressText"></span>
+                                        <span id="progressText">程序正在运行...</span>
                                     </div>
                                 </div>
                             </div>

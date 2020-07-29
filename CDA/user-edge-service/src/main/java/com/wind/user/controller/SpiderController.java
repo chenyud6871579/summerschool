@@ -16,11 +16,24 @@ public class SpiderController {
     @Resource
     private ServiceProvider serviceProvider;
 
+    private static boolean spiderFlag = true;
+
     @RequestMapping("/spider")
     @ResponseBody
     public String runSpider() throws TException {
-        SpiderService.Iface spiderService = serviceProvider.getSpiderService();
-        spiderService.runSpider();
-        return "数据爬取完毕！";
+        if(spiderFlag){
+            spiderFlag = false;
+            SpiderService.Iface spiderService = serviceProvider.getSpiderService();
+            spiderService.runSpider();
+            spiderFlag = true;
+            return "数据爬取完毕！";
+        }
+        return "running";
+    }
+
+    @RequestMapping("/spider/status")
+    @ResponseBody
+    public String spiderStatus(){
+        return String.valueOf(spiderFlag);
     }
 }
