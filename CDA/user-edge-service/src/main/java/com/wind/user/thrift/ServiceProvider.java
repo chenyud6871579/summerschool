@@ -40,7 +40,7 @@ public class ServiceProvider {
         // 1. 声明一个Socket， 用来连接ServerSocket
         TSocket socket = null;
         try {
-            socket = new TSocket(ip, port, 30000);
+            socket = new TSocket(ip, port, 60000);
         } catch (Exception e) {
             System.out.println("连接 serverSocket超时");
         }
@@ -66,7 +66,7 @@ public class ServiceProvider {
                 result = new UserService.Client(protocol);
                 break;
             case SPIDER:
-                result = null;
+                result = new SpiderService.Client(protocol);
                 break;
         }
         return (T) result;
@@ -77,9 +77,9 @@ public class ServiceProvider {
         return getService(userServerIp, userServerPort, ServiceType.USER);
     }
 
-//    public SpiderService.Client getMessageService(){
-//        return getService(messageServerIp,messageServerPort,ServiceType.MESSAGE);
-//    }
+    public SpiderService.Client getSpiderService(){
+        return getService(spiderServerIp,spiderServerPort,ServiceType.SPIDER);
+    }
 
 
 }

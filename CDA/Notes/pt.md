@@ -7,6 +7,7 @@
 | 获取北京疫情数据 | /data?type=beijing |
 | 获取中国疫情数据 | /data?type=china   |
 | 获取世界疫情数据 | /data?type=globe   |
+|                  | /spider            |
 
 # Day 1
 
@@ -68,3 +69,18 @@
 > ![image-20200728123938535](img/image-20200728123938535.png)
 >
 > ![image-20200728123945513](img/image-20200728123945513.png)
+
+# Day 6
+
+增加参数：类型控制（为了代码复用，防止一个函数复制粘贴三遍
+
+前端的同学用以下JS语句做==类型==判断
+
+```javascript
+var pageType = "[[${type}]]".toLowerCase();
+if(pageType == "beijing"){ ... }
+else if(pageType == "china"){ ... }
+else if(pageType == "globe"){ ... }
+else{ console.log("Wrong type") }
+```
+
