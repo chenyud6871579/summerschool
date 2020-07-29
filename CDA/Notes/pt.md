@@ -98,4 +98,10 @@ else if(pageType == "china"){ ... }
 else if(pageType == "globe"){ ... }
 else{ console.log("Wrong type") }
 ```
-
+# Day 7
+需要在==config.py==中添加以下代码
+```python
+def run_spider():
+    get_info(ip, db, table1, table2, table3)
+```
+并删除main函数
