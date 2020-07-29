@@ -6,8 +6,10 @@ import com.mongodb.client.MongoDatabase;
 import com.wind.service.thrift.data.DataType;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class MongoUtil {
     @Value("${mymongo.address}")
     private static String ipAddress;

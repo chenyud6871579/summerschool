@@ -1,13 +1,28 @@
 # RequestMapping 列表
 
-| Key              | Value              |
-| ---------------- | ------------------ |
-| IP+端口          | localhost:8080     |
-| 首页             | /index             |
-| 获取北京疫情数据 | /data?type=beijing |
-| 获取中国疫情数据 | /data?type=china   |
-| 获取世界疫情数据 | /data?type=globe   |
-|                  | /spider            |
+| Key              | Value                    |
+| ---------------- | ------------------------ |
+| IP+端口          | localhost:8080           |
+| 首页             | /index                   |
+| 获取北京疫情数据 | /data?type=beijing       |
+| 获取中国疫情数据 | /data?type=china         |
+| 获取世界疫情数据 | /data?type=globe         |
+| 获取北京数据界面 | /index/page?type=beijing |
+| 获取中国数据界面 | /index/page?type=china   |
+| 获取世界数据界面 | /index/page?type=globe   |
+| 运行爬虫         | /spider                  |
+| 启动 MapReduce   | /mr/runmr                |
+| 刷新本地生成数据 | /mr/localfile            |
+
+# ProgressBar 请求列表
+
+| Key                        | Value                                        |
+| -------------------------- | -------------------------------------------- |
+| 重置 spider 进度条         | /progress/spider/zero                        |
+| 获取 spider 进度           | /progress/spider/how                         |
+| 提交 spider 完成进度及信息 | /progress/spider/add?add=10&message=正在执行 |
+
+
 
 # Day 1
 
