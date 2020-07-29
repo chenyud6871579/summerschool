@@ -17,7 +17,7 @@ def get_info(ip, db, table1, table2, table3):
     my_db = my_client[db]
 
     print("正在获取新冠疫情信息")
-    get_rate(20, "正在获取新冠疫情信息")
+    get_rate(10, "正在获取新冠疫情信息")
     information = akshare.covid_19_history()
     print("获取完成")
 
@@ -364,4 +364,5 @@ def get_info(ip, db, table1, table2, table3):
             }
         }
     ]))
+    get_rate(10, "获取完成")
     print("整理完成")
