@@ -13,9 +13,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/charts.css" rel="stylesheet">
 
-    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/api?v=2.0&ak=GMxrUS0GLz09Yxa2evG8WvprVRzgsoIE"></script>
+    <script type="text/javascript"
+        src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <!-- 老陈引入的jquery -->
     <!-- <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script> -->
 
@@ -69,8 +75,157 @@
                     </ul>
 
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="point">
-                            地图 1
+                        <div role="tabpanel" class="tab-pane active" id="point" style="width: 860px;height: 640px;">
+                            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                            <div id="beijing_graph" style="width: 100%;height:100%;"></div>
+                            <script type="text/javascript">
+                                function reGraph() {
+                                    var myChart = echarts.init(document.getElementById('beijing_graph'));
+
+                                    $.get('lines-bus.json', function (data) {
+                                        var busLines = [].concat.apply([], data.map(function (busLine, idx) {
+                                            var prevPt;
+                                            var points = [];
+                                            for (var i = 0; i < busLine.length; i += 2) {
+                                                var pt = [busLine[i], busLine[i + 1]];
+                                                if (i > 0) {
+                                                    pt = [
+                                                        prevPt[0] + pt[0],
+                                                        prevPt[1] + pt[1]
+                                                    ];
+                                                }
+                                                prevPt = pt;
+
+                                                points.push([pt[0] / 1e4, pt[1] / 1e4]);
+                                            }
+                                            return {
+                                                coords: points
+                                            };
+                                        }));
+                                        myChart.setOption(option = {
+                                            bmap: {
+                                                center: [116.46, 39.92],
+                                                zoom: 10,
+                                                roam: true,
+                                                mapStyle: {
+                                                    styleJson: [{
+                                                        'featureType': 'water',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'color': '#d1d1d1'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'land',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'color': '#f3f3f3'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'railway',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'visibility': 'off'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'highway',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'color': '#fdfdfd'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'highway',
+                                                        'elementType': 'labels',
+                                                        'stylers': {
+                                                            'visibility': 'off'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'arterial',
+                                                        'elementType': 'geometry',
+                                                        'stylers': {
+                                                            'color': '#fefefe'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'arterial',
+                                                        'elementType': 'geometry.fill',
+                                                        'stylers': {
+                                                            'color': '#fefefe'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'poi',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'visibility': 'off'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'green',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'visibility': 'off'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'subway',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'visibility': 'off'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'manmade',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'color': '#d1d1d1'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'local',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'color': '#d1d1d1'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'arterial',
+                                                        'elementType': 'labels',
+                                                        'stylers': {
+                                                            'visibility': 'off'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'boundary',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'color': '#fefefe'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'building',
+                                                        'elementType': 'all',
+                                                        'stylers': {
+                                                            'color': '#d1d1d1'
+                                                        }
+                                                    }, {
+                                                        'featureType': 'label',
+                                                        'elementType': 'labels.text.fill',
+                                                        'stylers': {
+                                                            'color': '#999999'
+                                                        }
+                                                    }]
+                                                }
+                                            },
+                                            series: [{
+                                                type: 'lines',
+                                                coordinateSystem: 'bmap',
+                                                polyline: true,
+                                                data: busLines,
+                                                silent: true,
+                                                lineStyle: {
+                                                    color: 'rgb(200, 35, 45)',
+                                                    opacity: 0.2,
+                                                    width: 1
+                                                },
+                                                progressiveThreshold: 500,
+                                                progressive: 200
+                                            }]
+                                        });
+                                    });
+                                }
+                                reGraph();
+                            </script>
                         </div>
 
                         <div role="tabpanel" class="tab-pane" id="color">
@@ -98,14 +253,14 @@
                             //背景
                             backgroundColor: 'rgb(50, 50, 50)',
                             //组件yi：图片下载查看数据
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    dataView: { readOnly: false },
-                                    restore: {},
-                                    saveAsImage: {}
-                                }
-                            },
+                            // toolbox: {
+                            //     show: true,
+                            //     feature: {
+                            //         dataView: { readOnly: false },
+                            //         restore: {},
+                            //         saveAsImage: {}
+                            //     }
+                            // },
                             //题目
                             title: {
                                 //text: '北京市疫情',
@@ -123,19 +278,17 @@
                                 // shape: 'circle',
                                 name: {
                                     textStyle: {
-                                        color: 'rgb(221,107,102)',
-                                        backgroundColor: 'rgb(64,74,89)',
+                                        color: 'rgb(200,200,200)',
                                         borderRadius: 3,
                                         padding: [3, 5]
                                     }
                                 },
                                 indicator: [
-
-                                    { name: 'infection rate', max: 2 },
-                                    { name: 'cure rate ', max: 10 },
-                                    { name: 'Government attention ', max: 10 },
-                                    { name: 'Public attention ', max: 10 },
-                                    { name: 'Comprehensive index', max: 10 }
+                                    { name: '综合评分', max: 10 },
+                                    { name: '健康等级', max: 10 },
+                                    { name: '治愈效果', max: 10 },
+                                    { name: '政府措施', max: 10 },
+                                    { name: '公众意识', max: 10 }
                                 ]
                             },
                             series: [{
@@ -554,20 +707,20 @@
                             //   backgroundColor: 'black',
                             backgroundColor: 'rgb(50, 50, 50)',
                             //工具栏一号保存恢复查看原来的数据
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    //局域缩放
-                                    dataZoom: {
-                                        yAxisIndex: "none"
-                                    },
-                                    dataView: {
-                                        readOnly: false
-                                    },
-                                    restore: {},
-                                    saveAsImage: {}
-                                }
-                            },
+// <!--                            toolbox: {-->
+// <!--                                show: true,-->
+// <!--                                feature: {-->
+// <!--                                    //局域缩放-->
+// <!--                                    dataZoom: {-->
+// <!--                                        yAxisIndex: "none"-->
+// <!--                                    },-->
+// <!--                                    dataView: {-->
+// <!--                                        readOnly: false-->
+// <!--                                    },-->
+// <!--                                    restore: {},-->
+// <!--                                    saveAsImage: {}-->
+// <!--                                }-->
+// <!--                            },-->
                             //标题 
                             title: {
                                 //text: '北京市疫情',
@@ -587,20 +740,23 @@
                                     show: true,
                                     xAxisIndex: [0],
                                     start: 0,
-                                    end: 100
+                                    end: 100,
+                                    height: 15
                                 },
 
                                 {
                                     type: 'inside',
                                     xAxisIndex: [0],
                                     start: 0,
-                                    end: 1000
+                                    end: 1000,
+                                    height: 15
                                 },
                                 {
                                     type: 'inside',
                                     yAxisIndex: [0],
                                     start: 0,
-                                    end: 100
+                                    end: 100,
+                                    height: 15
                                 }
                             ],
                             //线性图
