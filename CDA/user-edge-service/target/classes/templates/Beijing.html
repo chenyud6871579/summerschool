@@ -75,7 +75,7 @@
                     </ul>
 
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active graph" id="point">
+                        <div role="tabpanel" class="tab-pane active" id="point" style="width: 860px;height: 640px;">
                             <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
                             <div id="beijing_graph" style="width: 100%;height:100%;"></div>
                             <script type="text/javascript">
@@ -242,7 +242,6 @@
             <div class="row col-md-5 table_2">
                 <div class="col-md-1"></div>
                 <div class="col-md-10 radar">
-                    <div id="radar" style="height: 100%;" style="float: right"></div>
                     <!-- 雷达图 -->
                     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
                     <div id="radar" style="height: 100%;" style="float: right"></div>
@@ -254,14 +253,14 @@
                             //背景
                             backgroundColor: 'rgb(50, 50, 50)',
                             //组件yi：图片下载查看数据
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    dataView: { readOnly: false },
-                                    restore: {},
-                                    saveAsImage: {}
-                                }
-                            },
+                            // toolbox: {
+                            //     show: true,
+                            //     feature: {
+                            //         dataView: { readOnly: false },
+                            //         restore: {},
+                            //         saveAsImage: {}
+                            //     }
+                            // },
                             //题目
                             title: {
                                 //text: '北京市疫情',
@@ -279,19 +278,17 @@
                                 // shape: 'circle',
                                 name: {
                                     textStyle: {
-                                        color: 'rgb(221,107,102)',
-                                        backgroundColor: 'rgb(64,74,89)',
+                                        color: 'rgb(200,200,200)',
                                         borderRadius: 3,
                                         padding: [3, 5]
                                     }
                                 },
                                 indicator: [
-
-                                    { name: 'infection rate', max: 2 },
-                                    { name: 'cure rate ', max: 10 },
-                                    { name: 'Government attention ', max: 10 },
-                                    { name: 'Public attention ', max: 10 },
-                                    { name: 'Comprehensive index', max: 10 }
+                                    { name: '综合评分', max: 10 },
+                                    { name: '健康等级', max: 10 },
+                                    { name: '治愈效果', max: 10 },
+                                    { name: '政府措施', max: 10 },
+                                    { name: '公众意识', max: 10 }
                                 ]
                             },
                             series: [{
@@ -710,20 +707,20 @@
                             //   backgroundColor: 'black',
                             backgroundColor: 'rgb(50, 50, 50)',
                             //工具栏一号保存恢复查看原来的数据
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    //局域缩放
-                                    dataZoom: {
-                                        yAxisIndex: "none"
-                                    },
-                                    dataView: {
-                                        readOnly: false
-                                    },
-                                    restore: {},
-                                    saveAsImage: {}
-                                }
-                            },
+// <!--                            toolbox: {-->
+// <!--                                show: true,-->
+// <!--                                feature: {-->
+// <!--                                    //局域缩放-->
+// <!--                                    dataZoom: {-->
+// <!--                                        yAxisIndex: "none"-->
+// <!--                                    },-->
+// <!--                                    dataView: {-->
+// <!--                                        readOnly: false-->
+// <!--                                    },-->
+// <!--                                    restore: {},-->
+// <!--                                    saveAsImage: {}-->
+// <!--                                }-->
+// <!--                            },-->
                             //标题 
                             title: {
                                 //text: '北京市疫情',
@@ -743,20 +740,23 @@
                                     show: true,
                                     xAxisIndex: [0],
                                     start: 0,
-                                    end: 100
+                                    end: 100,
+                                    height: 15
                                 },
 
                                 {
                                     type: 'inside',
                                     xAxisIndex: [0],
                                     start: 0,
-                                    end: 1000
+                                    end: 1000,
+                                    height: 15
                                 },
                                 {
                                     type: 'inside',
                                     yAxisIndex: [0],
                                     start: 0,
-                                    end: 100
+                                    end: 100,
+                                    height: 15
                                 }
                             ],
                             //线性图
@@ -800,5 +800,4 @@
         </div>
     </div>
 </body>
-
 </html>
