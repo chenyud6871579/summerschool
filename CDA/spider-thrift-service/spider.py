@@ -1,6 +1,15 @@
 import akshare
 import pymongo
 import json
+import requests
+
+
+def get_rate(add, message):
+    add_message = {
+        "add": add,
+        "message": message
+    }
+    requests.get("http://localhost:8080/progress/spider/add", add_message)
 
 
 def get_info(ip, db, table1, table2, table3):
@@ -8,10 +17,12 @@ def get_info(ip, db, table1, table2, table3):
     my_db = my_client[db]
 
     print("正在获取新冠疫情信息")
+    get_rate(20, "正在获取新冠疫情信息")
     information = akshare.covid_19_history()
     print("获取完成")
 
     print("正在保存信息到数据库")
+    get_rate(20, "正在保存信息到数据库")
     my_db[table1].delete_many({})
     my_db[table2].delete_many({})
     my_db[table3].delete_many({})
@@ -34,6 +45,7 @@ def get_info(ip, db, table1, table2, table3):
     print("保存完成")
 
     print("正在清洗世界疫情信息")
+    get_rate(10, "正在清洗世界疫情信息")
     my_db[table1].delete_many(
         {
             "country": "钻石公主号邮轮"
@@ -191,6 +203,7 @@ def get_info(ip, db, table1, table2, table3):
     print("清洗完成")
 
     print("正在清洗中国疫情信息")
+    get_rate(10, "正在清洗中国疫情信息")
     my_db[table2].insert(
         my_db[table1].find(
             {
@@ -236,6 +249,7 @@ def get_info(ip, db, table1, table2, table3):
     print("清洗完成")
 
     print("正在清洗北京疫情信息")
+    get_rate(10, "正在清洗北京疫情信息")
     my_db[table3].insert(
         my_db[table2].find(
             {
@@ -289,6 +303,7 @@ def get_info(ip, db, table1, table2, table3):
     print("清洗完成")
 
     print("正在整理世界疫情信息")
+    get_rate(10, "正在整理世界疫情信息")
     my_db["Globe_new"].delete_many({})
     my_db["Globe_new"].insert(my_db[table1].aggregate([
         {
@@ -310,6 +325,7 @@ def get_info(ip, db, table1, table2, table3):
     print("整理完成")
 
     print("正在整理中国疫情信息")
+    get_rate(10, "正在整理中国疫情信息")
     my_db["China_new"].delete_many({})
     my_db["China_new"].insert(my_db[table2].aggregate([
         {
@@ -330,6 +346,7 @@ def get_info(ip, db, table1, table2, table3):
     print("整理完成")
 
     print("正在整理北京疫情信息")
+    get_rate(10, "正在整理北京疫情信息")
     my_db["Beijing_new"].delete_many({})
     my_db["Beijing_new"].insert(my_db[table3].aggregate([
         {

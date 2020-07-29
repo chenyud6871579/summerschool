@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +11,18 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/charts.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+    <script type="text/javascript"
+            src="https://api.map.baidu.com/api?v=2.0&ak=GMxrUS0GLz09Yxa2evG8WvprVRzgsoIE"></script>
+    <script type="text/javascript"
+            src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <!-- 老陈引入的jquery -->
+    <!-- <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script> -->
 
     <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
     <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
@@ -18,12 +31,6 @@
     <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
 
-    <script>
-        window.onload = function () {
-            var pageType = "[[${type}]]".toLowerCase();
-            console.log(pageType)
-        }
-    </script>
 </head>
 
 <body>
@@ -33,7 +40,8 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <!-- 手机屏幕，隐藏右边三块-->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -41,7 +49,8 @@
                 </button>
                 <a class="navbar-brand" href="/index">新冠疫情大数据分析</a>
             </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse navbar-right" style="float: right;"
+                 id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <!-- class="active" -->
                     <li><a href="/globe">世界</a></li>
@@ -57,14 +66,166 @@
         <div class="col-md-7 table_1">
             <div class="tog_page container-fluid">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#point" aria-controls="point" role="tab" data-toggle="tab" class="tog_page_a">Point</a></li>
-                    <li role="presentation"><a href="#color" aria-controls="color" role="tab" data-toggle="tab" class="tog_page_a">Color</a></li>
-                    <li role="presentation"><a href="#d3" aria-controls="d3" role="tab" data-toggle="tab" class="tog_page_a">3D</a></li>
+                    <li role="presentation" class="active"><a href="#point" aria-controls="point" role="tab"
+                                                              data-toggle="tab" class="tog_page_a">Point</a></li>
+                    <li role="presentation"><a href="#color" aria-controls="color" role="tab" data-toggle="tab"
+                                               class="tog_page_a">Color</a></li>
+                    <li role="presentation"><a href="#d3" aria-controls="d3" role="tab" data-toggle="tab"
+                                               class="tog_page_a">3D</a></li>
                 </ul>
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="point">
-                        地图 1
+                    <div role="tabpanel" class="tab-pane active" id="point" style="width: 860px;height: 640px;">
+                        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="beijing_graph" style="width: 100%;height:100%;"></div>
+                        <script type="text/javascript">
+                            function reGraph() {
+                                var myChart = echarts.init(document.getElementById('beijing_graph'));
+
+                                $.get('lines-bus.json', function (data) {
+                                    var busLines = [].concat.apply([], data.map(function (busLine, idx) {
+                                        var prevPt;
+                                        var points = [];
+                                        for (var i = 0; i < busLine.length; i += 2) {
+                                            var pt = [busLine[i], busLine[i + 1]];
+                                            if (i > 0) {
+                                                pt = [
+                                                    prevPt[0] + pt[0],
+                                                    prevPt[1] + pt[1]
+                                                ];
+                                            }
+                                            prevPt = pt;
+
+                                            points.push([pt[0] / 1e4, pt[1] / 1e4]);
+                                        }
+                                        return {
+                                            coords: points
+                                        };
+                                    }));
+                                    myChart.setOption(option = {
+                                        bmap: {
+                                            center: [116.46, 39.92],
+                                            zoom: 10,
+                                            roam: true,
+                                            mapStyle: {
+                                                styleJson: [{
+                                                    'featureType': 'water',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'color': '#d1d1d1'
+                                                    }
+                                                }, {
+                                                    'featureType': 'land',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'color': '#f3f3f3'
+                                                    }
+                                                }, {
+                                                    'featureType': 'railway',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'visibility': 'off'
+                                                    }
+                                                }, {
+                                                    'featureType': 'highway',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'color': '#fdfdfd'
+                                                    }
+                                                }, {
+                                                    'featureType': 'highway',
+                                                    'elementType': 'labels',
+                                                    'stylers': {
+                                                        'visibility': 'off'
+                                                    }
+                                                }, {
+                                                    'featureType': 'arterial',
+                                                    'elementType': 'geometry',
+                                                    'stylers': {
+                                                        'color': '#fefefe'
+                                                    }
+                                                }, {
+                                                    'featureType': 'arterial',
+                                                    'elementType': 'geometry.fill',
+                                                    'stylers': {
+                                                        'color': '#fefefe'
+                                                    }
+                                                }, {
+                                                    'featureType': 'poi',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'visibility': 'off'
+                                                    }
+                                                }, {
+                                                    'featureType': 'green',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'visibility': 'off'
+                                                    }
+                                                }, {
+                                                    'featureType': 'subway',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'visibility': 'off'
+                                                    }
+                                                }, {
+                                                    'featureType': 'manmade',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'color': '#d1d1d1'
+                                                    }
+                                                }, {
+                                                    'featureType': 'local',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'color': '#d1d1d1'
+                                                    }
+                                                }, {
+                                                    'featureType': 'arterial',
+                                                    'elementType': 'labels',
+                                                    'stylers': {
+                                                        'visibility': 'off'
+                                                    }
+                                                }, {
+                                                    'featureType': 'boundary',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'color': '#fefefe'
+                                                    }
+                                                }, {
+                                                    'featureType': 'building',
+                                                    'elementType': 'all',
+                                                    'stylers': {
+                                                        'color': '#d1d1d1'
+                                                    }
+                                                }, {
+                                                    'featureType': 'label',
+                                                    'elementType': 'labels.text.fill',
+                                                    'stylers': {
+                                                        'color': '#999999'
+                                                    }
+                                                }]
+                                            }
+                                        },
+                                        series: [{
+                                            type: 'lines',
+                                            coordinateSystem: 'bmap',
+                                            polyline: true,
+                                            data: busLines,
+                                            silent: true,
+                                            lineStyle: {
+                                                color: 'rgb(200, 35, 45)',
+                                                opacity: 0.2,
+                                                width: 1
+                                            },
+                                            progressiveThreshold: 500,
+                                            progressive: 200
+                                        }]
+                                    });
+                                });
+                            }
+                            reGraph();
+                        </script>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="color">
@@ -79,23 +240,564 @@
             </div>
         </div>
         <div class="row col-md-5 table_2">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 radar">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 radar">
                 <!-- 雷达图 -->
-                雷达图
+                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                <div id="radar" style="height: 100%;" style="float: right"></div>
+                <script type="text/javascript">
+                    var myRadar = echarts.init(document.getElementById('radar'));
+                    var radarList = [1, 2, 3, 4, 5]
+
+                    option = {
+                        //背景
+                        backgroundColor: 'rgb(50, 50, 50)',
+                        //组件yi：图片下载查看数据
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                dataView: { readOnly: false },
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        //题目
+                        title: {
+                            //text: '北京市疫情',
+                            textStyle: { color: ' #EFE3A4' }
+
+                        },
+                        tooltip: {},
+                        legend: {
+                            data: ['北京市疫情'],
+                            textStyle: { color: ' #EFE3A4' },
+                            top: 10,
+                            left: 0
+                        },
+                        radar: {
+                            // shape: 'circle',
+                            name: {
+                                textStyle: {
+                                    color: 'rgb(221,107,102)',
+                                    backgroundColor: 'rgb(64,74,89)',
+                                    borderRadius: 3,
+                                    padding: [3, 5]
+                                }
+                            },
+                            indicator: [
+
+                                { name: 'infection rate', max: 2 },
+                                { name: 'cure rate ', max: 10 },
+                                { name: 'Government attention ', max: 10 },
+                                { name: 'Public attention ', max: 10 },
+                                { name: 'Comprehensive index', max: 10 }
+                            ]
+                        },
+                        series: [{
+                            name: '北京市疫情',
+                            type: 'radar',
+                            // areaStyle: {normal: {}},
+                            data: [
+                                {
+                                    // 这里错了，radarData是空的，应该这样写
+
+                                    value: radarList,
+                                    name: '北京市疫情衡量指标'
+                                }
+                            ]
+                        }]
+                    }
+                    myRadar.setOption(option)
+                </script>
             </div>
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-12 line">
                 <!-- 折线图 -->
-                折线图
+                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                <div id="line" style="height: 100%;"></div>
+                <script type="text/javascript">
+                    var myLine = echarts.init(document.getElementById('line'));
+
+                    var confirmed = [1,
+                        1,
+                        1,
+                        2,
+                        2,
+                        4,
+                        4,
+                        7,
+                        11,
+                        11,
+                        12,
+                        16,
+                        17,
+                        18,
+                        20,
+                        20,
+                        22,
+                        22,
+                        26,
+                        27,
+                        30,
+                        30,
+                        32,
+                        36,
+                        36,
+                        38,
+                        39,
+                        39,
+                        40,
+                        40,
+                        40,
+                        41,
+                        41,
+                        41,
+                        41,
+                        41,
+                        41,
+                        42,
+                        42,
+                        42,
+                        42,
+                        42,
+                        42,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        45,
+                        48,
+                        80,
+                        101,
+                        123,
+                        142,
+                        156,
+                        174,
+                        187,
+                        197,
+                        202,
+                        208,
+                        214,
+                        223,
+                        230,
+                        245,
+                        255,
+                        260,
+                        266,
+                        266,
+                        267,
+                        269,
+                        270,
+                        272,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273]
+                    var dateTime = [
+                        "2020-01-21",
+                        "2020-01-22",
+                        "2020-01-23",
+                        "2020-01-24",
+                        "2020-01-25",
+                        "2020-01-26",
+                        "2020-01-27",
+                        "2020-01-28",
+                        "2020-01-29",
+                        "2020-01-30",
+                        "2020-01-31",
+                        "2020-02-01",
+                        "2020-02-02",
+                        "2020-02-03",
+                        "2020-02-04",
+                        "2020-02-05",
+                        "2020-02-06",
+                        "2020-02-07",
+                        "2020-02-08",
+                        "2020-02-09",
+                        "2020-02-10",
+                        "2020-02-11",
+                        "2020-02-12",
+                        "2020-02-13",
+                        "2020-02-14",
+                        "2020-02-15",
+                        "2020-02-16",
+                        "2020-02-17",
+                        "2020-02-18",
+                        "2020-02-19",
+                        "2020-02-20",
+                        "2020-02-21",
+                        "2020-02-22",
+                        "2020-02-23",
+                        "2020-02-24",
+                        "2020-02-25",
+                        "2020-02-26",
+                        "2020-02-27",
+                        "2020-02-28",
+                        "2020-02-29",
+                        "2020-03-01",
+                        "2020-03-02",
+                        "2020-03-03",
+                        "2020-03-04",
+                        "2020-03-05",
+                        "2020-03-06",
+                        "2020-03-07",
+                        "2020-03-08",
+                        "2020-03-09",
+                        "2020-03-10",
+                        "2020-03-11",
+                        "2020-03-12",
+                        "2020-03-13",
+                        "2020-03-14",
+                        "2020-03-15",
+                        "2020-03-16",
+                        "2020-03-17",
+                        "2020-03-18",
+                        "2020-03-19",
+                        "2020-03-20",
+                        "2020-03-21",
+                        "2020-03-22",
+                        "2020-03-23",
+                        "2020-03-24",
+                        "2020-03-25",
+                        "2020-03-26",
+                        "2020-03-27",
+                        "2020-03-28",
+                        "2020-03-29",
+                        "2020-03-30",
+                        "2020-03-31",
+                        "2020-04-01",
+                        "2020-04-02",
+                        "2020-04-03",
+                        "2020-04-04",
+                        "2020-04-05",
+                        "2020-04-06",
+                        "2020-04-07",
+                        "2020-04-08",
+                        "2020-04-09",
+                        "2020-04-10",
+                        "2020-04-11",
+                        "2020-04-12",
+                        "2020-04-13",
+                        "2020-04-14",
+                        "2020-04-15",
+                        "2020-04-16",
+                        "2020-04-17",
+                        "2020-04-18",
+                        "2020-04-19",
+                        "2020-04-20",
+                        "2020-04-21",
+                        "2020-04-22",
+                        "2020-04-23",
+                        "2020-04-24",
+                        "2020-04-25",
+                        "2020-04-26",
+                        "2020-04-27",
+                        "2020-04-28",
+                        "2020-04-29",
+                        "2020-04-30",
+                        "2020-05-01",
+                        "2020-05-02",
+                        "2020-05-03",
+                        "2020-05-04",
+                        "2020-05-05",
+                        "2020-05-06",
+                        "2020-05-07",
+                        "2020-05-08",
+                        "2020-05-09",
+                        "2020-05-10",
+                        "2020-05-11",
+                        "2020-05-12",
+                        "2020-05-13",
+                        "2020-05-14",
+                        "2020-05-15",
+                        "2020-05-16",
+                        "2020-05-17",
+                        "2020-05-18",
+                        "2020-05-19",
+                        "2020-05-20",
+                        "2020-05-21",
+                        "2020-05-22",
+                        "2020-05-23",
+                        "2020-05-24",
+                        "2020-05-25",
+                        "2020-05-26",
+                        "2020-05-27",
+                        "2020-05-28",
+                        "2020-05-29",
+                        "2020-05-30",
+                        "2020-05-31",
+                        "2020-06-01",
+                        "2020-06-02",
+                        "2020-06-03",
+                        "2020-06-04",
+                        "2020-06-05",
+                        "2020-06-06",
+                        "2020-06-07",
+                        "2020-06-08",
+                        "2020-06-09",
+                        "2020-06-10",
+                        "2020-06-11",
+                        "2020-06-12",
+                        "2020-06-13",
+                        "2020-06-14",
+                        "2020-06-15",
+                        "2020-06-16",
+                        "2020-06-17",
+                        "2020-06-18",
+                        "2020-06-19",
+                        "2020-06-20",
+                        "2020-06-21",
+                        "2020-06-22",
+                        "2020-06-23",
+                        "2020-06-24",
+                        "2020-06-25",
+                        "2020-06-26",
+                        "2020-06-27",
+                        "2020-06-28",
+                        "2020-06-29",
+                        "2020-06-30",
+                        "2020-07-01",
+                        "2020-07-02",
+                        "2020-07-03",
+                        "2020-07-04",
+                        "2020-07-05",
+                        "2020-07-06",
+                        "2020-07-07",
+                        "2020-07-08",
+                        "2020-07-09",
+                        "2020-07-10",
+                        "2020-07-11",
+                        "2020-07-12",
+                        "2020-07-13",
+                        "2020-07-14",
+                        "2020-07-15",
+                        "2020-07-16",
+                        "2020-07-17",
+                        "2020-07-18",
+                        "2020-07-19",
+                        "2020-07-20",
+                        "2020-07-21",
+                        "2020-07-22",
+                        "2020-07-23",
+                        "2020-07-24",
+                        "2020-07-25",
+                        "2020-07-26",
+                        "2020-07-27",
+                        "2020-07-28"
+                    ]
+
+
+
+
+                    option = {
+                        //背景色
+                        //   backgroundColor: 'black',
+                        backgroundColor: 'rgb(50, 50, 50)',
+                        //工具栏一号保存恢复查看原来的数据
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                //局域缩放
+                                dataZoom: {
+                                    yAxisIndex: "none"
+                                },
+                                dataView: {
+                                    readOnly: false
+                                },
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        //标题
+                        title: {
+                            //text: '北京市疫情',
+                            //字体颜色
+                            textStyle: { color: ' #EFE3A4' }
+
+                        },
+                        tooltip: {},
+                        legend: {
+                            data: ['确诊人数'],
+                            textStyle: { color: ' #EFE3A4' }
+                        },
+                        // 滑动组件
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                show: true,
+                                xAxisIndex: [0],
+                                start: 0,
+                                end: 100
+                            },
+
+                            {
+                                type: 'inside',
+                                xAxisIndex: [0],
+                                start: 0,
+                                end: 1000
+                            },
+                            {
+                                type: 'inside',
+                                yAxisIndex: [0],
+                                start: 0,
+                                end: 100
+                            }
+                        ],
+                        //线性图
+                        xAxis: {
+                            type: "category",
+                            data: dateTime,
+                            name: "时间",
+                            minInterval: 3600 * 1000 * 24,
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'rgba(221,107,102,1)'
+                                }
+                            },
+
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: "感染人数",
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'rgba(221,107,102,1)'
+                                }
+                            }
+                        },
+                        series: [{
+                            data: confirmed,
+                            type: 'line',
+                            name: "确诊人数",
+                            lineStyle: {
+                                color: ' rgba(221,107,102,1)'
+                            },
+                            symbol: "circle",
+                            symbolSize: 5,
+                            itemStyle: { normal: { color: ' rgba(221,107,102,1)' } }
+                        }]
+                    }
+                    myLine.setOption(option);
+                </script>
             </div>
         </div>
     </div>
-
 </div>
-<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>
