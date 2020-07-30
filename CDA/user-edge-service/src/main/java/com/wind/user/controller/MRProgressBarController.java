@@ -1,14 +1,19 @@
 package com.wind.user.controller;
 
 import com.wind.user.thrift.ServiceProvider;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+@Controller
+@RequestMapping("/progress")
 public class MRProgressBarController {
     @Resource
     private ServiceProvider serviceProvider;
@@ -18,7 +23,7 @@ public class MRProgressBarController {
 
     @RequestMapping("/mr/zero")
     @ResponseBody
-    public String zeroSpiderProgress(){
+    public String zeroMRProgress(){
         mrProgress = 0;
         mrMessage = "";
         return "重置完成";
@@ -26,7 +31,7 @@ public class MRProgressBarController {
 
     @RequestMapping("/mr/how")
     @ResponseBody
-    public List<String> getSpiderProgress(){
+    public List<String> getMRProgress(){
         List<String> list = new ArrayList<>();
         list.add(String.valueOf(mrProgress));
         list.add(mrMessage);
@@ -35,7 +40,7 @@ public class MRProgressBarController {
 
     @RequestMapping("/mr/add")
     @ResponseBody
-    public String addSpiderProgress(
+    public String addMRProgress(
             @RequestParam("add") int add,
             @RequestParam("message") String message){
         mrProgress += add;

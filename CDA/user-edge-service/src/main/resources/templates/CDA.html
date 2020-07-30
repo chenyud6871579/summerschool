@@ -22,7 +22,7 @@
     <script>
         window.onload = function () {
 
-            function flushProgressBar(progressBarId, progressTextId, progress, message, setIntervalId) {
+            function flushProgressBar(progressBarId, progressTextId, progress, message, setIntervalId,type) {
                 var progressBar = document.getElementById(progressBarId);
                 var progressText = document.getElementById(progressTextId);
                 progressBar.style.width = String(progress) + "%";
@@ -34,45 +34,50 @@
                     $.ajax(
                         {
                             type:'get',
-                            url:'/progress/spider/zero'
+                            url:'/progress/'+type+'/zero'
                         }
                     )
                 }
             }
-
-            var spiderButton = document.getElementById("spiderButton");
-            spiderButton.onclick = function(){
+            function tapRunButton(progressBarId, progressTextId,type) {
                 $.ajax({
                     type:"get",
-                    url:"/spider/status",
+                    url:"/"+type+"/status",
                     success:function (result) {
                         console.log(result)
                         if(result == "true"){
                             $.ajax({
                                 type:"get",
-                                url:"/spider",
+                                url:"/"+type,
                             });
 
-                            var progressBar = document.getElementById("progressBar")
+                            var progressBar = document.getElementById(progressBarId)
                             progressBar.classList.remove("progress-bar-success")
 
-                            var setId = setInterval(function flush(){
-                                $.ajax({
-                                    type: "get",
-                                    url: "/progress/spider/how",
-                                    dataType:"json",
-                                    success: function (response) {
-                                        console.log(response)
-                                        flushProgressBar("progressBar", "progressText", parseInt(response[0]), response[1],setId);
-                                    }
-                                })
-                            },1000);
+                            // var setId = setInterval(function flush(){
+                            //     $.ajax({
+                            //         type: "get",
+                            //         url: "/progress/"+type+"/how",
+                            //         dataType:"json",
+                            //         success: function (response) {
+                            //             console.log(response)
+                            //             flushProgressBar(progressBarId, progressTextId, parseInt(response[0]), response[1],setId,type);
+                            //         }
+                            //     })
+                            // },1000);
                         }
                     }
                 })
+            }
 
-
-                }
+            var spiderButton = document.getElementById("spiderButton");
+            spiderButton.onclick = function(){
+                tapRunButton("progressBar","progressText","spider");
+            }
+            var mapReduceButton = document.getElementById("mapReduceButton");
+            mapReduceButton.onclick = function () {
+                tapRunButton("mapreduceBar","mapreduceText","mr")
+            }
 
         }
     </script>
@@ -183,7 +188,7 @@
                     获取数据
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn2" data-toggle="modal" data-target="#myModal2">
+                <button id="mapReduceButton" type="button" class="btn btn2" data-toggle="modal" data-target="#myModal2">
                     MapReduce
                 </button>
 

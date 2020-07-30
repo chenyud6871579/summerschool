@@ -119,18 +119,18 @@ public class WindMRServiceImpl implements WindMRService.Iface {
             String [] args = {"mapreduce-thrift-service/input/"+item,"mapreduce-thrift-service/output/"+item};
             String blockName = "";
             if (item.equals("globe")){
-                blockName = "国外";
+                blockName = "Chinese";
             }else if (item.equals("china")){
-                blockName = "国内";
+                blockName = "Foreign";
             }
-            WindUtil.pushProgressBar(5,"开始处理"+blockName+"数据");
+            WindUtil.pushProgressBar(5,"Start Processing "+blockName+" Data...");
             try {
                 radarMR.runRadarMR(args);
             } catch (Exception e) {
-                WindUtil.pushProgressBar(-1,"出现错误！");
+                WindUtil.pushProgressBar(0,"Wrong!");
             }
         }
-        WindUtil.pushProgressBar(0,"MapReduce 运行结束");
+        WindUtil.pushProgressBar(0,"End Of MapReduce Mission");
 
     }
 

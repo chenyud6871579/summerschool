@@ -16,16 +16,16 @@ public class SpiderController {
     @Resource
     private ServiceProvider serviceProvider;
 
-    private static boolean spiderFlag = true;
+    private static String spiderFlag = "true";
 
     @RequestMapping("/spider")
     @ResponseBody
     public String runSpider() throws TException {
-        if(spiderFlag){
-            spiderFlag = false;
+        if(spiderFlag.equals("true")){
+            spiderFlag = "false";
             SpiderService.Iface spiderService = serviceProvider.getSpiderService();
             spiderService.runSpider();
-            spiderFlag = true;
+            spiderFlag = "true";
             return "数据爬取完毕！";
         }
         return "running";

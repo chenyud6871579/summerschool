@@ -34,6 +34,15 @@
     <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
+
+    <script>
+        window.onload = function () {
+            var globeFlag = "[[${type}]]"; // beijing - china - globe
+            function getGlobeFlag() {
+                return globeFlag;
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -82,6 +91,17 @@
                         <script type="text/javascript">
                             var dataMap = {};
                             var myColor = echarts.init(document.getElementById('myColor'));
+                            var allList = [
+                                ['东城区',"西城区"],
+                                ['CN',"USA"],
+                                ['XJ','BJ']
+                            ]
+                            var pList = []
+                            if(getGlobeFlag() == "beijig"){
+                                pList = allList[0];
+                            }else if(getGlobeFlag() == "china"){
+                                pList = allList[2];
+                            }
                             var pList = ['东城区','西城区','朝阳区','丰台区','石景山区','海淀区','门头沟区','房山区','通州区','顺义区','昌平区','大兴区',
                                 '怀柔区','平谷区','密云区', '延庆区'];
 

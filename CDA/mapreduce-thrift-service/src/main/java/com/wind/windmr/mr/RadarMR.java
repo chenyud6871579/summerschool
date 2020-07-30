@@ -210,7 +210,7 @@ public class RadarMR {
         Job job = Job.getInstance(configuration, "Movie Lens Version 1.0");
         job.setJarByClass(RadarMR.class);
 
-        WindUtil.pushProgressBar(5,"开始初始化 MapReduce Job");
+        WindUtil.pushProgressBar(5,"Initializing MapReduce Job...");
 
         // 1. 指明输入
         String[] hadoopArgs = new GenericOptionsParser(configuration, args).getRemainingArgs();
@@ -254,13 +254,13 @@ public class RadarMR {
         FileOutputFormat.setOutputPath(job, outPath);
         job.setOutputFormatClass(TextOutputFormat.class);
 
-        WindUtil.pushProgressBar(10,"完成 MapReduce 配置，开始运行 MapReduce");
+        WindUtil.pushProgressBar(10,"Complete The MapReduce Configuration And Start To Run MapReduce...");
 
         // 8. 提交 MR Job
         boolean resultCompletion = job.waitForCompletion(true);
         boolean resultSuccessful = job.isSuccessful();
 
-        WindUtil.pushProgressBar(30,"MapReduce 运行结束");
+        WindUtil.pushProgressBar(30,"MapReduce Finished");
 
         System.exit(resultCompletion && resultSuccessful ? 0 : 1);
 
