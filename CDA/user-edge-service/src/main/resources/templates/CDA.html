@@ -17,7 +17,7 @@
     <!--[if lt IE 9]>
       <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-      <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <![endif]-->
 
     <script>
@@ -123,7 +123,7 @@
                 <div class="have_more">
                     <h6>COVID-19 Data Analysis</h6>
                     <h2>新冠疫情大数据分析</h2>
-                    <a id="btn-more" class="btn btn-default btn_more" href="#info-title" role="button">MORE</a>
+                    <a id="btn-more" class="btn btn-default btn_more" role="button">MORE</a>
 
                 </div>
             </div>
@@ -274,9 +274,9 @@
     <script>
          $(function()
          {
-             $('a').click(function()
+             $('#btn-more').click(function()
              {
-                $('html,body').animate({scrollTop: ($($(this).attr('href')).offset().top)}, 1000);
+                $('html,body').animate({scrollTop: ($('#info-title').offset().top)}, 1000);
              });
          });
      </script>
