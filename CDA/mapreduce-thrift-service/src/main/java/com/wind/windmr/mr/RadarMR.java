@@ -22,6 +22,7 @@ import org.apache.hadoop.yarn.webapp.hamlet2.Hamlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RadarMR {
@@ -95,13 +96,28 @@ public class RadarMR {
                     outMRBean.setSuspected(mrBean.getSuspected());
                 }
             }
-//            if(outMRBean.getConfirmed() == null){
-//                // 人口有 数据库没有
-//                return;
-//            }else if(outMRBean.getPopulation() == 0){
-//                // 数据库有 人口没有
-//                return;
-//            }
+            if(outMRBean.getConfirmed() == null){
+                // 人口有 数据库没有
+                return;
+            }else if(outMRBean.getPopulation() == 0){
+                // 数据库有 人口没有
+                return;
+            }
+
+            /*
+             * 此后是提供的变量
+             */
+            long population = outMRBean.getPopulation();
+            List<Integer> confirmed = outMRBean.getConfirmed();
+            List<Integer> cured = outMRBean.getCured();
+            List<Integer> dead = outMRBean.getDead();
+            List<Integer> suspected = outMRBean.getSuspected();
+
+            // 接受返回值的参数
+            List<Long> radarList = new ArrayList<>();
+
+            // 调用函数
+
             context.write(nameText, outMRBean);
         }
     }
