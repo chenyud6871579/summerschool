@@ -71,7 +71,7 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#color" aria-controls="color" role="tab"
                                                               data-toggle="tab" class="tog_page_a">Color</a></li>
-                    <li role="presentation"><a href="#point" aria-controls="point" role="tab" data-toggle="tab"
+                    <li role="presentation"><a href="#mypoint" aria-controls="point" role="tab" data-toggle="tab"
                                                class="tog_page_a">Point</a></li>
                 </ul>
 
@@ -315,6 +315,134 @@
 
                                                 ]
                                             }
+                                           
+                                            myColor.setOption(option1);
+                                        },
+                                    }
+                                )
+                            }
+                            myshow();
+                        </script>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="mypoint">
+                        <div id="myPoint" style="height: 600px;width: 892px;"></div>
+                        <script type="text/javascript">
+                            var dataMap = {};
+                            var myPoint = echarts.init(document.getElementById('myPoint'));
+                            var pList = ['东城区','西城区','朝阳区','丰台区','石景山区','海淀区','门头沟区','房山区','通州区','顺义区','昌平区','大兴区',
+                                '怀柔区','平谷区','密云区', '延庆区'];
+
+                            var geoCoordMap = {
+                                '东城区':[116.42,39.93],
+                                '西城区':[116.37,37.92],
+                                '崇文区':[116.43,39.88],
+                                '宣武区':[116.35,39.86],
+                                '朝阳区':[116.43,39.92],
+                                '丰台区':[116.28,39.82],
+                                '石景山区':[116.22,39.9],
+                                '海淀区':[116.3,39.95],
+                                '门头沟区':[116.1,39.93],
+                                '房山区':[116.13,39.75],
+                                '通州区':[116.65,39.92],
+                                '顺义区':[116.65,40.13],
+                                '昌平区':[116.23,40.22],
+                                '大兴区':[116.33,39.73],
+                                '怀柔区':[116.63,40.32],
+                                '平谷区':[117.12,40.13],
+                                '密云区':[116.83,40.37],
+                                '延庆区':[115.97,40.45],
+                            };
+
+                            var convertData = function (data) {
+                                var res = [];
+                                for (var i = 0; i < data.length; i++) {
+                                    var geoCoord = geoCoordMap[data[i].name];
+
+                                    if (geoCoord) {
+                                        res.push({
+                                            name: data[i].name,
+                                            value: geoCoord.concat(data[i].value),
+                                            vec:data[i].value
+                                        });
+                                    }
+                                }
+
+                                return res;
+
+                            };
+
+                            function timedata(){
+                                var date=[]
+                                for(var i=1;i<15;i++){
+                                    date[i]="06"+String(i+14)}
+                                for(var j=15;j<31;j++){
+                                    date[j]="07"+"-"+String(j-14)}
+                                return date
+                            }
+
+                            function dataFormatter(obj) {
+
+                                var temp;
+                                for (var num = 1; num <= 30; num++) {
+                                    temp = obj[num];
+
+                                    for (var i = 0, l = temp.length; i < l; i++) {
+                                        obj[num][i] = {
+                                            name : pList[i],
+                                            value : temp[i],
+
+                                        }
+                                    }
+
+                                }
+
+                                return obj;
+                            }
+                            function myshow(){
+
+                                $.ajax({
+                                        type: "get",
+                                        url: "json/beijing.json",
+                                        dataType: "json",
+                                        success: function (result) {
+
+                                            var obj = []
+                                            var data1 = []
+                                            for (var i = 1; i < 31; i++) {
+                                                var confirmed = []
+                                                for (var item in pList) {
+                                                    var proviceName = pList[item];
+
+
+                                                    var index = result[proviceName]["confirmed"].length - 31 + i
+                                                    confirmed.push(result[proviceName]["confirmed"][index])
+                                                }
+
+                                                data1[i] = confirmed,
+                                                    obj[String(i)] = confirmed
+
+                                            }
+                                            dataMap.confirm=dataFormatter(obj)
+                                            console.log(obj)
+
+                                            var foroption = function () {
+
+                                                var options = []
+                                                for (var i = 1; i < 30; i++) {
+                                                    var seriesa = []
+                                                    seriesa = {date: obj[i]}
+                                                    options[i] = {
+                                                        series: seriesa,
+                                                    }
+
+
+                                                }
+
+                                                return options
+
+                                            }
+
                                             var option2 = {
 
                                                 backgroundColor: '#404a59',
@@ -396,7 +524,7 @@
                                                     geo: {
                                                         map: '北京',
                                                         roam: false,//不开启缩放和平移
-                                                        zoom: 1.23,//视角缩放比例
+                                                        zoom: 1,//视角缩放比例
                                                         label: {
                                                             normal: {
                                                                 show: false,
@@ -500,17 +628,13 @@
                                                     {series: [{ data:convertData(obj[29])}]},
                                                     {series: [{ data:convertData(obj[30])}]},
                                                 ]}
-                                            myColor.setOption(option1);
+                                            myPoint.setOption(option2);
                                         },
                                     }
                                 )
                             }
                             myshow();
                         </script>
-                    </div>
-
-                    <div role="tabpanel" class="tab-pane" id="point">
-
                     </div>
                 </div>
             </div>
