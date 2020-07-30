@@ -131,7 +131,7 @@
 
         <div class="row info">
             <div id="info-title" class="info_title">
-                <h3 style="font-weight: bold;">新冠疫情信息</h3>
+                <h3 style="font-weight: bold; color: rgb(80, 80, 80);">新冠疫情信息</h3>
             </div>
             <div class="col-md-4">
                 <div class="info-item">
@@ -158,7 +158,7 @@
                         <p>
                             COVID-19 席卷全球
                             <br>
-                            累计确诊人数已经超过1600万
+                            累计确诊人数已经超过1700万
                             <br>
                             累计死亡人数已经超过60万
                             <br>
@@ -279,7 +279,22 @@
                 $('html, body').animate({scrollTop: ($('#info-title').offset().top)}, 1000);
              });
          });
-     </script>
+    </script>
+    <script type="text/javascript">
+        $(function()
+        {
+            $("nav").hide();
+            var height = $("#info-title").offset().top;
+            $(window).scroll(function()
+            {
+                var this_scrollTop = $(this).scrollTop();
+                if(this_scrollTop > height - 1)
+                {
+                    $("nav").show();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
