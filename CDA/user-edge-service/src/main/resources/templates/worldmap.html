@@ -45,7 +45,7 @@
         '毛里求斯','丹麦','塞尔维亚','列支敦士登','波多黎各','洪都拉斯','萨尔瓦多','布基纳法索','沙特阿拉伯','秘鲁','南苏丹','厄瓜多尔','玻利维亚',
         '马约特','阿联酋','格恩西岛','塞浦路斯','圣马力诺','不丹','博茨瓦纳','马提尼克','几内亚比绍','哈萨克斯坦','塞拉利昂','阿塞拜疆',
         '黑山','西班牙','乌克兰','乌拉圭','苏里南','安圭拉','塔吉克斯坦','乌干达','加拿大','日本','爱沙尼亚','马达加斯加','冈比亚','新加坡',
-        '塞内加尔','科威特','牙买加','毛利塔尼亚','格陵兰','莱索托',
+        '塞内加尔','科威特','牙买加','毛利塔尼亚', '莱索托','刚果金','立陶宛','埃及','孟加拉','吉尔吉斯斯坦','刚果布','利比亚','比利时','阿拉伯联合酋长国'
 
 
     ];
@@ -190,7 +190,23 @@
                         var confirmed = []
                         for (var item in pList) {
                             var proviceName = pList[item];
-
+                            if (proviceName == "刚果金") {
+                                proviceName = "刚果（金）"
+                            }
+                            if (proviceName == "毛里塔尼亚") {
+                                proviceName = "毛利塔尼亚"
+                            }
+                            if (proviceName == "孟加拉") {
+                                proviceName = "孟加拉国"
+                            }
+                            if (proviceName == "吉尔吉斯坦") {
+                                proviceName = "吉尔吉斯斯坦"
+                            }
+                            if (proviceName == "刚果布") {
+                                proviceName = "刚果（布）"
+                            }if (proviceName == "阿拉伯联合酋长国") {
+                                proviceName = "阿联酋"
+                            }
 
                             var index = result[proviceName]["confirmed"].length - 31 + i
                             confirmed.push(result[proviceName]["confirmed"][index])
@@ -348,7 +364,7 @@
                                     gte: 10000,
                                     lte: 20000,
                                     label: "10000 - 20000 人",
-                                    color: "#FF9933 "
+                                    color: "#FF7F50 "
                                 },
                                     {
                                         gte: 5000,
@@ -359,17 +375,20 @@
                                         gte: 1000,
                                         lt: 5000,
                                         label: "1000 - 5000 人",
-                                        color: "#FFCC00 "
+                                        color: "#FFCC99"
                                     }, {
                                         gt: 100,
                                         lt: 1000,
-                                        label: "100-1000人",
-                                        color: "#FFCC99 "
-                                    }, {gt:0,
-                                        lt:100,
-                                        label:"0-100人",
+                                        label: "100 - 1000人",
+                                        color: "#FFE4B5 "
+                                    }, {
+                                        gt: 0,
+                                        lt: 100,
+                                        label: "1 - 100人",
+                                        color: "#FFF8DC"
+                                    }, {
                                         value: 0,
-                                        color: "#FFFFCC "
+                                        color: "#ffffff"
                                     }],
                                 show: !0
                             },
