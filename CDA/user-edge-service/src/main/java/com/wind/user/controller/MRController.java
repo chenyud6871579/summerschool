@@ -1,6 +1,7 @@
 package com.wind.user.controller;
 
 import com.wind.service.thrift.windmr.WindMRService;
+import com.wind.used.util.WindUtil;
 import com.wind.user.thrift.ServiceProvider;
 import org.apache.thrift.TException;
 import org.springframework.stereotype.Controller;
@@ -16,9 +17,11 @@ public class MRController {
     @Resource
     private ServiceProvider serviceProvider;
 
+
     @RequestMapping("/runmr")
     @ResponseBody
     public String runMapReduce() throws TException {
+        WindUtil.pushProgressBar(10,"first");
         WindMRService.Iface mrService = serviceProvider.getMRService();
         mrService.runMapReduce();
         return "完成MR";
@@ -31,4 +34,5 @@ public class MRController {
         mrService.getLocalData();
         return "完成本地文件生成";
     }
+
 }
