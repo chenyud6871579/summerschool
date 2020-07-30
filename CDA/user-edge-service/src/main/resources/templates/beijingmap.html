@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script src="js/worldZH.js"></script>
+    <script src="js/beijing.js"></script>
     <style>
         *{margin:0;padding:0}
         html,body{
@@ -15,8 +15,8 @@
             height:100%;
         }
         #main{
-            width:1200px;
-            height:1000px;
+            width:900px;
+            height:650px;
             margin: 150px auto;
             border:1px solid #ddd;
         }
@@ -30,106 +30,44 @@
 <script type="text/javascript">
     var dataMap = {};
     var myChart = echarts.init(document.getElementById('main'));
-    var pList = ['巴西','泰国','斯威士兰','安道尔','委内瑞拉','约旦','新西兰','柬埔寨','布隆迪','贝宁',
-        '加纳', '科特迪瓦','直布罗陀','挪威','阿根廷','摩尔多瓦','纳米比亚','波黑','圣马丁',
-        '东帝汶','乌兹别克斯坦','卡塔尔','韩国','巴林','哥伦比亚','英国','德国','马耳他','圣巴泰勒米',
-        '瑞士','奥地利','马尔代夫','意大利','加蓬','科摩罗','土耳其','芬兰','阿鲁巴','多米尼加',
-        '圭亚那','索马里','叙利亚','巴巴多斯','爱尔兰','阿尔巴尼亚','中国','澳大利亚','蒙古','佛得角','巴勒斯坦','赤道几内亚',
-        '阿曼','巴基斯坦','北马里亚纳','卢森堡','海地', '古巴','黎巴嫩','法属圭亚那','哥斯达黎加','尼泊尔','罗马尼亚','卢旺达',
-        '利比里亚','几内亚','北马其顿','安哥拉','吉布提','以色列','开曼群岛','墨西哥','危地马拉','希腊','阿富汗','亚美尼亚','多米尼克',
-        '捷克','百慕大','新喀里多尼亚','保加利亚','匈牙利','波兰','法国','俄罗斯','斯里兰卡','荷兰','斯洛文尼亚','瑞典','摩洛哥','中非',
-        '缅甸','冰岛','突尼斯','智利','乍得','马拉维','巴布亚新几内亚','伯利兹','南非','圣多美和普林西比','马里','马来西亚','巴哈马','荷属安的列斯',
-        '葡萄牙','津巴布韦','孟加拉国','菲律宾','多哥','赞比亚','文莱','克罗地亚','尼日利亚','莫桑比克','泽西岛','巴拉圭',
-        '厄立特里亚','伊拉克','莱索托','越南','美国','梵蒂冈','肯尼亚','圣皮埃尔和密克隆','尼加拉瓜','法属波利尼西亚','巴拿马','英属维尔京群岛','摩纳哥','埃塞俄比亚','老挝','英国属地曼岛','印度','圣卢西亚','塞舌尔','安提瓜和巴布达','蒙特塞拉特','伊朗','白俄罗斯','格陵兰',
-        '苏丹','阿尔及利亚','斯洛伐克','也门','尼日尔','拉脱维亚','喀麦隆','印度尼西亚','法罗群岛','格鲁吉亚','关岛','坦桑尼亚',
-        '毛里求斯','丹麦','塞尔维亚','列支敦士登','波多黎各','洪都拉斯','萨尔瓦多','布基纳法索','沙特阿拉伯','秘鲁','南苏丹','厄瓜多尔','玻利维亚',
-        '马约特','阿联酋','格恩西岛','塞浦路斯','圣马力诺','不丹','博茨瓦纳','马提尼克','几内亚比绍','哈萨克斯坦','塞拉利昂','阿塞拜疆',
-        '黑山','西班牙','乌克兰','乌拉圭','苏里南','安圭拉','塔吉克斯坦','乌干达','加拿大','日本','爱沙尼亚','马达加斯加','冈比亚','新加坡',
-        '塞内加尔','科威特','牙买加','毛利塔尼亚','格陵兰','莱索托',
+    var pList = ['东城区','西城区','朝阳区','丰台区','石景山区','海淀区','门头沟区','房山区','通州区','顺义区','昌平区','大兴区',
+        '怀柔区','平谷区','密云区', '延庆区'];
+
+    var geoCoordMap = {
+        '东城区':[116.42,39.93],
+        '西城区':[116.37,37.92],
+        '崇文区':[116.43,39.88],
+        '宣武区':[116.35,39.86],
+        '朝阳区':[116.43,39.92],
+
+        '丰台区':[116.28,39.82],
+
+        '石景山区':[116.22,39.9],
+
+        '海淀区':[116.3,39.95],
 
 
-    ];
-    var geoCoordMap={
-        '阿联酋':[54.37,24.28],
-        '澳大利亚':[149.08,-35.15],
-        '比利时':[4.21,50.57],
-        '柬埔寨':[104.55,11.33],
-        '加拿大':[-75.42,45.27],
-        '中国':[116.2,39.55],
-        '埃及':[31.34,30.01],
-        '芬兰':[25.03,60.15],
-        '法国':[2.2,48.5],
-        '德国':[13.25,52.3],
-        '印度':[71.13,28.37],
-        '意大利':[12.29,41.54],
-        '马来西亚':[101.43,3.09],
-        '尼泊尔':[85.2,27.45],
-        '韩国':[126.58,37.31],
-        '俄罗斯':[37.35,55.45],
-        '西班牙':[2.173403,41.385064],
-        '泰国':[100.35,13.45],
-        '美国':[-77.03,39.91],
-        '英国':[-0.127758,51.507351],
-        '日本':[139.46,35.42],
-        '新加坡':[103.49,1.21],
-        '斯里兰卡':[79.52,6.5],
-        '菲律宾':[121.05,14.4],
-        '瑞典':[18.05,59.2],
-        '越南':[105.55,21.03],
-        "荷兰": [4.895168,52.370216],
-        "雅典": [-83.357567,33.951935],
-        "奥克兰": [174.763332,-36.84846],
-
-        "哥伦比亚": [-74.072092,4.710989],
-        "斯洛伐克": [17.107748,48.148596],
-        "比利时": [4.35171,50.85034],
-        "匈牙利": [19.040235,47.497912],
-        "阿根廷": [-58.381559,-34.603684],
-        "罗马尼亚": [26.102538,44.426767],
-        "委内瑞拉": [-66.903606,10.480594],
-        "印度": [77.209021,28.613939],
+        '门头沟区':[116.1,39.93],
 
 
-        "爱尔兰": [-6.26031,53.349805],
+        '房山区':[116.13,39.75],
 
-        "土耳其": [28.978359,41.008238],
-        "印度尼西亚": [106.845599,-6.208763],
+        '通州区':[116.65,39.92],
+
+        '顺义区':[116.65,40.13],
+
+        '昌平区':[116.23,40.22],
+
+        '大兴区':[116.33,39.73],
+
+        '怀柔区':[116.63,40.32],
+        '平谷区':[117.12,40.13],
+        '密云区':[116.83,40.37],
+
+        '延庆区':[115.97,40.45],
 
 
-        "乌克兰": [30.5234,50.4501],
-        "丹麦": [12.568337,55.676097],
-        "马来西亚": [101.686855,3.139003],
-        "秘鲁": [-77.042793,-12.046374],
-        "葡萄牙": [-9.139337,38.722252],
-        "斯洛文尼亚": [14.505751,46.056947],
-        "卢森堡": [6.129583,49.815273],
-        "苏格兰": [4.835659,45.764043],
-
-        "巴林": [50.58605,26.228516],
-
-        "墨西哥": [-99.133208,19.432608],
-
-        "肯尼亚": [36.821946,-1.292066],
-
-        "塞浦路斯": [33.382276,35.185566],
-        "挪威": [10.752245,59.913869],
-        "法国": [2.352222,48.856614],
-        "捷克": [14.4378,50.075538],
-        "拉脱维亚": [24.105186,56.949649],
-        "巴西": [-43.172896,-22.906847],
-        "罗马": [12.496366,41.902783],
-        "希腊": [-70.669265,-33.44889],
-
-        "保加利亚": [23.321868,42.697708],
-
-        "爱沙尼亚": [24.753575,59.436961],
-        "以色列": [34.781768,32.0853],
-        "立陶宛": [25.279651,54.687156],
-        "华沙": [21.012229,52.229676],
-        "奥地利": [16.373819,48.208174],
-        "瑞士": [8.541694,47.376887]
-
-    }
+    };
 
     var convertData = function (data) {
         var res = [];
@@ -151,10 +89,10 @@
 
     function timedata(){
         var date=[]
-        for(var i=1;i<17;i++){
+        for(var i=1;i<15;i++){
             date[i]="06-"+String(i+14)}
-        for(var j=17;j<31;j++){
-            date[j]="07"+"-"+String(j-16)}
+        for(var j=15;j<31;j++){
+            date[j]="07"+"-"+String(j-14)}
         return date
     }
 
@@ -180,7 +118,7 @@
 
         $.ajax({
                 type: "get",
-                url: "json/worldmap.json",
+                url: "json/beijing.json",
                 dataType: "json",
                 success: function (result) {
 
@@ -265,7 +203,7 @@
 
                         baseOption: {
                             title: {
-                                text: '世界各国新冠肺炎确诊情况图',
+                                text: '北京市各区新冠肺炎确诊情况图',
                                 subtext: '6月末至7月初数据',
 
                                 left: 'center',
@@ -273,11 +211,7 @@
                                     color: '#fff'
                                 }
                             },
-                            geo:{
-                                textStyle:{
-                                    color:"#fff",
-                                }
-                            },
+
                             itemStyle: {
 
                                 normal: {
@@ -321,90 +255,72 @@
                                     color:'#00000'
                                 },
                                 pieces: [{
-                                    gt: 1000000,
-                                    label: "> 1000000 人",
+                                    gt: 300,
+                                    label: "> 300 人",
+                                    color: "#7f1100"
+                                }, {
+                                    gte: 240,
+                                    lte: 300,
+                                    label: "240 - 300 人",
                                     color: "#7f1100"
                                 },{
-                                    gte: 500000,
-                                    lte: 1000000,
-                                    label: "500000 - 1000000 人",
-                                    color: "#ff2828"
-                                },{
-                                    gte: 100000,
-                                    lte: 500000,
-                                    label: "100000 - 500000 人",
-                                    color: "#ff2828"
-                                }, {
-                                    gte: 50000,
-                                    lte: 100000,
-                                    label: "1000 - 2000 人",
-                                    color: "#ff2828"
-                                },{
-                                    gte: 20000,
-                                    lte: 50000,
-                                    label: "20000 - 50000 人",
-                                    color: "#ff5428"
-                                },{
-                                    gte: 10000,
-                                    lte: 20000,
-                                    label: "10000 - 20000 人",
-                                    color: "#FF9933 "
+                                    gte: 180,
+                                    lte: 240,
+                                    label: "180 - 240 人",
+                                    color: "#ff5428 "
                                 },
                                     {
-                                        gte: 5000,
-                                        lte: 10000,
-                                        label: "5000 - 10000 人",
+                                        gte: 120,
+                                        lte: 180,
+                                        label: "120 - 180 人",
+                                        color: "#FF9933 "
+                                    }, {
+                                        gte: 60,
+                                        lt: 120,
+                                        label: "60 - 120 人",
                                         color: "#FF9966 "
                                     }, {
-                                        gte: 1000,
-                                        lt: 5000,
-                                        label: "1000 - 5000 人",
-                                        color: "#FFCC00 "
+                                        gt: 0,
+                                        lt: 60,
+                                        label: "1-60人",
+                                        color: "#FFCC99"
                                     }, {
-                                        gt: 100,
-                                        lt: 1000,
-                                        label: "100-1000人",
-                                        color: "#FFCC99 "
-                                    }, {gt:0,
-                                        lt:100,
-                                        label:"0-100人",
                                         value: 0,
-                                        color: "#FFFFCC "
+                                        color: "#FFFFCC"
                                     }],
                                 show: !0
-                            },
-                        },
+                            },},
 
-                        options:[{series: [{type: 'map', mapType: 'world', roam: true, data:obj[1]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[2]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[3]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[4]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[5]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[6]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[7]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[8]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[9]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[10]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[11]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[12]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[13]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[14]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[15]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[16]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[17]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[18]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[19]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[20]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[21]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[22]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[23]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[24]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[25]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[26]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[27]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[28]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[29]}]},
-                            {series: [{type: 'map', mapType: 'world', roam: true, data:obj[30]}]},
+                        options:[{series: [{type: 'map', mapType: '北京', roam: true, data:obj[1]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[2]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[3]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[4]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[5]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[6]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[7]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[8]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[9]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[10]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[11]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[12]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[13]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[14]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[15]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[16]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[17]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[18]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[19]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[20]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[21]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[22]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[23]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[24]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[25]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[26]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[27]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[28]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[29]}]},
+                            {series: [{type: 'map', mapType: '北京', roam: true, data:obj[30]}]},
 
 
 
@@ -420,6 +336,9 @@
                             autoPlay: false,
                             // currentIndex: 2,
                             playInterval: 1000,
+                            // controlStyle: {
+                            //     position: 'left'
+                            // },
                             label: {
                                 normal: {
                                     textStyle: {
@@ -432,9 +351,6 @@
                                     }
                                 }
                             },
-                            // controlStyle: {
-                            //     position: 'left'
-                            // },
                             textStyle: {
                                 color: '#fff'
                             },
@@ -459,7 +375,7 @@
 
                         baseOption: {
                             title: {
-                                text: '世界各国家新冠肺炎确诊情况点状图',
+                                text: '北京各区新冠肺炎确诊情况点状图',
                                 subtext: '6月末至7月初数据',
 
                                 left: 'center',
@@ -470,35 +386,27 @@
                             series: [{
                                 name: '信息量',
                                 type: 'scatter',
-                                map:'world',
+                                map:'北京',
                                 geoIndex: 0,
                                 coordinateSystem: 'geo',
-
+                                symbol:'pin',
 
                                 showAllSymbol: true,
 
                                 symbolSize:function(val){
-                                    if(val[2]>1000000)
-                                        return val[2]/30000
-                                    else if(val[2]>5000000&&val[2]<1000000)
-                                        return val[2]/20000
-                                    else if(val[2]>100000&&val[2]<500000)
-                                        return val[2]/10000
-                                    else if(val[2]>50000&&val[2]<100000)
-                                        return val[2]/6000
-                                    else if(val[2]>50000&&val[2]<100000)
-                                        return val[2]/4000
-                                    else if(val[2]>10000&&val[2]<50000)
-                                        return val[2]/2000
-                                    else if(val[2]>1000&&val[2]<10000)
-                                        return val[2]/800
-                                    else if(val[2]>100&&val[2]<1000)
-                                        return val[2]/400
-                                    else if(val[2]>10&&val[2]<1000)
-                                        return val[2]/8
-                                    else if(val[2]>0&&val[2]<10)
+                                    if(val[2]>=240)
+                                        return val[2]/3
+                                    else if(val[2]>=180&&val[2]<240)
+                                        return val[2]/3
+                                    else if(val[2]>=120&&val[2]<180)
                                         return val[2]/2
-                                    else return 2
+                                    else if(val[2]>=80&&val[2]<120)
+                                        return val[2]/2
+                                    else if(val[2]>=30&&val[2]<80)
+                                        return val[2]
+                                    else if(val[2]>=10&&val[2]<30)
+                                        return val[2]*3
+                                    else return val[2]*2
                                 },
 
                                 label:{
@@ -509,7 +417,7 @@
                             }
                             ],
                             geo: {
-                                map: 'world',
+                                map: '北京',
                                 roam: false,//不开启缩放和平移
                                 zoom: 1.23,//视角缩放比例
                                 label: {
@@ -574,7 +482,7 @@
                             },
                             visualMap: {
                                 min: 0,
-                                max: 2500,
+                                max: 300,
                                 left: 'left',
                                 top: 'bottom',
                                 text: ['高', '低'],           // 文本，默认为数值文本

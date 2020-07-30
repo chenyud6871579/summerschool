@@ -15,8 +15,8 @@
             height:100%;
         }
         #main{
-            width:800px;
-            height:650px;
+            width:1000px;
+            height:800px;
             margin: 150px auto;
             border:1px solid #ddd;
         }
@@ -117,10 +117,10 @@
 
     function timedata(){
         var date=[]
-        for(var i=1;i<10;i++){
-            date[i]="03-0"+String(i)}
-        for(var j=10;j<31;j++){
-            date[j]="03"+"-"+String(j)}
+        for(var i=1;i<17;i++){
+            date[i]="06-"+String(i+14)}
+        for(var j=17;j<31;j++){
+            date[j]="07"+"-"+String(j-16)}
         return date
     }
 
@@ -267,6 +267,18 @@
                     //     position: 'left'
                     // },
                     data: timedata(),
+                    label: {
+                        normal: {
+                            textStyle: {
+                                color: '#ddd'
+                            }
+                        },
+                        emphasis: {
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        }
+                    },
                     tooltip: {
                         padding: 10,
                         backgroundColor: '#222',
@@ -288,18 +300,19 @@
                 baseOption: {
                     title: {
                         text: '全国各省市新冠肺炎确诊情况图',
-                        subtext: '3月份数据',
+                        subtext: '6月末至7月初数据',
 
                         left: 'center',
                         textStyle: {
-                            color: '#fff'
+                            color: '#fff',
+                            fontSize:25
                         }
                     },
 
                     itemStyle: {
 
                         normal: {
-                            areaColor: '#F3B329',
+                            areaColor: '#f3b329',
                             borderColor: '#003366'
                         },
                         emphasis: {
@@ -321,23 +334,65 @@
 
                         formatter: function (params) {
 
-                            return params.name + '确诊病例:' + params.value;
+                            return params.name + ': ' + params.value;
 
                         }
 
 
                     },
                     calculable: true
-                    , visualMap: {
-                    min: 0,
-                    max: 2500,
-                    splitNumber: 10,
-                    color: ['#8B4513','#eac736','#F5DEB3'],
-
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },},
+                    ,
+                    visualMap: {
+                        min: 0,
+                        max: 68200,
+                        left: 26,
+                        bottom: 40,
+                        showLabel: !0,
+                        text: ["高", "低"],
+                        textStyle:{
+                            color:'#00000'
+                        },
+                        pieces: [{
+                            gt: 10000,
+                            label: "> 10000 人",
+                            color: "#7f1100"
+                        }, {
+                            gte: 1000,
+                            lte: 2000,
+                            label: "1000 - 2000 人",
+                            color: "#ff2828"
+                        },{
+                            gte: 600,
+                            lte: 1000,
+                            label: "600 - 1000 人",
+                            color: "#ff5428"
+                        },{
+                            gte: 300,
+                            lte: 600,
+                            label: "300 - 600 人",
+                            color: "#FF9933 "
+                        },
+                            {
+                            gte: 100,
+                            lte: 300,
+                            label: "100 - 300 人",
+                            color: "#FF9966 "
+                        }, {
+                            gte: 10,
+                            lt: 100,
+                            label: "10 - 100 人",
+                            color: "#FFCC00 "
+                        }, {
+                            gt: 0,
+                            lt: 9,
+                            label: "1-9人",
+                            color: "#ffd768"
+                        }, {
+                            value: 0,
+                            color: "#ffffff"
+                        }],
+                        show: !0
+                    },},
 
                 options:[{series: [{type: 'map', mapType: 'china', roam: true, data:obj[1]}]},
                     {series: [{type: 'map', mapType: 'china', roam: true, data:obj[2]}]},
@@ -375,14 +430,37 @@
                 ]
             }
                 var option2 = {
+                    animation: true,
+                    animationDuration: 1000,
+                    animationEasing: 'cubicInOut',
+                    animationDurationUpdate: 1000,
+                    animationEasingUpdate: 'cubicInOut',
+                    grid: {
+                        right: '1%',
+                        top: '15%',
+                        bottom: '10%',
+                        width: '20%'
+                    },
 
-                    backgroundColor: '#404a59',
+                    backgroundColor: '#14c9ea',
                     timeline: {
                     axisType: 'category',
                     // realtime: false,
                     // loop: false,
                     autoPlay: false,
                     // currentIndex: 2,
+                        label: {
+                            normal: {
+                                textStyle: {
+                                    color: '#ddd'
+                                }
+                            },
+                            emphasis: {
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        },
                     playInterval: 1000,
                     // controlStyle: {
                     //     position: 'left'
@@ -412,10 +490,11 @@
                 baseOption: {
                     title: {
                         text: '全国各省市新冠肺炎确诊情况点状图',
-                        subtext: '3月份数据',
+                        subtext: '6月末至7月初数据',
 
                         left: 'center',
                         textStyle: {
+                            fontSize:25,
                             color: '#fff'
                         }
                     },
@@ -430,19 +509,20 @@
                         showAllSymbol: true,
 
                         symbolSize:function(val){
-                            if(val[2]>10000)
-                                return val[2]/1000
-                                else if(val[2]>5000&&val[2]<10000)
-                                    return val[2]/1000
-                                else if(val[2]>2000&&val[2]<5000)
-                                    return val[2]/500
-                                else if(val[2]>1000&&val[2]<2000)
-                                    return val[2]/200
-                                else if(val[2]>500&&val[2]<1000)
-                                    return val[2]/100
+                            console.log(val)
+                            if(val[2]>=10000)
+                                return val[2]/800
+                                else if(val[2]>=1400&&val[2]<3000)
+                                    return val[2]/40
+                                else if(val[2]>=1000&&val[2]<1400)
+                                return val[2]/40
+                                else if(val[2]>=500&&val[2]<1000)
+                                    return val[2]/30
                                 else if(val[2]>100&&val[2]<500)
-                                    return val[2]/50
-                            else return 2
+                                    return val[2]/18
+                                else if(val[2]>10&&val[2]<100)
+                                    return val[2]/5
+                            else return val[2]
                         },
 
                         label:{
@@ -463,7 +543,7 @@
                                 color: '#fff',
                                 itemStyle:{
                                     normal:{
-                                        areaStyle:{color:'#33ccff'}
+                                        areaStyle:{color:'#fff'}
                                     }
                                 }
                             }
@@ -471,7 +551,7 @@
                         itemStyle:  {
 
                             normal: {
-                                areaColor:'#808080',
+                               areaColor:'#808080',
                                 borderColor: '#003366'
                             },
                             emphasis: {
@@ -509,9 +589,11 @@
                         borderWidth: 1,
                         trigger: 'item',
                         formatter: function (params) {
-                            return params.name+'确诊病例:'+params.value[2]
+                            return params.name+': '+params.value[2]
 
                         }
+
+
 
                     },
                     visualMap: {
@@ -522,7 +604,8 @@
                         text: ['高', '低'],           // 文本，默认为数值文本
                         calculable: true,
                         inRange: {
-                            color: ['#DDDDDD', '#CCFFFF']//取值范围的颜色
+                            color: ['#e2fdf8', '#cff1ea']
+
                         },
                     },
                 },
@@ -557,10 +640,8 @@
                     {series: [{ data:convertData(obj[29])}]},
                     {series: [{ data:convertData(obj[30])}]},
 
-
-
                 ]}
-                myChart.setOption(option2);
+                myChart.setOption(option1);
 
             },
     }
@@ -568,7 +649,11 @@
     )
 
             }
+
                     myshow();
+
     </script>
+
 </body>
+
 </html>
