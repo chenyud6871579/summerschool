@@ -42,20 +42,28 @@ public class WindMRServiceImpl implements WindMRService.Iface {
         System.out.println("用户的当前工作目录:"+userDir);
         String outPutFileString = userDir + "\\mapreduce-thrift-service\\input\\";
         System.out.println("outPutFileString : " + outPutFileString);
-        String fileName = "demo";
+        String fileName;
 
-        String tableName = null;
+        String tableName;
+        String keyName = "";
+        String folder = "";
 
         for(DataType dataType : DataType.values()){
             if (dataType == DataType.BEIJING) {
                 tableName = beijingTable;
                 fileName = beijingTable;
+                keyName = "_id";
+                folder = "beijing\\";
             } else if (dataType == DataType.GLOBE) {
                 tableName = globeTable;
                 fileName = globeTable;
+                keyName = "name";
+                folder = "globe\\";
             } else {
                 tableName = chinaTable;
                 fileName = chinaTable;
+                keyName = "_id";
+                folder = "china\\";
             }
             MongoCollection<Document> mongoCollection = database.getCollection(tableName);
             //获取文档 FindItersble 是一个迭代器，通过他来遍历文档
@@ -66,15 +74,21 @@ public class WindMRServiceImpl implements WindMRService.Iface {
             FileWriter fw = null;
             try {
                 // 提供File类对象，指明写出文件
-                File file = new File(outPutFileString + fileName);
+                File file = new File(outPutFileString + folder + fileName);
                 if(file.exists())
                     file.delete();
                 fw = new FileWriter(file, true);
                 // 写出
                 for(Document document : documents){
 //                    System.out.println(JSON.toJSONString(document));
-                    fw.write(JSON.toJSONString(document));
-                    fw.write("\n");
+//                    fw.write(JSON.toJSONString(document));
+                    String outString = "";
+                    outString = (String) document.get(keyName) + "::" +
+                            JSON.toJSONString(document.get("confirmed")) + "::" +
+                            JSON.toJSONString(document.get("cured")) + "::" +
+                            JSON.toJSONString(document.get("dead")) + "::" +
+                            JSON.toJSONString(document.get("suspected")) + "\n";
+                    fw.write(outString);
                     fw.flush();
                 }
                 System.out.println(tableName + " end");
