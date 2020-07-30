@@ -22,6 +22,7 @@ import org.apache.hadoop.yarn.webapp.hamlet2.Hamlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class RadarMR {
     static {
@@ -45,23 +46,24 @@ public class RadarMR {
             String line = value.toString();
             MRBean mrBean = new MRBean();
 
+            String[] filed = line.split("::");
+
             FileSplit inputSplit = (FileSplit) context.getInputSplit();
             String dataSourceFilename = inputSplit.getPath().getName();
             if (dataSourceFilename.indexOf("population") != -1) {
                 // 是 人口数 文件
-                String[] filed = line.split("::");
                 nameText.set(filed[0]);
-                mrBean.setPopulation(Integer.valueOf(filed[1]));
+                mrBean.setPopulation(Long.valueOf(filed[1]));
                 mrBean.setFlag("population");
             } else {
                 // 是 疫情信息 文件
-                OutDataBean outDataBean = (OutDataBean) JSON.parse(line);
-                String blockName = outDataBean.getCode() == "" ? outDataBean.getName() : outDataBean.getCode();
-                nameText.set(blockName);
-                mrBean.setConfirmed(outDataBean.getConfirmed());
-                mrBean.setSuspected(outDataBean.getSuspected());
-                mrBean.setDead(outDataBean.getDead());
-                mrBean.setCured(outDataBean.getCured());
+
+
+                nameText.set(filed[0]);
+                mrBean.setConfirmed(JSON.parseArray(filed[1], Integer.class));
+                mrBean.setCured(JSON.parseArray(filed[2], Integer.class));
+                mrBean.setDead(JSON.parseArray(filed[3], Integer.class));
+                mrBean.setSuspected(JSON.parseArray(filed[4], Integer.class));
                 mrBean.setFlag("database");
             }
             context.write(nameText, mrBean);
@@ -76,7 +78,7 @@ public class RadarMR {
 
             MRBean outMRBean = new MRBean();
             for (MRBean mrBean : mrBeans) {
-                if (mrBean.getFlag() == "population") {
+                if (mrBean.getFlag().equals("population")) {
                     // 人口
                     outMRBean.setPopulation(mrBean.getPopulation());
                 } else {
@@ -93,9 +95,17 @@ public class RadarMR {
                     outMRBean.setSuspected(mrBean.getSuspected());
                 }
             }
-            context.write(nameText,outMRBean);
+//            if(outMRBean.getConfirmed() == null){
+//                // 人口有 数据库没有
+//                return;
+//            }else if(outMRBean.getPopulation() == 0){
+//                // 数据库有 人口没有
+//                return;
+//            }
+            context.write(nameText, outMRBean);
         }
     }
+
     // 3. MR2-Controller
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         // 0. 初始化 MR Job
@@ -132,9 +142,7 @@ public class RadarMR {
         // 7. 指定输出
         Path outPath = new Path(hadoopArgs[hadoopArgs.length - 1]);
         File outFile = new File(hadoopArgs[hadoopArgs.length - 1]);
-        if (outFile.exists()) {
-            outFile.delete();
-        }
+        delFile(outFile);
         FileOutputFormat.setOutputPath(job, outPath);
         job.setOutputFormatClass(TextOutputFormat.class);
 
@@ -143,5 +151,19 @@ public class RadarMR {
         boolean resultSuccessful = job.isSuccessful();
         System.exit(resultCompletion && resultSuccessful ? 0 : 1);
 
+    }
+
+    static boolean delFile(File file) {
+        if (!file.exists()) {
+            return false;
+        }
+
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                delFile(f);
+            }
+        }
+        return file.delete();
     }
 }

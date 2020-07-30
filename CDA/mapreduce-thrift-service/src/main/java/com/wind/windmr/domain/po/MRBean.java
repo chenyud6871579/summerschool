@@ -14,7 +14,7 @@ public class MRBean implements Writable {
     private List<Integer> cured;
     private List<Integer> dead;
     private List<Integer> suspected;
-    private int population;
+    private long population;
     private String flag;
 
     public String getFlag() {
@@ -25,7 +25,7 @@ public class MRBean implements Writable {
         this.flag = flag;
     }
 
-    public MRBean(List<Integer> confirmed, List<Integer> cured, List<Integer> dead, List<Integer> suspected, int population, String flag) {
+    public MRBean(List<Integer> confirmed, List<Integer> cured, List<Integer> dead, List<Integer> suspected, long population, String flag) {
         this.confirmed = confirmed;
         this.cured = cured;
         this.dead = dead;
@@ -69,11 +69,11 @@ public class MRBean implements Writable {
         this.suspected = suspected;
     }
 
-    public int getPopulation() {
+    public long getPopulation() {
         return population;
     }
 
-    public void setPopulation(int population) {
+    public void setPopulation(long population) {
         this.population = population;
     }
 
@@ -83,7 +83,7 @@ public class MRBean implements Writable {
         dataOutput.writeUTF(JSON.toJSONString(cured));
         dataOutput.writeUTF(JSON.toJSONString(dead));
         dataOutput.writeUTF(JSON.toJSONString(suspected));
-        dataOutput.writeInt(population);
+        dataOutput.writeLong(population);
         dataOutput.writeUTF(flag);
     }
 
@@ -93,7 +93,20 @@ public class MRBean implements Writable {
         this.cured = JSON.parseArray(dataInput.readUTF(),Integer.class);
         this.dead = JSON.parseArray(dataInput.readUTF(),Integer.class);
         this.suspected = JSON.parseArray(dataInput.readUTF(),Integer.class);
-        this.population = dataInput.readInt();
+        this.population = dataInput.readLong();
         this.flag = dataInput.readUTF();
+    }
+
+    @Override
+    public String toString() {
+        return "MRBean{" +
+                "confirmed=" + confirmed +
+                ", cured=" + cured +
+                ", dead=" + dead +
+                ", suspected=" + suspected +
+                ", population=" + population +
+                ", flag='" + flag + '\'' +
+                ", flag='" + flag + '\'' +
+                '}';
     }
 }

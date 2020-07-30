@@ -105,3 +105,15 @@ def run_spider():
     get_info(ip, db, table1, table2, table3)
 ```
 并删除main函数
+
+
+
+---
+
+# Day 8
+
+从 MongoDB 提取的疫情数据
+
+```
+name::confirmed::cured::dead::suspected
+```
