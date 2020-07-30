@@ -8,6 +8,7 @@
 /CDA/user-thrift-service/src/main/resources/*.yml
 /CDA/user-thrift-service/target/classes/application.yml
 /CDA/spider-thrift-service/config.py
+/CDA/mapreduce-thrift-service/src/main/java/com/wind/windmr/util/MongoDBInfo.java
 *.iml
 misc.xml
 >>>>>>> 488aac002f8ce403c75aec1e2856c7d5dec6fde0

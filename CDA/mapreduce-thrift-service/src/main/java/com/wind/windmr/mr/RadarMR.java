@@ -1,13 +1,14 @@
 package com.wind.windmr.mr;
 
 import com.alibaba.fastjson.JSON;
-import com.wind.user.bean.OutDataBean;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.wind.windmr.domain.po.MRBean;
+import com.wind.windmr.util.MongoDBInfo;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -18,14 +19,84 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
-import org.apache.hadoop.yarn.webapp.hamlet2.Hamlet;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RadarMR {
+    private static String ipAddress = MongoDBInfo.ipAddress;
+    private static int ipHost = MongoDBInfo.ipHost;
+    private static String databaseName = MongoDBInfo.databaseName;
+
+    private static String dataType;
+
+    public static List<Double> getRadarList(long population,
+                                            List<Integer> confirmedList,
+                                            List<Integer> curedList,
+                                            List<Integer> deadList) {
+        long total = population;
+        int confirmed[] = confirmedList.stream().mapToInt(Integer::valueOf).toArray();
+        int cured[] = curedList.stream().mapToInt(Integer::valueOf).toArray();
+        int dead[] = deadList.stream().mapToInt(Integer::valueOf).toArray();
+        int[] remain = new int[confirmed.length];
+        for (int i = 0; i < confirmed.length; i++) {
+            remain[i] = confirmed[i] - cured[i] - dead[i];
+        }
+        int max_value = remain[0];
+        int max_index = 0;
+        for (int i = 0; i < remain.length; i++) {
+            if (remain[i] > max_value) {
+                max_value = remain[i];
+                max_index = i;
+            }
+        }
+
+        List<Double> radarList = new ArrayList<>();
+
+        // 健康等级
+        double item1 = 1000 * (1 - remain[remain.length - 1] / (1.0 * total)) - 990;
+        double result1 = Double.valueOf(String.format("%.1f", item1));
+//        System.out.println(result1);
+
+        // 治愈效果
+        double item2 = 10.0 * cured[cured.length - 1] / confirmed[confirmed.length - 1];
+        double result2 = Double.valueOf(String.format("%.1f", item2));
+//        System.out.println(result2);
+
+        // 政府措施
+        double x3 = (max_value - remain[remain.length - 1]) / (1.0 * total);
+        double item3 = 10.0 / (1 + Math.pow(Math.E, x3 * -500));
+        double result3 = Double.valueOf(String.format("%.1f", item3));
+//        System.out.println(result3);
+
+        // 公众意识
+        double x4 = max_value / (1.0 * total);
+        double item4 = 10.0 / (1 + Math.pow(Math.E, x4 * -500));
+        double result4 = Double.valueOf(String.format("%.1f", item4));
+//        System.out.println(result4);
+
+        // 综合评分
+        double item5 = (item1 + item2 + item3 + item4) / 4;
+        double result5 = Double.valueOf(String.format("%.1f", item5));
+//        System.out.println(result5);
+
+
+        radarList.add(result1);
+        radarList.add(result2);
+        radarList.add(result3);
+        radarList.add(result4);
+        radarList.add(result5);
+        return radarList;
+    }
+
     static {
         // 设置宿主机环境变量 HADOOP_USER_NAME == icss
         System.setProperty("HADOOP_USER_NAME", "icss");
@@ -51,6 +122,7 @@ public class RadarMR {
 
             FileSplit inputSplit = (FileSplit) context.getInputSplit();
             String dataSourceFilename = inputSplit.getPath().getName();
+
             if (dataSourceFilename.indexOf("population") != -1) {
                 // 是 人口数 文件
                 nameText.set(filed[0]);
@@ -73,7 +145,7 @@ public class RadarMR {
 
     // 2. 完成 reduce
     private static class RadarReducer
-            extends Reducer<Text, MRBean, Text, MRBean> {
+            extends Reducer<Text, MRBean, Text, Iterable<Double>> {
         @Override
         protected void reduce(Text nameText, Iterable<MRBean> mrBeans, Context context) throws IOException, InterruptedException {
 
@@ -96,10 +168,10 @@ public class RadarMR {
                     outMRBean.setSuspected(mrBean.getSuspected());
                 }
             }
-            if(outMRBean.getConfirmed() == null){
+            if (outMRBean.getConfirmed() == null) {
                 // 人口有 数据库没有
                 return;
-            }else if(outMRBean.getPopulation() == 0){
+            } else if (outMRBean.getPopulation() == 0) {
                 // 数据库有 人口没有
                 return;
             }
@@ -111,14 +183,21 @@ public class RadarMR {
             List<Integer> confirmed = outMRBean.getConfirmed();
             List<Integer> cured = outMRBean.getCured();
             List<Integer> dead = outMRBean.getDead();
-            List<Integer> suspected = outMRBean.getSuspected();
 
             // 接受返回值的参数
-            List<Long> radarList = new ArrayList<>();
+            List<Double> radarList = getRadarList(population, confirmed, cured, dead);
 
-            // 调用函数
+            // 更新数据库
+            MongoClient mongoClient = new MongoClient(ipAddress, ipHost);
+            MongoDatabase database = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> mongoCollection = database.getCollection(dataType);
+            Document updateDocument = new Document();
+            updateDocument.append("$set", new Document().append("radar", radarList));
+            String blockName = dataType == "Globe_new" ? "name" : "_id";
+            Document searchQuery2 = new Document().append(blockName, nameText.toString());
+            mongoCollection.updateOne(searchQuery2, updateDocument);
 
-            context.write(nameText, outMRBean);
+            context.write(nameText, radarList);
         }
     }
 
@@ -153,12 +232,21 @@ public class RadarMR {
 //        job.setNumReduceTasks(0);     // 只看 Mapper 的输出
         job.setReducerClass(RadarMR.RadarReducer.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(MRBean.class);
+        job.setOutputValueClass(Iterator.class);
 
         // 7. 指定输出
-        Path outPath = new Path(hadoopArgs[hadoopArgs.length - 1]);
-        File outFile = new File(hadoopArgs[hadoopArgs.length - 1]);
+        String outString = hadoopArgs[hadoopArgs.length - 1];
+        Path outPath = new Path(outString);
+        File outFile = new File(outString);
         delFile(outFile);
+        if (outString.toLowerCase().indexOf("china") != -1) {
+            dataType = "China_new";
+        } else if (outString.toLowerCase().indexOf("globe") != -1) {
+            dataType = "Globe_new";
+        } else if (outString.toLowerCase().indexOf("beijing") != -1) {
+            dataType = "Beijing_new";
+        }
+
         FileOutputFormat.setOutputPath(job, outPath);
         job.setOutputFormatClass(TextOutputFormat.class);
 

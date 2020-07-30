@@ -14,17 +14,10 @@ public class OutDataBean {
     private List<Integer> cured;
     private List<Integer> dead;
     private List<Integer> suspected;
-    private List<Integer> radarList;
+    private List<Double> radarList;
 
     public OutDataBean() {
 
-        List<Integer> tem = new ArrayList<>();
-        tem.add(1);
-        tem.add(2);
-        tem.add(3);
-        tem.add(4);
-        tem.add(5);
-        this.radarList = tem;
     }
 
     public OutDataBean(String _id, String code, List<Integer> date, List<Integer> confirmed, List<Integer> cured, List<Integer> dead, List<Integer> suspected) {
@@ -35,16 +28,9 @@ public class OutDataBean {
         this.cured = cured;
         this.dead = dead;
         this.suspected = suspected;
-        List<Integer> tem = new ArrayList<>();
-        tem.add(1);
-        tem.add(2);
-        tem.add(3);
-        tem.add(4);
-        tem.add(5);
-        this.radarList = tem;
     }
 
-    public OutDataBean(String name, String code, List<Integer> date, List<Integer> confirmed, List<Integer> cured, List<Integer> dead, List<Integer> suspected, List<Integer> radarList) {
+    public OutDataBean(String name, String code, List<Integer> date, List<Integer> confirmed, List<Integer> cured, List<Integer> dead, List<Integer> suspected, List<Double> radarList) {
         this.name = name;
         this.code = code;
         this.date = date;
@@ -55,11 +41,11 @@ public class OutDataBean {
         this.radarList = radarList;
     }
 
-    public List<Integer> getRadarList() {
+    public List<Double> getRadarList() {
         return radarList;
     }
 
-    public void setRadarList(List<Integer> radarList) {
+    public void setRadarList(List<Double> radarList) {
         this.radarList = radarList;
     }
 

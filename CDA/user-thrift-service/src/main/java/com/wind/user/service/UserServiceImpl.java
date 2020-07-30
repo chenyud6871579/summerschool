@@ -58,7 +58,8 @@ public class UserServiceImpl implements UserService.Iface {
             outDataBean.setSuspected((List<Integer>) document.get("suspected"));
             outDataBean.setCured((List<Integer>) document.get("cured"));
             outDataBean.setDead((List<Integer>) document.get("dead"));
-
+            List<Double> radarList = document.getList("radarList",Double.class);
+            outDataBean.setRadarList((List<Double>) document.get("radarList"));
 //            System.out.println(outDataBean.myToString());
 //            System.out.println(JSON.toJSONString(outDataBean));
             mapResult.put((String) document.get("_id"), outDataBean);
