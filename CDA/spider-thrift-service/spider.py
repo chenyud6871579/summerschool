@@ -2,7 +2,7 @@ import akshare
 import pymongo
 import json
 import requests
-
+from codeChange import codeTable
 
 def get_rate(add, message):
     add_message = {
@@ -322,6 +322,17 @@ def get_info(ip, db, table1, table2, table3):
             }
         }
     ]))
+
+    globe_db = my_db["Globe_new"]
+    code_map = codeTable
+    info = globe_db.find()
+    for item in info:
+        current_name = item['name']
+        if current_name in code_map.keys():
+            now_name = code_map[current_name]
+            globe_db.update({"name":current_name},{"$set":{"name":now_name}})
+        else:
+            print(current_name + "不存在")
     print("整理完成")
 
     print("正在整理中国疫情信息")
@@ -343,6 +354,8 @@ def get_info(ip, db, table1, table2, table3):
             }
         }
     ]))
+
+
     print("整理完成")
 
     print("正在整理北京疫情信息")
