@@ -118,3 +118,38 @@ def run_spider():
 name::confirmed::cured::dead::suspected
 ```
 
+---
+
+需要在==mapreduce-thrift-service==中添加配置文件**application.yml**，代码如下
+
+```yml
+mymongo1:
+  address: 192.168.241.7
+  host: 27017
+  database: covid-19-new
+  container:
+    beijing: Beijing_new
+    china: China_new
+    globe: Globe_new
+```
+
+![image-20200730164820390](img/image-20200730164820390.png)
+
+---
+
+需要在==mapreduce-thrift-service==中的==com.wind.windmr==中添加**util.MongoDBInfo**,代码如下
+
+```java
+package com.wind.windmr.util;
+
+public class MongoDBInfo {
+    public static String ipAddress = "192.168.241.7";
+    public static int ipHost = 27017;
+    public static String databaseName = "covid-19-new";
+}
+```
+
+![image-20200730164947322](img/image-20200730164947322.png)
+
+---
+

@@ -7,11 +7,14 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.wind.service.thrift.data.DataType;
 import com.wind.service.thrift.windmr.WindMRService;
+import com.wind.used.util.WindUtil;
+import com.wind.windmr.mr.RadarMR;
 import org.apache.thrift.TException;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,6 +34,9 @@ public class WindMRServiceImpl implements WindMRService.Iface {
     private String chinaTable;
     @Value("${mymongo1.container.globe}")
     private String globeTable;
+
+    @Resource
+    private RadarMR radarMR;
 
     @Override
     public void getLocalData() throws TException {
@@ -108,6 +114,23 @@ public class WindMRServiceImpl implements WindMRService.Iface {
 
     @Override
     public void runMapReduce() throws TException {
+        String [] location = {"globe","china"};
+        for (String item : location){
+            String [] args = {"mapreduce-thrift-service/input/"+item,"mapreduce-thrift-service/output/"+item};
+            String blockName = "";
+            if (item.equals("globe")){
+                blockName = "国外";
+            }else if (item.equals("china")){
+                blockName = "国内";
+            }
+            WindUtil.pushProgressBar(5,"开始处理"+blockName+"数据");
+            try {
+                radarMR.runRadarMR(args);
+            } catch (Exception e) {
+                WindUtil.pushProgressBar(-1,"出现错误！");
+            }
+        }
+        WindUtil.pushProgressBar(0,"MapReduce 运行结束");
 
     }
 

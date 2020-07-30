@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.wind.used.util.WindUtil;
 import com.wind.windmr.domain.po.MRBean;
 import com.wind.windmr.util.MongoDBInfo;
 import org.apache.hadoop.conf.Configuration;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Component
 public class RadarMR {
     private static String ipAddress = MongoDBInfo.ipAddress;
     private static int ipHost = MongoDBInfo.ipHost;
@@ -202,11 +204,13 @@ public class RadarMR {
     }
 
     // 3. MR2-Controller
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void runRadarMR(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         // 0. 初始化 MR Job
         Configuration configuration = new Configuration();
         Job job = Job.getInstance(configuration, "Movie Lens Version 1.0");
         job.setJarByClass(RadarMR.class);
+
+        WindUtil.pushProgressBar(5,"开始初始化 MapReduce Job");
 
         // 1. 指明输入
         String[] hadoopArgs = new GenericOptionsParser(configuration, args).getRemainingArgs();
@@ -250,10 +254,16 @@ public class RadarMR {
         FileOutputFormat.setOutputPath(job, outPath);
         job.setOutputFormatClass(TextOutputFormat.class);
 
+        WindUtil.pushProgressBar(10,"完成 MapReduce 配置，开始运行 MapReduce");
+
         // 8. 提交 MR Job
         boolean resultCompletion = job.waitForCompletion(true);
         boolean resultSuccessful = job.isSuccessful();
+
+        WindUtil.pushProgressBar(30,"MapReduce 运行结束");
+
         System.exit(resultCompletion && resultSuccessful ? 0 : 1);
+
 
     }
 

@@ -17,6 +17,7 @@
         <module>user-edge-service</module>
         <module>mapreduce-thrift-service-api</module>
         <module>mapreduce-thrift-service</module>
+        <module>wind-util</module>
     </modules>
 
 
