@@ -27,6 +27,14 @@ def get_info(ip, db, table1, table2, table3):
     my_db[table2].delete_many({})
     my_db[table3].delete_many({})
     json_info = json.loads(information.T.to_json()).values()
+    try:
+        print(json_info)
+    except:
+        print(1)
+    try:
+        print(json_info[0])
+    except:
+        print(2)
 
     # file = open("tem.json", "w", encoding="utf-8")
     # try:

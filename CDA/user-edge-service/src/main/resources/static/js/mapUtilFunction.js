@@ -670,6 +670,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                 console.log("blockName",blockName)
                 globalRadarList = getResultData[blockName]['radarList']
                 minetable(globalRadarList,blockName)
+                linetable(getResultData[blockName]['confirmed'], getResultData[blockName]['date'], blockName)
                 console.log("globalRadarList",globalRadarList)
             });
             myChart.setOption(resultOption)
