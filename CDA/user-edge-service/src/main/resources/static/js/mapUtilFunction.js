@@ -623,38 +623,8 @@ function myshow(boxId, typeFlag, buttonFlag) {
 
                             symbolSize: function (val) {
                                 // console.log(val)
-                                if (val[2] > 1000000)
-                                    return val[2] / 30000
-                                else if (val[2] > 5000000 && val[2] < 1000000)
-                                    return val[2] / 20000
-                                else if (val[2] > 100000 && val[2] < 500000)
-                                    return val[2] / 10000
-                                else if (val[2] > 70000 && val[2] < 100000)
-                                    return val[2] / 6000
-                                if (val[2] >= 50000 && val[2] < 70000)
-                                    return val[2] / 4000
-                                else if (val[2] >= 10000 && val[2] < 50000)
-                                    return val[2] / 3000
-                                else if (val[2] >= 5000 && val[2] < 10000)
-                                    return val[2] / 700
-                                else if (val[2] >= 3000 && val[2] < 5000)
-                                    return val[2] / 500
-                                else if (val[2] >= 1400 && val[2] < 3000)
-                                    return val[2] / 300
-                                else if (val[2] >= 1000 && val[2] < 1400)
-                                    return val[2] / 100
-                                else if (val[2] >= 500 && val[2] < 1000)
-                                    return val[2] / 40
-                                else if (val[2] >= 200 && val[2] < 500)
-                                    return val[2] / 10
-                                else if (val[2] >= 100 && val[2] < 200)
-                                    return val[2] / 7
-                                else if (val[2] >= 50 && val[2] < 100)
-                                    return val[2] / 4
-                                else if (val[2] >= 20 && val[2] < 50)
-                                    return val[2] / 3
-                                else if (val[2] >= 10 && val[2] < 20)
-                                    return val[2]
+
+                                    return Math.pow(val[2],1/2)/25
 
                             },
 
