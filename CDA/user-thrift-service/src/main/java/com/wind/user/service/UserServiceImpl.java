@@ -13,26 +13,18 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @Component
 public class UserServiceImpl implements UserService.Iface {
 
-    @Value("${mymongo.address}")
-    private String ipAddress;
-    @Value("${mymongo.host}")
-    private int ipHost;
-    @Value("${mymongo.database}")
-    private String databaseName;
-    @Value("${mymongo.container.beijing}")
-    private String beijingTable;
-    @Value("${mymongo.container.china}")
-    private String chinaTable;
-    @Value("${mymongo.container.globe}")
-    private String globeTable;
+    @Resource
+    MongoUtil mongoUtil;
+
 
     @Override
-    public List<DataBlock> getDataBlock(DataType type) throws TException {
+    public List<DataBlock> getDataBlock(DataType type){
         return null;
     }
 
@@ -43,7 +35,7 @@ public class UserServiceImpl implements UserService.Iface {
         Map<String, OutDataBean> mapResult = new HashMap<>();
 
         //获取集合
-        MongoCollection<Document> Test = MongoUtil.getCollection(type);
+        MongoCollection<Document> Test = mongoUtil.getCollection(type);
 
         //获取文档 FindItersble 是一个迭代器，通过他来遍历文档
         FindIterable<Document> documents = Test.find();
@@ -60,8 +52,6 @@ public class UserServiceImpl implements UserService.Iface {
             outDataBean.setDead((List<Integer>) document.get("dead"));
             List<Double> radarList = document.getList("radarList",Double.class);
             outDataBean.setRadarList((List<Double>) document.get("radarList"));
-//            System.out.println(outDataBean.myToString());
-//            System.out.println(JSON.toJSONString(outDataBean));
             mapResult.put((String) document.get("_id"), outDataBean);
 
 

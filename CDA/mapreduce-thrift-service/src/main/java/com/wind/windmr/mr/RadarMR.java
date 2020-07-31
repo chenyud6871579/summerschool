@@ -210,13 +210,13 @@ public class RadarMR {
         Job job = Job.getInstance(configuration, "Movie Lens Version 1.0");
         job.setJarByClass(RadarMR.class);
 
-        WindUtil.pushProgressBar(5,"Initializing MapReduce Job...");
+        WindUtil.pushProgressBar(5,"开始初始化 MapReduce 任务...");
 
         // 1. 指明输入
         String[] hadoopArgs = new GenericOptionsParser(configuration, args).getRemainingArgs();
         if (hadoopArgs.length < 2) {
-            System.err.println("Args is Error, Usage mymovielens <inpath> <inpath> [ <in> ...] <outpath>");
-            System.exit(2);
+            System.err.println("Args is Error！");
+            return;
         }
         for (int i = 0; i < hadoopArgs.length - 1; i++) {
             Path inputPath = new Path(hadoopArgs[i]);
@@ -254,16 +254,16 @@ public class RadarMR {
         FileOutputFormat.setOutputPath(job, outPath);
         job.setOutputFormatClass(TextOutputFormat.class);
 
-        WindUtil.pushProgressBar(10,"Complete The MapReduce Configuration And Start To Run MapReduce...");
+        WindUtil.pushProgressBar(10,"MapReduce 配置完成,开始运行...");
 
         // 8. 提交 MR Job
         boolean resultCompletion = job.waitForCompletion(true);
         boolean resultSuccessful = job.isSuccessful();
 
-        WindUtil.pushProgressBar(30,"MapReduce Finished");
+        WindUtil.pushProgressBar(20,"MapReduce 执行结束");
 
-        System.exit(resultCompletion && resultSuccessful ? 0 : 1);
-
+//        System.exit(resultCompletion && resultSuccessful ? 0 : 1);
+//        System.exit(0);
 
     }
 

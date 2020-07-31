@@ -27,11 +27,8 @@ public class MRController {
     public String runMapReduce() throws TException {
         if(mrFlag.equals("true")) {
             mrFlag = "false";
-//            WindMRService.Iface mrService = serviceProvider.getMRService();
-//            mrService.runMapReduce();
-
-//            WindUtil.pushProgressBar(0, "All MapReduce job done!");
-            WindUtil.pushProgressBar(0, "结束！");
+            WindMRService.Iface mrService = serviceProvider.getMRService();
+            mrService.runMapReduce();
             mrFlag = "true";
             return "MapReduce 执行完毕";
         }

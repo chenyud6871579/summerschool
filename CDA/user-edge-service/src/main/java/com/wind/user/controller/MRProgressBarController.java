@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/progress")
 public class MRProgressBarController {
-    @Resource
-    private ServiceProvider serviceProvider;
 
     private static int mrProgress = 0;
     private static String mrMessage = "";
@@ -47,7 +46,11 @@ public class MRProgressBarController {
 
         mrProgress = mrProgress>100?100:mrProgress;
 
-        mrMessage = message;
+        try {
+            mrMessage = URLDecoder.decode(message,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return "已完成添加";
     }
 }

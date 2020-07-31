@@ -9,6 +9,7 @@ import com.wind.service.thrift.data.DataType;
 import com.wind.service.thrift.windmr.WindMRService;
 import com.wind.used.util.WindUtil;
 import com.wind.windmr.mr.RadarMR;
+import com.wind.windmr.util.MongoUtil;
 import org.apache.thrift.TException;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,27 +23,22 @@ import java.io.IOException;
 @Service
 public class WindMRServiceImpl implements WindMRService.Iface {
 
-    @Value("${mymongo1.address}")
-    private String ipAddress;
-    @Value("${mymongo1.host}")
-    private int ipHost;
-    @Value("${mymongo1.database}")
-    private String databaseName;
-    @Value("${mymongo1.container.beijing}")
-    private String beijingTable;
-    @Value("${mymongo1.container.china}")
-    private String chinaTable;
-    @Value("${mymongo1.container.globe}")
-    private String globeTable;
+    @Resource
+    private MongoUtil mongoUtil;
+
+    private String ipAddress = mongoUtil.getIpAddressUtil();
+    private int ipHost = mongoUtil.getIpHostUtil();
+    private String databaseName = mongoUtil.getDatabaseNameUtil();
+    private String beijingTable = mongoUtil.getBeijingTableUtil();
+    private String chinaTable = mongoUtil.getChinaTableUtil();
+    private String globeTable = mongoUtil.getGlobeTableUtil();
 
     @Resource
     private RadarMR radarMR;
 
     @Override
-    public void getLocalData() throws TException {
+    public void getLocalData(){
 
-        MongoClient mongoClient = new MongoClient(ipAddress, ipHost);
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
 
         String userDir = System.getProperty("user.dir");
         System.out.println("用户的当前工作目录:"+userDir);
@@ -56,10 +52,11 @@ public class WindMRServiceImpl implements WindMRService.Iface {
 
         for(DataType dataType : DataType.values()){
             if (dataType == DataType.BEIJING) {
-                tableName = beijingTable;
-                fileName = beijingTable;
-                keyName = "_id";
-                folder = "beijing\\";
+                continue;
+//                tableName = beijingTable;
+//                fileName = beijingTable;
+//                keyName = "_id";
+//                folder = "beijing\\";
             } else if (dataType == DataType.GLOBE) {
                 tableName = globeTable;
                 fileName = globeTable;
@@ -71,7 +68,8 @@ public class WindMRServiceImpl implements WindMRService.Iface {
                 keyName = "_id";
                 folder = "china\\";
             }
-            MongoCollection<Document> mongoCollection = database.getCollection(tableName);
+
+            MongoCollection<Document> mongoCollection = mongoUtil.getCollection(dataType);
             //获取文档 FindItersble 是一个迭代器，通过他来遍历文档
             FindIterable<Document> documents = mongoCollection.find();
 
@@ -114,23 +112,26 @@ public class WindMRServiceImpl implements WindMRService.Iface {
 
     @Override
     public void runMapReduce() throws TException {
+        WindUtil.pushProgressBar(10,"开始刷新本地文件...");
+        this.getLocalData();
+
         String [] location = {"globe","china"};
         for (String item : location){
             String [] args = {"mapreduce-thrift-service/input/"+item,"mapreduce-thrift-service/output/"+item};
             String blockName = "";
             if (item.equals("globe")){
-                blockName = "Chinese";
+                blockName = "国外";
             }else if (item.equals("china")){
-                blockName = "Foreign";
+                blockName = "国内";
             }
-            WindUtil.pushProgressBar(5,"Start Processing "+blockName+" Data...");
+            WindUtil.pushProgressBar(5,"开始处理"+blockName+" 数据...");
             try {
                 radarMR.runRadarMR(args);
             } catch (Exception e) {
                 WindUtil.pushProgressBar(0,"Wrong!");
             }
         }
-        WindUtil.pushProgressBar(0,"End Of MapReduce Mission");
+        WindUtil.pushProgressBar(10,"MapReduce 执行结束");
 
     }
 
