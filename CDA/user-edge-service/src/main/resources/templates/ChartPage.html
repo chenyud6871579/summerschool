@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>北京疫情</title>
+    <title>新冠疫情</title>
 
     <!-- Bootstrap -->
-    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/charts.css" rel="stylesheet">
 
@@ -20,8 +19,6 @@
     <script src="/js/china.js"></script>
     <script src="/js/worldZH.js"></script>
     <script src="/js/mapUtilFunction.js"></script>
-    <!-- 老陈引入的jquery -->
-    <!-- <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script> -->
 
     <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
     <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
@@ -43,7 +40,6 @@
     <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <!-- 手机屏幕，隐藏右边三块-->
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -91,7 +87,6 @@
                         <script>
                             myshow("myPoint",globeFlag,"point");
                         </script>
-
                     </div>
                 </div>
             </div>
@@ -101,19 +96,8 @@
             <div class="col-md-10 radar">
                 <br>
                 <!-- 雷达图 -->
-                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
                 <div id="radar" style="height: 100%;width: 100%"></div>
                 <script type="text/javascript">
-
-
-                    // var name;
-                    // if (globeFlag == "beijing") {
-                    //     name = "北京"
-                    // } else if (globeFlag == "china") {
-                    //     name = "中国"
-                    // } else if (globeFlag == "globe") {
-                    //     name = "世界"
-                    // }
 
                     function minetable(radarList, name) {
                         var myRadar = echarts.init(document.getElementById('radar'));
@@ -122,7 +106,7 @@
                                 option = {
                                     //背景
                                     backgroundColor: '#323232',
-                                    //组件yi：图片下载查看数据
+                                    //组件：图片下载查看数据
                                     toolbox: {
                                         show: true,
                                         feature: {
@@ -131,7 +115,6 @@
                                             saveAsImage: {}
                                         }
                                     },
-                                    //题目
                                     title: {
                                         text: "暂无数据",
 
@@ -155,7 +138,6 @@
                                             }
                                         },
                                         indicator: [
-
                                             { name: 'infection rate', max: 2 },
                                             { name: 'cure rate ', max: 10 },
                                             { name: 'Government attention ', max: 10 },
@@ -165,7 +147,6 @@
                                     }
 
                                 }
-
                                 myRadar.setOption(option, true)
                             }
                         } else {
@@ -173,7 +154,7 @@
                                 option = {
                                     //背景
                                     backgroundColor: '#323232',
-                                    //组件yi：图片下载查看数据
+                                    //组件：图片下载查看数据
                                     toolbox: {
                                         show: true,
                                         feature: {
@@ -182,7 +163,6 @@
                                             saveAsImage: {}
                                         }
                                     },
-                                    //题目
                                     title: {
                                         text: name,
 
@@ -262,13 +242,10 @@
                                     }]
 
                                 }
-
                                 myRadar.setOption(option)
                             }
                         }
                     }
-
-
                     minetable(globalRadarList, name)
 
                 </script>
@@ -276,7 +253,6 @@
             <div class="col-md-1"></div>
             <div class="col-md-12 line">
                 <!-- 折线图 -->
-                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
                 <div id="line" style="height: 100%;width: 100%"></div>
                 <script type="text/javascript">
 
@@ -683,20 +659,16 @@
                                 show: true,
                                 feature: {
                                     //局域缩放
-
                                     dataView: {
                                         readOnly: false
                                     },
-
                                     saveAsImage: {}
                                 }
                             },
-                            //标题
                             title: {
                                 text: name,
                                 //字体颜色
                                 textStyle: { color: ' #EFE3A4' }
-
                             },
                             tooltip: {
                                 trigger: 'axis'
@@ -732,7 +704,7 @@
                                 minInterval: 3600 * 1000 * 24,
                                 axisLine: {
                                     lineStyle: {
-                                        color: 'rgba(221,107,102,1)'   //#E60026  #f5c518  rgb(221,107,102)
+                                        color: 'rgba(221,107,102,1)'
                                     }
                                 },
                                 //          axisLabel: {
@@ -770,9 +742,7 @@
                             }]
                         }
                         myLine.setOption(option);
-
                     }
-
                     linetable([], [], "")
                 </script>
             </div>

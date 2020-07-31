@@ -149,7 +149,6 @@ function timedata() {
     }
     return date
 }
-// console.log("data",timedata())
 
 function dataFormatter(obj) {
     var temp;
@@ -167,7 +166,6 @@ function dataFormatter(obj) {
 
 var getResultData;
 
-
 function myshow(boxId, typeFlag, buttonFlag) {
     var myChart = echarts.init(document.getElementById(boxId));
 
@@ -179,7 +177,6 @@ function myshow(boxId, typeFlag, buttonFlag) {
         dataType: "json",
         success: function (result) {
             getResultData = result;
-            console.log("result",result)
             var obj = []
             // var data1 = []
             var resultOption;
@@ -276,16 +273,8 @@ function myshow(boxId, typeFlag, buttonFlag) {
                         var index = result[proviceName]["confirmed"].length - 122 + i
                         confirmed.push(result[proviceName]["confirmed"][index])
                     }
-
-                    // confirmed = result[proviceName]["confirmed"]
-
-
-
                 }
-                console.log("confimed",confirmed)
-                // data1[i] = confirmed
                 obj[String(i)] = confirmed
-                // console.log("obj",obj)
             }
             dataMap.confirm = dataFormatter(obj)
 
@@ -318,14 +307,9 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 trigger: 'item',
 
                                 formatter: function (params) {
-
                                     return params.name;
-
                                 }
-
-
                             },
-
                         },
 
                         title: {
@@ -346,7 +330,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 borderColor: '#003366'
                             },
                             emphasis: {
-                                areaColor: '#70f329',//鼠标选择区域颜色
+                                areaColor: '#8ad216',//鼠标选择区域颜色
                                 shadowOffsetX: 0,
                                 shadowOffsetY: 0,
                                 shadowBlur: 20,
@@ -354,33 +338,18 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 shadowColor: '#03CCFF',
 
                             }
-                            // emphasis: {
-                            //     areaColor: '#03B329',//鼠标选择区域颜色
-                            //     shadowOffsetX: 0,
-                            //     shadowOffsetY: 0,
-                            //     shadowBlur: 20,
-                            //     borderWidth: 0,
-                            //     shadowColor: '#03CCFF',
-                            //
-                            // }
                         },
-                        // tooltip: {
-                        //     padding: 10,
-                        //     backgroundColor: '#222',
-                        //     borderColor: '#777',
-                        //     borderWidth: 1,
-                        //     trigger: 'item',
-                        //
-                        //     formatter: function (params) {
-                        //
-                        //         return params.name + '确诊病例:' + params.value;
-                        //
-                        //     }
-                        //
-                        //
-                        // },
-                        calculable: true
-                        ,
+                        tooltip: {
+                            // padding: 10,
+                            // backgroundColor: '#222',
+                            // borderColor: '#777',
+                            // borderWidth: 1,
+                            // trigger: 'item',
+                            formatter: function (params) {
+                                return params.name + '确诊病例:' + params.value;
+                            }
+                        },
+                        calculable: true,
                         visualMap: {
                             min: 0,
                             max: 3000000,
@@ -555,9 +524,9 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                     borderColor: '#003366'
                                 },
                                 emphasis: {
-                                    areaColor: '#03B329',//鼠标选择区域颜色
-                                    shadowOffsetX: 0,
-                                    shadowOffsetY: 0,
+                                    areaColor: '#03b329',//鼠标选择区域颜色
+                                    shadowOffsetX: 10,
+                                    shadowOffsetY: 10,
                                     shadowBlur: 20,
                                     borderWidth: 0,
                                     shadowColor: '#03CCFF',
@@ -582,17 +551,17 @@ function myshow(boxId, typeFlag, buttonFlag) {
                         //
                         //     }
                         // },
-                        // tooltip: {
-                        //     padding: 10,
-                        //     backgroundColor: '#222',
-                        //     borderColor: '#222',
-                        //     borderWidth: 1,
-                        //     trigger: 'item',
-                        //     formatter: function (params) {
-                        //         return params.name + '确诊病例:' + params.value[2]
-                        //
-                        //     }
-                        // },
+                        tooltip: {
+                            // padding: 10,
+                            // backgroundColor: '#222',
+                            // borderColor: '#222',
+                            // borderWidth: 1,
+                            // trigger: 'item',
+                            formatter: function (params) {
+                                return params.name + '确诊病例:' + params.value[2]
+
+                            }
+                        },
                         visualMap: {
                             min: 0,
                             max: 2500,
@@ -623,8 +592,11 @@ function myshow(boxId, typeFlag, buttonFlag) {
 
                             symbolSize: function (val) {
                                 // console.log(val)
-
+                                if(typeFlag == "globe")
                                     return Math.pow(val[2],1/2)/25
+                                else if(typeFlag == "china")
+                                    return Math.pow(val[2],1/2)
+                                else return Math.pow(val[2],1/2)*2
 
                             },
 
