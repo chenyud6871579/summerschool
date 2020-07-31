@@ -32,12 +32,8 @@
 
     <script>
         function getGlobeFlag(){}
-        window.onload = function () {
-            var globeFlag = "[[${type}]]"; // beijing - china - globe
-            getGlobeFlag = function () {
-                return globeFlag;
-            }
-        }
+        var globeFlag = "[[${type}]]";
+        var globalRadarList = null;
     </script>
 </head>
 
@@ -61,9 +57,9 @@
                  id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <!-- class="active" -->
-                    <li><a href="/globe">世界</a></li>
-                    <li><a href="/china">中国</a></li>
-                    <li><a href="/beijing">北京</a></li>
+                    <li><a href="/page?type=globe">世界</a></li>
+                    <li><a href="/page?type=china">中国</a></li>
+                    <li><a href="/page?type=beijing">北京</a></li>
                 </ul>
             </div>
         </div>
@@ -86,7 +82,6 @@
                         <div id="myColor" style="width: 1000px;height: 800px;">
                         </div>
                         <script type="text/javascript">
-                            var myTypeFlag = "beijing";
                             myshow("myColor", globeFlag, "color");
                         </script>
                     </div>
@@ -95,7 +90,6 @@
                         <div id="myPoint" style="width: 1000px;height: 800px;"></div>
                         <!--完成选择功能再写-->
                         <script>
-                            var myTypeFlag = "beijing";
                             myshow("myPoint",globeFlag,"point");
                         </script>
 
@@ -109,13 +103,11 @@
                 <br>
                 <!-- 雷达图 -->
                 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-                <div id="radar" style="height: 100%;" style="float: right"></div>
+                <div id="radar" style="height: 100px;float: right;width: 200px"></div>
                 <script type="text/javascript">
 
 
-                    var globeFlag = getGlobeFlag();
-                    var radarList = [1, 2, 3, 4, 5]
-                    var name
+                    var name;
                     if (globeFlag == "beijing") {
                         name = "北京"
                     } else if (globeFlag == "china") {
@@ -175,7 +167,7 @@
 
                                 }
 
-                                myChart.setOption(option, true)
+                                myRadar.setOption(option, true)
                             }
                         } else {
                             {
@@ -230,7 +222,6 @@
                                         data: [
                                             {
                                                 // 这里错了，radarData是空的，应该这样写
-
                                                 value: radarList,
                                                 name: name
                                             }
@@ -279,7 +270,7 @@
                     }
 
 
-                    minetable(radarList, name)
+                    minetable(globalRadarList, name)
 
                 </script>
             </div>
@@ -290,7 +281,6 @@
                 <div id="line" style="height: 100%;"></div>
                 <script type="text/javascript">
 
-                    var globeFlag = "beijing"
                     var confirmed = [1,
                         1,
                         1,

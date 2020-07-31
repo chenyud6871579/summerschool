@@ -236,5 +236,6 @@ codeTable = {
     "ZA": "ZAF",
     "ZR": "ZAR",
     "ZM": "ZMB",
-    "ZW": "ZWE"
+    "ZW": "ZWE",
+    "CN":"CHN"
 }

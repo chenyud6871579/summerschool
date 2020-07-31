@@ -331,6 +331,7 @@ def get_info(ip, db, table1, table2, table3):
         if current_name in code_map.keys():
             now_name = code_map[current_name]
             globe_db.update({"name":current_name},{"$set":{"name":now_name}})
+            print(current_name + "  替换为  " + now_name)
         else:
             print(current_name + "不存在")
     print("整理完成")
