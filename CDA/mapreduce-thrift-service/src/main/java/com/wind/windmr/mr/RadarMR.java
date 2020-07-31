@@ -37,16 +37,6 @@ import java.util.List;
 @Component
 public class RadarMR {
 
-
-//    @Resource
-//    private MongoUtil resourceMongoUtil;
-//    private static MongoUtil mongoUtil;
-//
-//    @PostConstruct
-//    public void init(){
-//        mongoUtil = resourceMongoUtil;
-//    }
-
     private static String ipAddress = MongoDBInfo.ipAddress;
     private static int ipHost = MongoDBInfo.ipHost;
     private static String databaseName = MongoDBInfo.databaseName;
@@ -170,12 +160,6 @@ public class RadarMR {
                     outMRBean.setPopulation(mrBean.getPopulation());
                 } else {
                     // 数据库
-                    /*
-                    private List<Integer> confirmed;
-                    private List<Integer> cured;
-                    private List<Integer> dead;
-                    private List<Integer> suspected;
-                    */
                     outMRBean.setConfirmed(mrBean.getConfirmed());
                     outMRBean.setCured(mrBean.getCured());
                     outMRBean.setDead(mrBean.getDead());

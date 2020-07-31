@@ -14,17 +14,12 @@
     <link href="css/charts.css" rel="stylesheet">
 
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
-    <script type="text/javascript"
-        src="https://api.map.baidu.com/api?v=2.0&ak=GMxrUS0GLz09Yxa2evG8WvprVRzgsoIE"></script>
-    <script type="text/javascript"
-        src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-    <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script src="js/beijing.js"></script>
+    <script src="/js/beijing.js"></script>
+    <script src="/js/china.js"></script>
+    <script src="/js/worldZH.js"></script>
+    <script src="/js/mapUtilFunction.js"></script>
     <!-- 老陈引入的jquery -->
     <!-- <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script> -->
 
@@ -36,11 +31,12 @@
     <![endif]-->
 
     <script>
+        function getGlobeFlag(){}
         window.onload = function () {
             var globeFlag = "[[${type}]]"; // beijing - china - globe
-            getGlobeFlag = function() {
-                return globeFlag;
-            }
+            getGlobeFlag = function () {
+            return globeFlag;
+        }
         }
     </script>
 </head>
@@ -87,525 +83,22 @@
                     <div class="tab-content" style="height: 600px;">
                         <br>
                         <div role="tabpanel" class="tab-pane active" id="color">
-                            <div id="myColor" style="height: 600px;"></div>
+                            <div id="myColor" style="width: 1000px;height: 800px;">
+                            </div>
                             <script type="text/javascript">
-                                var dataMap = {};
-                                var myColor = echarts.init(document.getElementById('myColor'));
-                                var pList = ['东城区', '西城区', '朝阳区', '丰台区', '石景山区', '海淀区', '门头沟区', '房山区', '通州区', '顺义区', '昌平区', '大兴区',
-                                    '怀柔区', '平谷区', '密云区', '延庆区'];
-
-                                var geoCoordMap = {
-                                    '东城区': [116.42, 39.93],
-                                    '西城区': [116.37, 37.92],
-                                    '崇文区': [116.43, 39.88],
-                                    '宣武区': [116.35, 39.86],
-                                    '朝阳区': [116.43, 39.92],
-
-                                    '丰台区': [116.28, 39.82],
-
-                                    '石景山区': [116.22, 39.9],
-
-                                    '海淀区': [116.3, 39.95],
-
-
-                                    '门头沟区': [116.1, 39.93],
-
-
-                                    '房山区': [116.13, 39.75],
-
-                                    '通州区': [116.65, 39.92],
-
-                                    '顺义区': [116.65, 40.13],
-
-                                    '昌平区': [116.23, 40.22],
-
-                                    '大兴区': [116.33, 39.73],
-
-                                    '怀柔区': [116.63, 40.32],
-                                    '平谷区': [117.12, 40.13],
-                                    '密云区': [116.83, 40.37],
-
-                                    '延庆区': [115.97, 40.45],
-
-
-                                };
-
-                                var convertData = function (data) {
-                                    var res = [];
-                                    for (var i = 0; i < data.length; i++) {
-                                        var geoCoord = geoCoordMap[data[i].name];
-
-                                        if (geoCoord) {
-                                            res.push({
-                                                name: data[i].name,
-                                                value: geoCoord.concat(data[i].value),
-                                                vec: data[i].value
-                                            });
-                                        }
-                                    }
-
-                                    return res;
-
-                                };
-
-                                function timedata() {
-                                    var date = []
-                                    for (var i = 1; i < 15; i++) {
-                                        date[i] = "06-" + String(i + 14)
-                                    }
-                                    for (var j = 15; j < 31; j++) {
-                                        date[j] = "07" + "-" + String(j - 14)
-                                    }
-                                    return date
-                                }
-
-                                function dataFormatter(obj) {
-
-                                    var temp;
-                                    for (var num = 1; num <= 30; num++) {
-                                        temp = obj[num];
-
-                                        for (var i = 0, l = temp.length; i < l; i++) {
-                                            obj[num][i] = {
-                                                name: pList[i],
-                                                value: temp[i],
-
-                                            }
-                                        }
-
-                                    }
-
-                                    return obj;
-                                }
-                                function myshow() {
-
-                                    $.ajax({
-                                        type: "get",
-                                        url: "json/beijing.json",
-                                        dataType: "json",
-                                        success: function (result) {
-
-                                            var obj = []
-                                            var data1 = []
-                                            for (var i = 1; i < 31; i++) {
-                                                var confirmed = []
-                                                for (var item in pList) {
-                                                    var proviceName = pList[item];
-
-
-                                                    var index = result[proviceName]["confirmed"].length - 31 + i
-                                                    confirmed.push(result[proviceName]["confirmed"][index])
-                                                }
-
-                                                data1[i] = confirmed,
-                                                    obj[String(i)] = confirmed
-
-                                            }
-                                            dataMap.confirm = dataFormatter(obj)
-                                            console.log(obj)
-
-                                            var foroption = function () {
-
-                                                var options = []
-                                                for (var i = 1; i < 30; i++) {
-                                                    var seriesa = []
-                                                    seriesa = { date: obj[i] }
-                                                    options[i] = {
-                                                        series: seriesa,
-                                                    }
-
-
-                                                }
-
-                                                return options
-
-                                            }
-
-
-                                            var option1 = {
-                                                timeline: {
-                                                    axisType: 'category',
-                                                    // realtime: false,
-                                                    // loop: false,
-                                                    autoPlay: false,
-                                                    // currentIndex: 2,
-                                                    playInterval: 1000,
-                                                    // controlStyle: {
-                                                    //     position: 'left'
-                                                    // },
-                                                    data: timedata(),
-                                                    label: {
-                                                        normal: {
-                                                            textStyle: {
-                                                                color: '#ddd'
-                                                            }
-                                                        },
-                                                        emphasis: {
-                                                            textStyle: {
-                                                                color: '#fff'
-                                                            }
-                                                        }
-                                                    },
-                                                    tooltip: {
-                                                        padding: 10,
-                                                        backgroundColor: '#222',
-                                                        borderColor: '#777',
-                                                        borderWidth: 1,
-                                                        trigger: 'item',
-
-                                                        formatter: function (params) {
-
-                                                            return params.name;
-
-                                                        }
-
-
-                                                    },
-
-                                                },
-
-                                                baseOption: {
-                                                    title: {
-                                                        text: '北京市各区新冠肺炎确诊情况图',
-                                                        subtext: '6月末至7月初数据',
-
-                                                        left: 'center',
-                                                        textStyle: {
-                                                            color: '#fff'
-                                                        }
-                                                    },
-
-                                                    itemStyle: {
-
-                                                        normal: {
-                                                            areaColor: '#F3B329',
-                                                            borderColor: '#003366'
-                                                        },
-                                                        emphasis: {
-                                                            areaColor: '#F3B329',//鼠标选择区域颜色
-                                                            shadowOffsetX: 0,
-                                                            shadowOffsetY: 0,
-                                                            shadowBlur: 20,
-                                                            borderWidth: 0,
-                                                            shadowColor: '#33CCFF',
-
-                                                        }
-                                                    },
-                                                    tooltip: {
-                                                        padding: 10,
-                                                        backgroundColor: '#222',
-                                                        borderColor: '#777',
-                                                        borderWidth: 1,
-                                                        trigger: 'item',
-
-                                                        formatter: function (params) {
-
-                                                            return params.name + ': ' + params.value;
-
-                                                        }
-
-
-                                                    },
-                                                    calculable: true
-                                                    , visualMap: {
-                                                        min: 0,
-                                                        max: 68200,
-                                                        left: 26,
-                                                        bottom: 40,
-                                                        showLabel: !0,
-                                                        text: ["高", "低"],
-                                                        textStyle: {
-                                                            color: '#00000'
-                                                        },
-                                                        pieces: [{
-                                                            gt: 300,
-                                                            label: "> 300 人",
-                                                            color: "#7f1100"
-                                                        }, {
-                                                            gte: 240,
-                                                            lte: 300,
-                                                            label: "240 - 300 人",
-                                                            color: "#c0392b"
-                                                        }, {
-                                                            gte: 180,
-                                                            lte: 240,
-                                                            label: "180 - 240 人",
-                                                            color: "#ff5428 "
-                                                        },
-                                                        {
-                                                            gte: 120,
-                                                            lte: 180,
-                                                            label: "120 - 180 人",
-                                                            color: "#FF7F50 "
-                                                        }, {
-                                                            gte: 60,
-                                                            lt: 120,
-                                                            label: "60 - 120 人",
-                                                            color: "#FF9966 "
-                                                        }, {
-                                                            gt: 0,
-                                                            lt: 60,
-                                                            label: "1 - 60人",
-                                                            color: "#FFCC99"
-                                                        }, {
-                                                            value: 0,
-                                                            color: "#ffffff"
-                                                        }],
-                                                        show: !0
-                                                    },
-                                                },
-
-                                                options: [{ series: [{ type: 'map', mapType: '北京', roam: true, data: obj[1] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[2] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[3] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[4] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[5] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[6] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[7] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[8] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[9] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[10] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[11] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[12] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[13] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[14] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[15] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[16] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[17] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[18] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[19] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[20] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[21] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[22] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[23] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[24] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[25] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[26] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[27] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[28] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[29] }] },
-                                                { series: [{ type: 'map', mapType: '北京', roam: true, data: obj[30] }] },
-
-
-
-                                                ]
-                                            }
-                                            var option2 = {
-
-                                                backgroundColor: '#404a59',
-                                                timeline: {
-                                                    axisType: 'category',
-                                                    // realtime: false,
-                                                    // loop: false,
-                                                    autoPlay: false,
-                                                    // currentIndex: 2,
-                                                    playInterval: 1000,
-                                                    // controlStyle: {
-                                                    //     position: 'left'
-                                                    // },
-                                                    label: {
-                                                        normal: {
-                                                            textStyle: {
-                                                                color: '#ddd'
-                                                            }
-                                                        },
-                                                        emphasis: {
-                                                            textStyle: {
-                                                                color: '#fff'
-                                                            }
-                                                        }
-                                                    },
-                                                    textStyle: {
-                                                        color: '#fff'
-                                                    },
-                                                    data: timedata(),
-                                                    tooltip: {
-                                                        padding: 10,
-                                                        backgroundColor: '#222',
-                                                        borderColor: '#777',
-                                                        borderWidth: 1,
-                                                        trigger: 'item',
-
-                                                        formatter: function (params) {
-
-                                                            return params.name;
-
-                                                        }
-
-
-                                                    },
-
-                                                },
-
-                                                baseOption: {
-                                                    title: {
-                                                        text: '北京各区新冠肺炎确诊情况点状图',
-                                                        subtext: '6月末至7月初数据',
-
-                                                        left: 'center',
-                                                        textStyle: {
-                                                            color: '#fff'
-                                                        }
-                                                    },
-                                                    series: [{
-                                                        name: '信息量',
-                                                        type: 'scatter',
-                                                        map: '北京',
-                                                        geoIndex: 0,
-                                                        coordinateSystem: 'geo',
-                                                        symbol: 'pin',
-
-                                                        showAllSymbol: true,
-
-                                                        symbolSize: function (val) {
-                                                            if (val[2] >= 240)
-                                                                return val[2] / 3
-                                                            else if (val[2] >= 180 && val[2] < 240)
-                                                                return val[2] / 3
-                                                            else if (val[2] >= 120 && val[2] < 180)
-                                                                return val[2] / 2
-                                                            else if (val[2] >= 80 && val[2] < 120)
-                                                                return val[2] / 2
-                                                            else if (val[2] >= 30 && val[2] < 80)
-                                                                return val[2]
-                                                            else if (val[2] >= 10 && val[2] < 30)
-                                                                return val[2] * 3
-                                                            else return val[2] * 2
-                                                        },
-
-                                                        label: {
-                                                            textStyle: {
-                                                                fontSize: 20
-                                                            }
-                                                        },
-                                                    }
-                                                    ],
-                                                    geo: {
-                                                        map: '北京',
-                                                        roam: false,//不开启缩放和平移
-                                                        zoom: 1.23,//视角缩放比例
-                                                        label: {
-                                                            normal: {
-                                                                show: false,
-                                                                fontSize: '12',
-                                                                color: '#fff',
-                                                                itemStyle: {
-                                                                    normal: {
-                                                                        areaStyle: { color: '#33ccff' }
-                                                                    }
-                                                                }
-                                                            }
-                                                        },
-                                                        itemStyle: {
-
-                                                            normal: {
-                                                                areaColor: '#808080',
-                                                                borderColor: '#003366'
-                                                            },
-                                                            emphasis: {
-                                                                areaColor: '#F3B329',//鼠标选择区域颜色
-                                                                shadowOffsetX: 0,
-                                                                shadowOffsetY: 0,
-                                                                shadowBlur: 20,
-                                                                borderWidth: 0,
-                                                                shadowColor: '#33CCFF',
-
-                                                            }
-                                                        }
-                                                    },
-
-                                                    itemStyle: {
-
-                                                        normal: {
-                                                            areaColor: '#777',
-                                                            borderColor: '#003366'
-                                                        },
-                                                        emphasis: {
-                                                            areaColor: '#F3B329',//鼠标选择区域颜色
-                                                            shadowOffsetX: 0,
-                                                            shadowOffsetY: 0,
-                                                            shadowBlur: 20,
-                                                            borderWidth: 0,
-                                                            shadowColor: '#33CCFF',
-
-                                                        }
-                                                    },
-                                                    tooltip: {
-                                                        padding: 10,
-                                                        backgroundColor: '#222',
-                                                        borderColor: '#222',
-                                                        borderWidth: 1,
-                                                        trigger: 'item',
-                                                        formatter: function (params) {
-                                                            return params.name + ': ' + params.value[2]
-
-                                                        }
-
-
-
-                                                    },
-                                                    visualMap: {
-                                                        min: 0,
-                                                        max: 300,
-                                                        left: 'left',
-                                                        top: 'bottom',
-                                                        text: ['高', '低'],           // 文本，默认为数值文本
-                                                        calculable: true,
-                                                        inRange: {
-                                                            color: ['#DDDDDD', '#CCFFFF']//取值范围的颜色
-                                                        },
-                                                    },
-                                                },
-                                                options: [{ series: [{ data: convertData(obj[1]) }] },
-                                                { series: [{ data: convertData(obj[2]) }] },
-                                                { series: [{ data: convertData(obj[3]) }] },
-                                                { series: [{ data: convertData(obj[4]) }] },
-                                                { series: [{ data: convertData(obj[5]) }] },
-                                                { series: [{ data: convertData(obj[6]) }] },
-                                                { series: [{ data: convertData(obj[7]) }] },
-                                                { series: [{ data: convertData(obj[8]) }] },
-                                                { series: [{ data: convertData(obj[9]) }] },
-                                                { series: [{ data: convertData(obj[10]) }] },
-                                                { series: [{ data: convertData(obj[11]) }] },
-                                                { series: [{ data: convertData(obj[12]) }] },
-                                                { series: [{ data: convertData(obj[13]) }] },
-                                                { series: [{ data: convertData(obj[14]) }] },
-                                                { series: [{ data: convertData(obj[15]) }] },
-                                                { series: [{ data: convertData(obj[16]) }] },
-                                                { series: [{ data: convertData(obj[17]) }] },
-                                                { series: [{ data: convertData(obj[18]) }] },
-                                                { series: [{ data: convertData(obj[19]) }] },
-                                                { series: [{ data: convertData(obj[20]) }] },
-                                                { series: [{ data: convertData(obj[21]) }] },
-                                                { series: [{ data: convertData(obj[22]) }] },
-                                                { series: [{ data: convertData(obj[23]) }] },
-                                                { series: [{ data: convertData(obj[24]) }] },
-                                                { series: [{ data: convertData(obj[25]) }] },
-                                                { series: [{ data: convertData(obj[26]) }] },
-                                                { series: [{ data: convertData(obj[27]) }] },
-                                                { series: [{ data: convertData(obj[28]) }] },
-                                                { series: [{ data: convertData(obj[29]) }] },
-                                                { series: [{ data: convertData(obj[30]) }] },
-
-
-
-                                                ]
-                                            }
-                                            myColor.setOption(option1);
-
-                                        },
-                                    }
-
-                                    )
-
-                                }
-                                myshow();
+                                var myTypeFlag = "beijing";
+                                myshow("myColor", globeFlag, "color");
                             </script>
                         </div>
 
                         <div role="tabpanel" class="tab-pane" id="point">
-                            <div id="myPoint" style="height: 600px;"></div>
+                            <div id="myPoint" style="width: 1000px;height: 800px;"></div>
                             <!--完成选择功能再写-->
+                            <script>
+                            var myTypeFlag = "beijing";
+                            myshow("myPoint",globeFlag,"point");
+                            </script>
+
                         </div>
                     </div>
                 </div>
@@ -619,17 +112,17 @@
                     <div id="radar" style="height: 100%;" style="float: right"></div>
                     <script type="text/javascript">
 
-                        //测试用
-                        // var globeFlag = getGlobeFlag();
-                        // var radarList = [1, 2, 3, 4, 5]
-                        // var name
-                        // if (globeFlag == "beijing") {
-                        //     name="北京"
-                        // } else if (globeFlag == "china") {
-                        //     name="中国"
-                        // } else if (globeFlag == "globe") {
-                        //     name="世界"
-                        // }
+
+                        var globeFlag = getGlobeFlag();
+                        var radarList = [1, 2, 3, 4, 5]
+                        var name
+                        if (globeFlag == "beijing") {
+                            name = "北京"
+                        } else if (globeFlag == "china") {
+                            name = "中国"
+                        } else if (globeFlag == "globe") {
+                            name = "世界"
+                        }
 
                         function minetable(radarList, name) {
                             var myRadar = echarts.init(document.getElementById('radar'));
@@ -797,397 +290,397 @@
                     <div id="line" style="height: 100%;"></div>
                     <script type="text/javascript">
 
-                        // var globeFlag = "beijing"
-                        // var confirmed = [1,
-                        //     1,
-                        //     1,
-                        //     2,
-                        //     2,
-                        //     4,
-                        //     4,
-                        //     7,
-                        //     11,
-                        //     11,
-                        //     12,
-                        //     16,
-                        //     17,
-                        //     18,
-                        //     20,
-                        //     20,
-                        //     22,
-                        //     22,
-                        //     26,
-                        //     27,
-                        //     30,
-                        //     30,
-                        //     32,
-                        //     36,
-                        //     36,
-                        //     38,
-                        //     39,
-                        //     39,
-                        //     40,
-                        //     40,
-                        //     40,
-                        //     41,
-                        //     41,
-                        //     41,
-                        //     41,
-                        //     41,
-                        //     41,
-                        //     42,
-                        //     42,
-                        //     42,
-                        //     42,
-                        //     42,
-                        //     42,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     43,
-                        //     45,
-                        //     48,
-                        //     80,
-                        //     101,
-                        //     123,
-                        //     142,
-                        //     156,
-                        //     174,
-                        //     187,
-                        //     197,
-                        //     202,
-                        //     208,
-                        //     214,
-                        //     223,
-                        //     230,
-                        //     245,
-                        //     255,
-                        //     260,
-                        //     266,
-                        //     266,
-                        //     267,
-                        //     269,
-                        //     270,
-                        //     272,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273,
-                        //     273]
-                        // var dateTime = [
-                        //     "2020-01-21",
-                        //     "2020-01-22",
-                        //     "2020-01-23",
-                        //     "2020-01-24",
-                        //     "2020-01-25",
-                        //     "2020-01-26",
-                        //     "2020-01-27",
-                        //     "2020-01-28",
-                        //     "2020-01-29",
-                        //     "2020-01-30",
-                        //     "2020-01-31",
-                        //     "2020-02-01",
-                        //     "2020-02-02",
-                        //     "2020-02-03",
-                        //     "2020-02-04",
-                        //     "2020-02-05",
-                        //     "2020-02-06",
-                        //     "2020-02-07",
-                        //     "2020-02-08",
-                        //     "2020-02-09",
-                        //     "2020-02-10",
-                        //     "2020-02-11",
-                        //     "2020-02-12",
-                        //     "2020-02-13",
-                        //     "2020-02-14",
-                        //     "2020-02-15",
-                        //     "2020-02-16",
-                        //     "2020-02-17",
-                        //     "2020-02-18",
-                        //     "2020-02-19",
-                        //     "2020-02-20",
-                        //     "2020-02-21",
-                        //     "2020-02-22",
-                        //     "2020-02-23",
-                        //     "2020-02-24",
-                        //     "2020-02-25",
-                        //     "2020-02-26",
-                        //     "2020-02-27",
-                        //     "2020-02-28",
-                        //     "2020-02-29",
-                        //     "2020-03-01",
-                        //     "2020-03-02",
-                        //     "2020-03-03",
-                        //     "2020-03-04",
-                        //     "2020-03-05",
-                        //     "2020-03-06",
-                        //     "2020-03-07",
-                        //     "2020-03-08",
-                        //     "2020-03-09",
-                        //     "2020-03-10",
-                        //     "2020-03-11",
-                        //     "2020-03-12",
-                        //     "2020-03-13",
-                        //     "2020-03-14",
-                        //     "2020-03-15",
-                        //     "2020-03-16",
-                        //     "2020-03-17",
-                        //     "2020-03-18",
-                        //     "2020-03-19",
-                        //     "2020-03-20",
-                        //     "2020-03-21",
-                        //     "2020-03-22",
-                        //     "2020-03-23",
-                        //     "2020-03-24",
-                        //     "2020-03-25",
-                        //     "2020-03-26",
-                        //     "2020-03-27",
-                        //     "2020-03-28",
-                        //     "2020-03-29",
-                        //     "2020-03-30",
-                        //     "2020-03-31",
-                        //     "2020-04-01",
-                        //     "2020-04-02",
-                        //     "2020-04-03",
-                        //     "2020-04-04",
-                        //     "2020-04-05",
-                        //     "2020-04-06",
-                        //     "2020-04-07",
-                        //     "2020-04-08",
-                        //     "2020-04-09",
-                        //     "2020-04-10",
-                        //     "2020-04-11",
-                        //     "2020-04-12",
-                        //     "2020-04-13",
-                        //     "2020-04-14",
-                        //     "2020-04-15",
-                        //     "2020-04-16",
-                        //     "2020-04-17",
-                        //     "2020-04-18",
-                        //     "2020-04-19",
-                        //     "2020-04-20",
-                        //     "2020-04-21",
-                        //     "2020-04-22",
-                        //     "2020-04-23",
-                        //     "2020-04-24",
-                        //     "2020-04-25",
-                        //     "2020-04-26",
-                        //     "2020-04-27",
-                        //     "2020-04-28",
-                        //     "2020-04-29",
-                        //     "2020-04-30",
-                        //     "2020-05-01",
-                        //     "2020-05-02",
-                        //     "2020-05-03",
-                        //     "2020-05-04",
-                        //     "2020-05-05",
-                        //     "2020-05-06",
-                        //     "2020-05-07",
-                        //     "2020-05-08",
-                        //     "2020-05-09",
-                        //     "2020-05-10",
-                        //     "2020-05-11",
-                        //     "2020-05-12",
-                        //     "2020-05-13",
-                        //     "2020-05-14",
-                        //     "2020-05-15",
-                        //     "2020-05-16",
-                        //     "2020-05-17",
-                        //     "2020-05-18",
-                        //     "2020-05-19",
-                        //     "2020-05-20",
-                        //     "2020-05-21",
-                        //     "2020-05-22",
-                        //     "2020-05-23",
-                        //     "2020-05-24",
-                        //     "2020-05-25",
-                        //     "2020-05-26",
-                        //     "2020-05-27",
-                        //     "2020-05-28",
-                        //     "2020-05-29",
-                        //     "2020-05-30",
-                        //     "2020-05-31",
-                        //     "2020-06-01",
-                        //     "2020-06-02",
-                        //     "2020-06-03",
-                        //     "2020-06-04",
-                        //     "2020-06-05",
-                        //     "2020-06-06",
-                        //     "2020-06-07",
-                        //     "2020-06-08",
-                        //     "2020-06-09",
-                        //     "2020-06-10",
-                        //     "2020-06-11",
-                        //     "2020-06-12",
-                        //     "2020-06-13",
-                        //     "2020-06-14",
-                        //     "2020-06-15",
-                        //     "2020-06-16",
-                        //     "2020-06-17",
-                        //     "2020-06-18",
-                        //     "2020-06-19",
-                        //     "2020-06-20",
-                        //     "2020-06-21",
-                        //     "2020-06-22",
-                        //     "2020-06-23",
-                        //     "2020-06-24",
-                        //     "2020-06-25",
-                        //     "2020-06-26",
-                        //     "2020-06-27",
-                        //     "2020-06-28",
-                        //     "2020-06-29",
-                        //     "2020-06-30",
-                        //     "2020-07-01",
-                        //     "2020-07-02",
-                        //     "2020-07-03",
-                        //     "2020-07-04",
-                        //     "2020-07-05",
-                        //     "2020-07-06",
-                        //     "2020-07-07",
-                        //     "2020-07-08",
-                        //     "2020-07-09",
-                        //     "2020-07-10",
-                        //     "2020-07-11",
-                        //     "2020-07-12",
-                        //     "2020-07-13",
-                        //     "2020-07-14",
-                        //     "2020-07-15",
-                        //     "2020-07-16",
-                        //     "2020-07-17",
-                        //     "2020-07-18",
-                        //     "2020-07-19",
-                        //     "2020-07-20",
-                        //     "2020-07-21",
-                        //     "2020-07-22",
-                        //     "2020-07-23",
-                        //     "2020-07-24",
-                        //     "2020-07-25",
-                        //     "2020-07-26",
-                        //     "2020-07-27",
-                        //     "2020-07-28"
-                        // ]
-                        // var name
-                        // if (globeFlag == "beijing") {
-                        //     name="北京"
-                        // } else if (globeFlag == "china") {
-                        //     name="中国"
-                        // } else if (globeFlag == "globe") {
-                        //     name="世界"
-                        // }
+                        var globeFlag = "beijing"
+                        var confirmed = [1,
+                            1,
+                            1,
+                            2,
+                            2,
+                            4,
+                            4,
+                            7,
+                            11,
+                            11,
+                            12,
+                            16,
+                            17,
+                            18,
+                            20,
+                            20,
+                            22,
+                            22,
+                            26,
+                            27,
+                            30,
+                            30,
+                            32,
+                            36,
+                            36,
+                            38,
+                            39,
+                            39,
+                            40,
+                            40,
+                            40,
+                            41,
+                            41,
+                            41,
+                            41,
+                            41,
+                            41,
+                            42,
+                            42,
+                            42,
+                            42,
+                            42,
+                            42,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            43,
+                            45,
+                            48,
+                            80,
+                            101,
+                            123,
+                            142,
+                            156,
+                            174,
+                            187,
+                            197,
+                            202,
+                            208,
+                            214,
+                            223,
+                            230,
+                            245,
+                            255,
+                            260,
+                            266,
+                            266,
+                            267,
+                            269,
+                            270,
+                            272,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273,
+                            273]
+                        var dateTime = [
+                            "2020-01-21",
+                            "2020-01-22",
+                            "2020-01-23",
+                            "2020-01-24",
+                            "2020-01-25",
+                            "2020-01-26",
+                            "2020-01-27",
+                            "2020-01-28",
+                            "2020-01-29",
+                            "2020-01-30",
+                            "2020-01-31",
+                            "2020-02-01",
+                            "2020-02-02",
+                            "2020-02-03",
+                            "2020-02-04",
+                            "2020-02-05",
+                            "2020-02-06",
+                            "2020-02-07",
+                            "2020-02-08",
+                            "2020-02-09",
+                            "2020-02-10",
+                            "2020-02-11",
+                            "2020-02-12",
+                            "2020-02-13",
+                            "2020-02-14",
+                            "2020-02-15",
+                            "2020-02-16",
+                            "2020-02-17",
+                            "2020-02-18",
+                            "2020-02-19",
+                            "2020-02-20",
+                            "2020-02-21",
+                            "2020-02-22",
+                            "2020-02-23",
+                            "2020-02-24",
+                            "2020-02-25",
+                            "2020-02-26",
+                            "2020-02-27",
+                            "2020-02-28",
+                            "2020-02-29",
+                            "2020-03-01",
+                            "2020-03-02",
+                            "2020-03-03",
+                            "2020-03-04",
+                            "2020-03-05",
+                            "2020-03-06",
+                            "2020-03-07",
+                            "2020-03-08",
+                            "2020-03-09",
+                            "2020-03-10",
+                            "2020-03-11",
+                            "2020-03-12",
+                            "2020-03-13",
+                            "2020-03-14",
+                            "2020-03-15",
+                            "2020-03-16",
+                            "2020-03-17",
+                            "2020-03-18",
+                            "2020-03-19",
+                            "2020-03-20",
+                            "2020-03-21",
+                            "2020-03-22",
+                            "2020-03-23",
+                            "2020-03-24",
+                            "2020-03-25",
+                            "2020-03-26",
+                            "2020-03-27",
+                            "2020-03-28",
+                            "2020-03-29",
+                            "2020-03-30",
+                            "2020-03-31",
+                            "2020-04-01",
+                            "2020-04-02",
+                            "2020-04-03",
+                            "2020-04-04",
+                            "2020-04-05",
+                            "2020-04-06",
+                            "2020-04-07",
+                            "2020-04-08",
+                            "2020-04-09",
+                            "2020-04-10",
+                            "2020-04-11",
+                            "2020-04-12",
+                            "2020-04-13",
+                            "2020-04-14",
+                            "2020-04-15",
+                            "2020-04-16",
+                            "2020-04-17",
+                            "2020-04-18",
+                            "2020-04-19",
+                            "2020-04-20",
+                            "2020-04-21",
+                            "2020-04-22",
+                            "2020-04-23",
+                            "2020-04-24",
+                            "2020-04-25",
+                            "2020-04-26",
+                            "2020-04-27",
+                            "2020-04-28",
+                            "2020-04-29",
+                            "2020-04-30",
+                            "2020-05-01",
+                            "2020-05-02",
+                            "2020-05-03",
+                            "2020-05-04",
+                            "2020-05-05",
+                            "2020-05-06",
+                            "2020-05-07",
+                            "2020-05-08",
+                            "2020-05-09",
+                            "2020-05-10",
+                            "2020-05-11",
+                            "2020-05-12",
+                            "2020-05-13",
+                            "2020-05-14",
+                            "2020-05-15",
+                            "2020-05-16",
+                            "2020-05-17",
+                            "2020-05-18",
+                            "2020-05-19",
+                            "2020-05-20",
+                            "2020-05-21",
+                            "2020-05-22",
+                            "2020-05-23",
+                            "2020-05-24",
+                            "2020-05-25",
+                            "2020-05-26",
+                            "2020-05-27",
+                            "2020-05-28",
+                            "2020-05-29",
+                            "2020-05-30",
+                            "2020-05-31",
+                            "2020-06-01",
+                            "2020-06-02",
+                            "2020-06-03",
+                            "2020-06-04",
+                            "2020-06-05",
+                            "2020-06-06",
+                            "2020-06-07",
+                            "2020-06-08",
+                            "2020-06-09",
+                            "2020-06-10",
+                            "2020-06-11",
+                            "2020-06-12",
+                            "2020-06-13",
+                            "2020-06-14",
+                            "2020-06-15",
+                            "2020-06-16",
+                            "2020-06-17",
+                            "2020-06-18",
+                            "2020-06-19",
+                            "2020-06-20",
+                            "2020-06-21",
+                            "2020-06-22",
+                            "2020-06-23",
+                            "2020-06-24",
+                            "2020-06-25",
+                            "2020-06-26",
+                            "2020-06-27",
+                            "2020-06-28",
+                            "2020-06-29",
+                            "2020-06-30",
+                            "2020-07-01",
+                            "2020-07-02",
+                            "2020-07-03",
+                            "2020-07-04",
+                            "2020-07-05",
+                            "2020-07-06",
+                            "2020-07-07",
+                            "2020-07-08",
+                            "2020-07-09",
+                            "2020-07-10",
+                            "2020-07-11",
+                            "2020-07-12",
+                            "2020-07-13",
+                            "2020-07-14",
+                            "2020-07-15",
+                            "2020-07-16",
+                            "2020-07-17",
+                            "2020-07-18",
+                            "2020-07-19",
+                            "2020-07-20",
+                            "2020-07-21",
+                            "2020-07-22",
+                            "2020-07-23",
+                            "2020-07-24",
+                            "2020-07-25",
+                            "2020-07-26",
+                            "2020-07-27",
+                            "2020-07-28"
+                        ]
+                        var name
+                        if (globeFlag == "beijing") {
+                            name = "北京"
+                        } else if (globeFlag == "china") {
+                            name = "中国"
+                        } else if (globeFlag == "globe") {
+                            name = "世界"
+                        }
 
 
                         function linetable(confirmed, dateTime, name) {
