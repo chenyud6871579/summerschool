@@ -35,761 +35,761 @@
         window.onload = function () {
             var globeFlag = "[[${type}]]"; // beijing - china - globe
             getGlobeFlag = function () {
-            return globeFlag;
-        }
+                return globeFlag;
+            }
         }
     </script>
 </head>
 
 <body>
-    <div class="container-fluid">
+<div class="container-fluid">
 
-        <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <!-- 手机屏幕，隐藏右边三块-->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <!-- 手机屏幕，隐藏右边三块-->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/index">新冠疫情大数据分析</a>
-                </div>
-                <div class="collapse navbar-collapse navbar-right" style="float: right;"
-                    id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <!-- class="active" -->
-                        <li><a href="/globe">世界</a></li>
-                        <li><a href="/china">中国</a></li>
-                        <li><a href="/beijing">北京</a></li>
-                    </ul>
-                </div>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index">新冠疫情大数据分析</a>
             </div>
-        </nav>
+            <div class="collapse navbar-collapse navbar-right" style="float: right;"
+                 id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- class="active" -->
+                    <li><a href="/globe">世界</a></li>
+                    <li><a href="/china">中国</a></li>
+                    <li><a href="/beijing">北京</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 
-        <div class="row contents">
-            <div class="col-md-8 table_1">
-                <div class="tog_page container-fluid" style="height: 100%; width: 60%">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#color" aria-controls="color" role="tab"
-                                data-toggle="tab" class="tog_page_a">Color</a></li>
-                        <li role="presentation"><a href="#point" aria-controls="point" role="tab" data-toggle="tab"
-                                class="tog_page_a">Point</a></li>
-                    </ul>
+    <div class="row contents">
+        <div class="col-md-8 table_1">
+            <div class="tog_page container-fluid" style="height: 100%; width: 60%">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#color" aria-controls="color" role="tab"
+                                                              data-toggle="tab" class="tog_page_a">Color</a></li>
+                    <li role="presentation"><a href="#point" aria-controls="point" role="tab" data-toggle="tab"
+                                               class="tog_page_a">Point</a></li>
+                </ul>
 
-                    <div class="tab-content" style="height: 600px;">
-                        <br>
-                        <div role="tabpanel" class="tab-pane active" id="color">
-                            <div id="myColor" style="width: 1000px;height: 800px;">
-                            </div>
-                            <script type="text/javascript">
-                                var myTypeFlag = "beijing";
-                                myshow("myColor", globeFlag, "color");
-                            </script>
+                <div class="tab-content" style="height: 600px;">
+                    <br>
+                    <div role="tabpanel" class="tab-pane active" id="color">
+                        <div id="myColor" style="width: 1000px;height: 800px;">
                         </div>
+                        <script type="text/javascript">
+                            var myTypeFlag = "beijing";
+                            myshow("myColor", globeFlag, "color");
+                        </script>
+                    </div>
 
-                        <div role="tabpanel" class="tab-pane" id="point">
-                            <div id="myPoint" style="width: 1000px;height: 800px;"></div>
-                            <!--完成选择功能再写-->
-                            <script>
+                    <div role="tabpanel" class="tab-pane" id="point">
+                        <div id="myPoint" style="width: 1000px;height: 800px;"></div>
+                        <!--完成选择功能再写-->
+                        <script>
                             var myTypeFlag = "beijing";
                             myshow("myPoint",globeFlag,"point");
-                            </script>
+                        </script>
 
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row col-md-4 table_2">
-                <div class="col-md-1"></div>
-                <div class="col-md-10 radar">
-                    <br>
-                    <!-- 雷达图 -->
-                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-                    <div id="radar" style="height: 100%;" style="float: right"></div>
-                    <script type="text/javascript">
+        </div>
+        <div class="row col-md-4 table_2">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 radar">
+                <br>
+                <!-- 雷达图 -->
+                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                <div id="radar" style="height: 100%;" style="float: right"></div>
+                <script type="text/javascript">
 
 
-                        var globeFlag = getGlobeFlag();
-                        var radarList = [1, 2, 3, 4, 5]
-                        var name
-                        if (globeFlag == "beijing") {
-                            name = "北京"
-                        } else if (globeFlag == "china") {
-                            name = "中国"
-                        } else if (globeFlag == "globe") {
-                            name = "世界"
-                        }
+                    var globeFlag = getGlobeFlag();
+                    var radarList = [1, 2, 3, 4, 5]
+                    var name
+                    if (globeFlag == "beijing") {
+                        name = "北京"
+                    } else if (globeFlag == "china") {
+                        name = "中国"
+                    } else if (globeFlag == "globe") {
+                        name = "世界"
+                    }
 
-                        function minetable(radarList, name) {
-                            var myRadar = echarts.init(document.getElementById('radar'));
-                            if (radarList == null) {
-                                {
-                                    option = {
-                                        //背景
-                                        backgroundColor: '#323232',
-                                        //组件yi：图片下载查看数据
-                                        toolbox: {
-                                            show: true,
-                                            feature: {
-                                                dataView: { readOnly: false },
-                                                restore: {},
-                                                saveAsImage: {}
-                                            }
-                                        },
-                                        //题目
-                                        title: {
-                                            text: "暂无数据",
-
-                                            textStyle: { color: ' #EFE3A4' }
-
-                                        },
-
-                                        tooltip: {},
-                                        legend: {
-                                            data: name,
-                                            textStyle: { color: ' #EFE3A4' }
-                                        },
-                                        radar: {
-                                            // shape: 'circle',
-                                            name: {
-                                                textStyle: {
-                                                    color: 'rgb(221,107,102)',
-                                                    backgroundColor: 'rgb(64,74,89)',
-                                                    borderRadius: 3,
-                                                    padding: [3, 5]
-                                                }
-                                            },
-                                            indicator: [
-
-                                                { name: 'infection rate', max: 2 },
-                                                { name: 'cure rate ', max: 10 },
-                                                { name: 'Government attention ', max: 10 },
-                                                { name: 'Public attention ', max: 10 },
-                                                { name: 'Comprehensive index', max: 10 }
-                                            ]
-                                        }
-
-                                    }
-
-                                    myChart.setOption(option, true)
-                                }
-                            } else {
-                                {
-                                    option = {
-                                        //背景
-                                        backgroundColor: '#323232',
-                                        //组件yi：图片下载查看数据
-                                        toolbox: {
-                                            show: true,
-                                            feature: {
-                                                dataView: { readOnly: false },
-
-                                                saveAsImage: {}
-                                            }
-                                        },
-                                        //题目
-                                        title: {
-                                            text: name,
-
-                                            textStyle: { color: ' #EFE3A4' }
-
-                                        },
-
-                                        tooltip: {},
-                                        legend: {
-                                            data: name,
-                                            textStyle: { color: ' #EFE3A4' }
-                                        },
-                                        radar: {
-                                            // shape: 'circle',
-                                            name: {
-                                                textStyle: {
-                                                    color: 'rgb(221,107,102)',
-                                                    backgroundColor: '#323232',
-                                                    borderRadius: 3,
-                                                    padding: [3, 5]
-                                                }
-                                            },
-                                            indicator: [
-
-                                                { name: '综合评分', max: 10 },
-                                                { name: '公众意识 ', max: 10 },
-                                                { name: '政府措施 ', max: 10 },
-                                                { name: '治愈效果', max: 10 },
-                                                { name: '健康等级', max: 10 }
-                                            ]
-                                        },
-                                        series: [{
-                                            name: name,
-                                            type: 'radar',
-                                            // areaStyle: {normal: {}},
-                                            data: [
-                                                {
-                                                    // 这里错了，radarData是空的，应该这样写
-
-                                                    value: radarList,
-                                                    name: name
-                                                }
-                                            ],
-                                            itemStyle: {
-                                                normal: {
-                                                    lineStyle: {
-                                                        color: 'rgb(221,107,102)',
-                                                        // shadowColor: 'rgb(221,107,102)',
-                                                        // shadowBlur: 10,
-                                                    },
-                                                    shadowColor: 'rgb(221,107,102)',
-                                                    shadowBlur: 10,
-                                                },
-                                            },
-                                            areaStyle: {
-                                                normal: { // 单项区域填充样式
-                                                    color: {
-                                                        type: 'linear',
-                                                        x: 0, //右
-                                                        y: 0, //下
-                                                        x2: 1, //左
-                                                        y2: 1, //上
-                                                        colorStops: [{
-                                                            offset: 0,
-                                                            color: 'rgb(221,107,102)'
-                                                        }, {
-                                                            offset: 0.5,
-                                                            color: 'rgba(0,0,0,0)'
-                                                        }, {
-                                                            offset: 1,
-                                                            color: 'rgb(221,107,102)'
-                                                        }],
-                                                        globalCoord: false
-                                                    },
-                                                    opacity: 1 // 区域透明度
-                                                }
-                                            }
-                                        }]
-
-                                    }
-
-                                    myRadar.setOption(option)
-                                }
-                            }
-                        }
-
-
-                        minetable(radarList, name)
-
-                    </script>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-12 line">
-                    <!-- 折线图 -->
-                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-                    <div id="line" style="height: 100%;"></div>
-                    <script type="text/javascript">
-
-                        var globeFlag = "beijing"
-                        var confirmed = [1,
-                            1,
-                            1,
-                            2,
-                            2,
-                            4,
-                            4,
-                            7,
-                            11,
-                            11,
-                            12,
-                            16,
-                            17,
-                            18,
-                            20,
-                            20,
-                            22,
-                            22,
-                            26,
-                            27,
-                            30,
-                            30,
-                            32,
-                            36,
-                            36,
-                            38,
-                            39,
-                            39,
-                            40,
-                            40,
-                            40,
-                            41,
-                            41,
-                            41,
-                            41,
-                            41,
-                            41,
-                            42,
-                            42,
-                            42,
-                            42,
-                            42,
-                            42,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            43,
-                            45,
-                            48,
-                            80,
-                            101,
-                            123,
-                            142,
-                            156,
-                            174,
-                            187,
-                            197,
-                            202,
-                            208,
-                            214,
-                            223,
-                            230,
-                            245,
-                            255,
-                            260,
-                            266,
-                            266,
-                            267,
-                            269,
-                            270,
-                            272,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273,
-                            273]
-                        var dateTime = [
-                            "2020-01-21",
-                            "2020-01-22",
-                            "2020-01-23",
-                            "2020-01-24",
-                            "2020-01-25",
-                            "2020-01-26",
-                            "2020-01-27",
-                            "2020-01-28",
-                            "2020-01-29",
-                            "2020-01-30",
-                            "2020-01-31",
-                            "2020-02-01",
-                            "2020-02-02",
-                            "2020-02-03",
-                            "2020-02-04",
-                            "2020-02-05",
-                            "2020-02-06",
-                            "2020-02-07",
-                            "2020-02-08",
-                            "2020-02-09",
-                            "2020-02-10",
-                            "2020-02-11",
-                            "2020-02-12",
-                            "2020-02-13",
-                            "2020-02-14",
-                            "2020-02-15",
-                            "2020-02-16",
-                            "2020-02-17",
-                            "2020-02-18",
-                            "2020-02-19",
-                            "2020-02-20",
-                            "2020-02-21",
-                            "2020-02-22",
-                            "2020-02-23",
-                            "2020-02-24",
-                            "2020-02-25",
-                            "2020-02-26",
-                            "2020-02-27",
-                            "2020-02-28",
-                            "2020-02-29",
-                            "2020-03-01",
-                            "2020-03-02",
-                            "2020-03-03",
-                            "2020-03-04",
-                            "2020-03-05",
-                            "2020-03-06",
-                            "2020-03-07",
-                            "2020-03-08",
-                            "2020-03-09",
-                            "2020-03-10",
-                            "2020-03-11",
-                            "2020-03-12",
-                            "2020-03-13",
-                            "2020-03-14",
-                            "2020-03-15",
-                            "2020-03-16",
-                            "2020-03-17",
-                            "2020-03-18",
-                            "2020-03-19",
-                            "2020-03-20",
-                            "2020-03-21",
-                            "2020-03-22",
-                            "2020-03-23",
-                            "2020-03-24",
-                            "2020-03-25",
-                            "2020-03-26",
-                            "2020-03-27",
-                            "2020-03-28",
-                            "2020-03-29",
-                            "2020-03-30",
-                            "2020-03-31",
-                            "2020-04-01",
-                            "2020-04-02",
-                            "2020-04-03",
-                            "2020-04-04",
-                            "2020-04-05",
-                            "2020-04-06",
-                            "2020-04-07",
-                            "2020-04-08",
-                            "2020-04-09",
-                            "2020-04-10",
-                            "2020-04-11",
-                            "2020-04-12",
-                            "2020-04-13",
-                            "2020-04-14",
-                            "2020-04-15",
-                            "2020-04-16",
-                            "2020-04-17",
-                            "2020-04-18",
-                            "2020-04-19",
-                            "2020-04-20",
-                            "2020-04-21",
-                            "2020-04-22",
-                            "2020-04-23",
-                            "2020-04-24",
-                            "2020-04-25",
-                            "2020-04-26",
-                            "2020-04-27",
-                            "2020-04-28",
-                            "2020-04-29",
-                            "2020-04-30",
-                            "2020-05-01",
-                            "2020-05-02",
-                            "2020-05-03",
-                            "2020-05-04",
-                            "2020-05-05",
-                            "2020-05-06",
-                            "2020-05-07",
-                            "2020-05-08",
-                            "2020-05-09",
-                            "2020-05-10",
-                            "2020-05-11",
-                            "2020-05-12",
-                            "2020-05-13",
-                            "2020-05-14",
-                            "2020-05-15",
-                            "2020-05-16",
-                            "2020-05-17",
-                            "2020-05-18",
-                            "2020-05-19",
-                            "2020-05-20",
-                            "2020-05-21",
-                            "2020-05-22",
-                            "2020-05-23",
-                            "2020-05-24",
-                            "2020-05-25",
-                            "2020-05-26",
-                            "2020-05-27",
-                            "2020-05-28",
-                            "2020-05-29",
-                            "2020-05-30",
-                            "2020-05-31",
-                            "2020-06-01",
-                            "2020-06-02",
-                            "2020-06-03",
-                            "2020-06-04",
-                            "2020-06-05",
-                            "2020-06-06",
-                            "2020-06-07",
-                            "2020-06-08",
-                            "2020-06-09",
-                            "2020-06-10",
-                            "2020-06-11",
-                            "2020-06-12",
-                            "2020-06-13",
-                            "2020-06-14",
-                            "2020-06-15",
-                            "2020-06-16",
-                            "2020-06-17",
-                            "2020-06-18",
-                            "2020-06-19",
-                            "2020-06-20",
-                            "2020-06-21",
-                            "2020-06-22",
-                            "2020-06-23",
-                            "2020-06-24",
-                            "2020-06-25",
-                            "2020-06-26",
-                            "2020-06-27",
-                            "2020-06-28",
-                            "2020-06-29",
-                            "2020-06-30",
-                            "2020-07-01",
-                            "2020-07-02",
-                            "2020-07-03",
-                            "2020-07-04",
-                            "2020-07-05",
-                            "2020-07-06",
-                            "2020-07-07",
-                            "2020-07-08",
-                            "2020-07-09",
-                            "2020-07-10",
-                            "2020-07-11",
-                            "2020-07-12",
-                            "2020-07-13",
-                            "2020-07-14",
-                            "2020-07-15",
-                            "2020-07-16",
-                            "2020-07-17",
-                            "2020-07-18",
-                            "2020-07-19",
-                            "2020-07-20",
-                            "2020-07-21",
-                            "2020-07-22",
-                            "2020-07-23",
-                            "2020-07-24",
-                            "2020-07-25",
-                            "2020-07-26",
-                            "2020-07-27",
-                            "2020-07-28"
-                        ]
-                        var name
-                        if (globeFlag == "beijing") {
-                            name = "北京"
-                        } else if (globeFlag == "china") {
-                            name = "中国"
-                        } else if (globeFlag == "globe") {
-                            name = "世界"
-                        }
-
-
-                        function linetable(confirmed, dateTime, name) {
-                            var myLine = echarts.init(document.getElementById('line'));
-                            option = {
-                                //背景色
-                                //   backgroundColor: 'black',
-                                backgroundColor: '#323232',
-                                //工具栏一号保存恢复查看原来的数据
-                                toolbox: {
-                                    show: true,
-                                    feature: {
-                                        //局域缩放
-
-                                        dataView: {
-                                            readOnly: false
-                                        },
-
-                                        saveAsImage: {}
-                                    }
-                                },
-                                //标题
-                                title: {
-                                    text: name,
-                                    //字体颜色
-                                    textStyle: { color: ' #EFE3A4' }
-
-                                },
-                                tooltip: {
-                                    trigger: 'axis'
-                                },
-
-                                // 滑动组件
-                                dataZoom: [
-                                    {
-                                        type: 'slider',
+                    function minetable(radarList, name) {
+                        var myRadar = echarts.init(document.getElementById('radar'));
+                        if (radarList == null) {
+                            {
+                                option = {
+                                    //背景
+                                    backgroundColor: '#323232',
+                                    //组件yi：图片下载查看数据
+                                    toolbox: {
                                         show: true,
-                                        xAxisIndex: [0],
-                                        start: 85,
-                                        end: 100,
-                                        realtime: true,
-                                        height: 15
-
-                                    },
-
-                                    {
-                                        type: 'inside',
-                                        xAxisIndex: [0],
-                                        realtime: true,
-                                        start: 85,
-                                        end: 100
-                                    }
-
-                                ],
-                                //线性图
-                                xAxis: {
-                                    type: "category",
-                                    data: dateTime,
-                                    name: "时间",
-                                    minInterval: 3600 * 1000 * 24,
-                                    axisLine: {
-                                        lineStyle: {
-                                            color: 'rgba(221,107,102,1)'   //#E60026  #f5c518  rgb(221,107,102)
+                                        feature: {
+                                            dataView: { readOnly: false },
+                                            restore: {},
+                                            saveAsImage: {}
                                         }
                                     },
-                                    //          axisLabel: {
-                                    //         formatter: function(value, index) {
-                                    //          return new Date(value).toLocaleTimeString();
-                                    //      }
-                                    //        }
-                                },
-                                yAxis: {
-                                    type: 'value',
-                                    name: "确诊人数",
-                                    axisLine: {
-                                        lineStyle: {
-                                            color: 'rgba(221,107,102,1)'
-                                        }
-                                    }
-                                },
-                                series: [{
-                                    data: confirmed,
-                                    type: 'line',
-                                    name: "确诊人数",
-                                    lineStyle: {
-                                        color: ' rgba(221,107,102,1)'
+                                    //题目
+                                    title: {
+                                        text: "暂无数据",
+
+                                        textStyle: { color: ' #EFE3A4' }
+
                                     },
-                                    symbol: "circle",
-                                    symbolSize: 5,
-                                    itemStyle: { normal: { color: ' rgba(221,107,102,1)' } },
-                                    markArea: { animation: true },
-                                    markPoint: {
-                                        data: [{
-                                            name: "最大值",
-                                            type: "max"
-                                        }]
+
+                                    tooltip: {},
+                                    legend: {
+                                        data: name,
+                                        textStyle: { color: ' #EFE3A4' }
+                                    },
+                                    radar: {
+                                        // shape: 'circle',
+                                        name: {
+                                            textStyle: {
+                                                color: 'rgb(221,107,102)',
+                                                backgroundColor: 'rgb(64,74,89)',
+                                                borderRadius: 3,
+                                                padding: [3, 5]
+                                            }
+                                        },
+                                        indicator: [
+
+                                            { name: 'infection rate', max: 2 },
+                                            { name: 'cure rate ', max: 10 },
+                                            { name: 'Government attention ', max: 10 },
+                                            { name: 'Public attention ', max: 10 },
+                                            { name: 'Comprehensive index', max: 10 }
+                                        ]
                                     }
-                                }]
+
+                                }
+
+                                myChart.setOption(option, true)
                             }
-                            myLine.setOption(option);
+                        } else {
+                            {
+                                option = {
+                                    //背景
+                                    backgroundColor: '#323232',
+                                    //组件yi：图片下载查看数据
+                                    toolbox: {
+                                        show: true,
+                                        feature: {
+                                            dataView: { readOnly: false },
 
+                                            saveAsImage: {}
+                                        }
+                                    },
+                                    //题目
+                                    title: {
+                                        text: name,
+
+                                        textStyle: { color: ' #EFE3A4' }
+
+                                    },
+
+                                    tooltip: {},
+                                    legend: {
+                                        data: name,
+                                        textStyle: { color: ' #EFE3A4' }
+                                    },
+                                    radar: {
+                                        // shape: 'circle',
+                                        name: {
+                                            textStyle: {
+                                                color: 'rgb(221,107,102)',
+                                                backgroundColor: '#323232',
+                                                borderRadius: 3,
+                                                padding: [3, 5]
+                                            }
+                                        },
+                                        indicator: [
+
+                                            { name: '综合评分', max: 10 },
+                                            { name: '公众意识 ', max: 10 },
+                                            { name: '政府措施 ', max: 10 },
+                                            { name: '治愈效果', max: 10 },
+                                            { name: '健康等级', max: 10 }
+                                        ]
+                                    },
+                                    series: [{
+                                        name: name,
+                                        type: 'radar',
+                                        // areaStyle: {normal: {}},
+                                        data: [
+                                            {
+                                                // 这里错了，radarData是空的，应该这样写
+
+                                                value: radarList,
+                                                name: name
+                                            }
+                                        ],
+                                        itemStyle: {
+                                            normal: {
+                                                lineStyle: {
+                                                    color: 'rgb(221,107,102)',
+                                                    // shadowColor: 'rgb(221,107,102)',
+                                                    // shadowBlur: 10,
+                                                },
+                                                shadowColor: 'rgb(221,107,102)',
+                                                shadowBlur: 10,
+                                            },
+                                        },
+                                        areaStyle: {
+                                            normal: { // 单项区域填充样式
+                                                color: {
+                                                    type: 'linear',
+                                                    x: 0, //右
+                                                    y: 0, //下
+                                                    x2: 1, //左
+                                                    y2: 1, //上
+                                                    colorStops: [{
+                                                        offset: 0,
+                                                        color: 'rgb(221,107,102)'
+                                                    }, {
+                                                        offset: 0.5,
+                                                        color: 'rgba(0,0,0,0)'
+                                                    }, {
+                                                        offset: 1,
+                                                        color: 'rgb(221,107,102)'
+                                                    }],
+                                                    globalCoord: false
+                                                },
+                                                opacity: 1 // 区域透明度
+                                            }
+                                        }
+                                    }]
+
+                                }
+
+                                myRadar.setOption(option)
+                            }
                         }
+                    }
 
-                        linetable(confirmed, dateTime, name)
-                    </script>
-                </div>
+
+                    minetable(radarList, name)
+
+                </script>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-12 line">
+                <!-- 折线图 -->
+                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                <div id="line" style="height: 100%;"></div>
+                <script type="text/javascript">
+
+                    var globeFlag = "beijing"
+                    var confirmed = [1,
+                        1,
+                        1,
+                        2,
+                        2,
+                        4,
+                        4,
+                        7,
+                        11,
+                        11,
+                        12,
+                        16,
+                        17,
+                        18,
+                        20,
+                        20,
+                        22,
+                        22,
+                        26,
+                        27,
+                        30,
+                        30,
+                        32,
+                        36,
+                        36,
+                        38,
+                        39,
+                        39,
+                        40,
+                        40,
+                        40,
+                        41,
+                        41,
+                        41,
+                        41,
+                        41,
+                        41,
+                        42,
+                        42,
+                        42,
+                        42,
+                        42,
+                        42,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        43,
+                        45,
+                        48,
+                        80,
+                        101,
+                        123,
+                        142,
+                        156,
+                        174,
+                        187,
+                        197,
+                        202,
+                        208,
+                        214,
+                        223,
+                        230,
+                        245,
+                        255,
+                        260,
+                        266,
+                        266,
+                        267,
+                        269,
+                        270,
+                        272,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273,
+                        273]
+                    var dateTime = [
+                        "2020-01-21",
+                        "2020-01-22",
+                        "2020-01-23",
+                        "2020-01-24",
+                        "2020-01-25",
+                        "2020-01-26",
+                        "2020-01-27",
+                        "2020-01-28",
+                        "2020-01-29",
+                        "2020-01-30",
+                        "2020-01-31",
+                        "2020-02-01",
+                        "2020-02-02",
+                        "2020-02-03",
+                        "2020-02-04",
+                        "2020-02-05",
+                        "2020-02-06",
+                        "2020-02-07",
+                        "2020-02-08",
+                        "2020-02-09",
+                        "2020-02-10",
+                        "2020-02-11",
+                        "2020-02-12",
+                        "2020-02-13",
+                        "2020-02-14",
+                        "2020-02-15",
+                        "2020-02-16",
+                        "2020-02-17",
+                        "2020-02-18",
+                        "2020-02-19",
+                        "2020-02-20",
+                        "2020-02-21",
+                        "2020-02-22",
+                        "2020-02-23",
+                        "2020-02-24",
+                        "2020-02-25",
+                        "2020-02-26",
+                        "2020-02-27",
+                        "2020-02-28",
+                        "2020-02-29",
+                        "2020-03-01",
+                        "2020-03-02",
+                        "2020-03-03",
+                        "2020-03-04",
+                        "2020-03-05",
+                        "2020-03-06",
+                        "2020-03-07",
+                        "2020-03-08",
+                        "2020-03-09",
+                        "2020-03-10",
+                        "2020-03-11",
+                        "2020-03-12",
+                        "2020-03-13",
+                        "2020-03-14",
+                        "2020-03-15",
+                        "2020-03-16",
+                        "2020-03-17",
+                        "2020-03-18",
+                        "2020-03-19",
+                        "2020-03-20",
+                        "2020-03-21",
+                        "2020-03-22",
+                        "2020-03-23",
+                        "2020-03-24",
+                        "2020-03-25",
+                        "2020-03-26",
+                        "2020-03-27",
+                        "2020-03-28",
+                        "2020-03-29",
+                        "2020-03-30",
+                        "2020-03-31",
+                        "2020-04-01",
+                        "2020-04-02",
+                        "2020-04-03",
+                        "2020-04-04",
+                        "2020-04-05",
+                        "2020-04-06",
+                        "2020-04-07",
+                        "2020-04-08",
+                        "2020-04-09",
+                        "2020-04-10",
+                        "2020-04-11",
+                        "2020-04-12",
+                        "2020-04-13",
+                        "2020-04-14",
+                        "2020-04-15",
+                        "2020-04-16",
+                        "2020-04-17",
+                        "2020-04-18",
+                        "2020-04-19",
+                        "2020-04-20",
+                        "2020-04-21",
+                        "2020-04-22",
+                        "2020-04-23",
+                        "2020-04-24",
+                        "2020-04-25",
+                        "2020-04-26",
+                        "2020-04-27",
+                        "2020-04-28",
+                        "2020-04-29",
+                        "2020-04-30",
+                        "2020-05-01",
+                        "2020-05-02",
+                        "2020-05-03",
+                        "2020-05-04",
+                        "2020-05-05",
+                        "2020-05-06",
+                        "2020-05-07",
+                        "2020-05-08",
+                        "2020-05-09",
+                        "2020-05-10",
+                        "2020-05-11",
+                        "2020-05-12",
+                        "2020-05-13",
+                        "2020-05-14",
+                        "2020-05-15",
+                        "2020-05-16",
+                        "2020-05-17",
+                        "2020-05-18",
+                        "2020-05-19",
+                        "2020-05-20",
+                        "2020-05-21",
+                        "2020-05-22",
+                        "2020-05-23",
+                        "2020-05-24",
+                        "2020-05-25",
+                        "2020-05-26",
+                        "2020-05-27",
+                        "2020-05-28",
+                        "2020-05-29",
+                        "2020-05-30",
+                        "2020-05-31",
+                        "2020-06-01",
+                        "2020-06-02",
+                        "2020-06-03",
+                        "2020-06-04",
+                        "2020-06-05",
+                        "2020-06-06",
+                        "2020-06-07",
+                        "2020-06-08",
+                        "2020-06-09",
+                        "2020-06-10",
+                        "2020-06-11",
+                        "2020-06-12",
+                        "2020-06-13",
+                        "2020-06-14",
+                        "2020-06-15",
+                        "2020-06-16",
+                        "2020-06-17",
+                        "2020-06-18",
+                        "2020-06-19",
+                        "2020-06-20",
+                        "2020-06-21",
+                        "2020-06-22",
+                        "2020-06-23",
+                        "2020-06-24",
+                        "2020-06-25",
+                        "2020-06-26",
+                        "2020-06-27",
+                        "2020-06-28",
+                        "2020-06-29",
+                        "2020-06-30",
+                        "2020-07-01",
+                        "2020-07-02",
+                        "2020-07-03",
+                        "2020-07-04",
+                        "2020-07-05",
+                        "2020-07-06",
+                        "2020-07-07",
+                        "2020-07-08",
+                        "2020-07-09",
+                        "2020-07-10",
+                        "2020-07-11",
+                        "2020-07-12",
+                        "2020-07-13",
+                        "2020-07-14",
+                        "2020-07-15",
+                        "2020-07-16",
+                        "2020-07-17",
+                        "2020-07-18",
+                        "2020-07-19",
+                        "2020-07-20",
+                        "2020-07-21",
+                        "2020-07-22",
+                        "2020-07-23",
+                        "2020-07-24",
+                        "2020-07-25",
+                        "2020-07-26",
+                        "2020-07-27",
+                        "2020-07-28"
+                    ]
+                    var name
+                    if (globeFlag == "beijing") {
+                        name = "北京"
+                    } else if (globeFlag == "china") {
+                        name = "中国"
+                    } else if (globeFlag == "globe") {
+                        name = "世界"
+                    }
+
+
+                    function linetable(confirmed, dateTime, name) {
+                        var myLine = echarts.init(document.getElementById('line'));
+                        option = {
+                            //背景色
+                            //   backgroundColor: 'black',
+                            backgroundColor: '#323232',
+                            //工具栏一号保存恢复查看原来的数据
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    //局域缩放
+
+                                    dataView: {
+                                        readOnly: false
+                                    },
+
+                                    saveAsImage: {}
+                                }
+                            },
+                            //标题
+                            title: {
+                                text: name,
+                                //字体颜色
+                                textStyle: { color: ' #EFE3A4' }
+
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+
+                            // 滑动组件
+                            dataZoom: [
+                                {
+                                    type: 'slider',
+                                    show: true,
+                                    xAxisIndex: [0],
+                                    start: 85,
+                                    end: 100,
+                                    realtime: true,
+                                    height: 15
+
+                                },
+
+                                {
+                                    type: 'inside',
+                                    xAxisIndex: [0],
+                                    realtime: true,
+                                    start: 85,
+                                    end: 100
+                                }
+
+                            ],
+                            //线性图
+                            xAxis: {
+                                type: "category",
+                                data: dateTime,
+                                name: "时间",
+                                minInterval: 3600 * 1000 * 24,
+                                axisLine: {
+                                    lineStyle: {
+                                        color: 'rgba(221,107,102,1)'   //#E60026  #f5c518  rgb(221,107,102)
+                                    }
+                                },
+                                //          axisLabel: {
+                                //         formatter: function(value, index) {
+                                //          return new Date(value).toLocaleTimeString();
+                                //      }
+                                //        }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                name: "确诊人数",
+                                axisLine: {
+                                    lineStyle: {
+                                        color: 'rgba(221,107,102,1)'
+                                    }
+                                }
+                            },
+                            series: [{
+                                data: confirmed,
+                                type: 'line',
+                                name: "确诊人数",
+                                lineStyle: {
+                                    color: ' rgba(221,107,102,1)'
+                                },
+                                symbol: "circle",
+                                symbolSize: 5,
+                                itemStyle: { normal: { color: ' rgba(221,107,102,1)' } },
+                                markArea: { animation: true },
+                                markPoint: {
+                                    data: [{
+                                        name: "最大值",
+                                        type: "max"
+                                    }]
+                                }
+                            }]
+                        }
+                        myLine.setOption(option);
+
+                    }
+
+                    linetable(confirmed, dateTime, name)
+                </script>
             </div>
         </div>
     </div>
+</div>
 </body>
 
 </html>
