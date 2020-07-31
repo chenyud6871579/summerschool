@@ -3,9 +3,9 @@ codeTable = {
     "AF": "AFG",
     "AO": "AGO",
     "AI": "AIA",
-    "AL": "ALB ",
-    "AD": "AND ",
-    "AN": "ANT ",
+    "AL": "ALB",
+    "AD": "AND",
+    "AN": "ANT",
     "AE": "ARE",
     "AR": "ARG",
     "AM": "ARM",
@@ -13,7 +13,7 @@ codeTable = {
     "AT": "SUT",
     "TF": "ATF",
     "AG": "ATG",
-    "AU": "AUS ",
+    "AU": "AUS",
     "AZ": "AZE",
     "BI": "BDI",
     "BE": "BEL",
@@ -237,5 +237,6 @@ codeTable = {
     "ZR": "ZAR",
     "ZM": "ZMB",
     "ZW": "ZWE",
-    "CN":"CHN"
+    "CN":"CHN",
+    "AUS ":"AUS"
 }

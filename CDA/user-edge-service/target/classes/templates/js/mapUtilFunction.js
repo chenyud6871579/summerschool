@@ -94,9 +94,9 @@ var geoworld = {
 }
 
 var myurls = {
-    "beijing": "/json/beijingmap.json",
-    "china": "/json/chinamap.json",
-    "globe": "/json/globemap.json"
+    "beijing": "/data?type=beijing",
+    "china": "/data?type=china",
+    "globe": "/data?type=globe"
 }
 var colorTitle = {
     "beijing": "北京市各区新冠肺炎确诊人数分布",
@@ -665,12 +665,13 @@ function myshow(boxId, typeFlag, buttonFlag) {
                 // var city = params.name;
                 // loadChart(city); 
                 var blockName = params.name
-                // console.log(blockName, getResultData[blockName])
-                console.log("getResultData[blockName]['radarList']",getResultData[blockName]['radarList'])
+                // console.log("getResultData[blockName]['radarList']",getResultData[blockName]['radarList'])
+                console.log("getResultData",getResultData)
+                console.log("blockName",blockName)
                 globalRadarList = getResultData[blockName]['radarList']
                 minetable(globalRadarList,blockName)
+                linetable(getResultData[blockName]['confirmed'], getResultData[blockName]['date'], blockName)
                 console.log("globalRadarList",globalRadarList)
-                // return getResultData[blockName]
             });
             myChart.setOption(resultOption)
         },

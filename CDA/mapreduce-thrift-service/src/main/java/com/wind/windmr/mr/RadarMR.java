@@ -82,7 +82,7 @@ public class RadarMR {
 
         // 政府措施
         double x3 = (max_value - remain[remain.length - 1]) / (1.0 * total);
-        double item3 = 10.0 / (1 + Math.pow(Math.E, x3 * -500));
+        double item3 = 10.0 / (1 + Math.pow(Math.E, x3 * -5));
         double result3 = Double.valueOf(String.format("%.1f", item3));
 //        System.out.println(result3);
 
@@ -98,11 +98,12 @@ public class RadarMR {
 //        System.out.println(result5);
 
 
-        radarList.add(result1);
-        radarList.add(result2);
-        radarList.add(result3);
-        radarList.add(result4);
         radarList.add(result5);
+        radarList.add(result4);
+        radarList.add(result3);
+        radarList.add(result2);
+        radarList.add(result1);
+
         return radarList;
     }
 
