@@ -326,7 +326,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 borderColor: '#003366'
                             },
                             emphasis: {
-                                areaColor: '#F3B329',//鼠标选择区域颜色
+                                areaColor: '#000',//鼠标选择区域颜色
                                 shadowOffsetX: 0,
                                 shadowOffsetY: 0,
                                 shadowBlur: 20,

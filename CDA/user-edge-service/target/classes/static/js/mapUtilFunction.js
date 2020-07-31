@@ -135,18 +135,25 @@ var convertData = function (data, typeFlag) {
 
 function timedata() {
     var date = []
-    for (var i = 1; i < 17; i++) {
-        date[i] = "06-" + String(i + 14)
+    for (var i = 1; i < 31; i++) {
+        date[i-1] = "04-" + String(i)
     }
-    for (var j = 17; j < 31; j++) {
-        date[j] = "07" + "-" + String(j - 16)
+    for (var i = 1; i < 32; i++) {
+        date[i+29] = "05-" + String(i)
+    }
+    for (var j = 1; j < 31; j++) {
+        date[j+60] = "06" + "-" + String(j)
+    }
+    for (var j = 1; j < 32; j++) {
+        date[j+90] = "07" + "-" + String(j)
     }
     return date
 }
+// console.log("data",timedata())
 
 function dataFormatter(obj) {
     var temp;
-    for (var num = 1; num <= 30; num++) {
+    for (var num = 1; num <= 121; num++) {
         temp = obj[num];
         for (var i = 0, l = temp.length; i < l; i++) {
             obj[num][i] = {
@@ -172,10 +179,11 @@ function myshow(boxId, typeFlag, buttonFlag) {
         dataType: "json",
         success: function (result) {
             getResultData = result;
+            console.log("result",result)
             var obj = []
-            var data1 = []
+            // var data1 = []
             var resultOption;
-            for (var i = 1; i < 31; i++) {
+            for (var i = 0; i < 122; i++) {
                 var confirmed = []
                 for (var item in pList) {
                     var proviceName = pList[item];
@@ -261,12 +269,23 @@ function myshow(boxId, typeFlag, buttonFlag) {
                     } if (proviceName == "阿拉伯联合酋长国") {
                         proviceName = "阿联酋"
                     }
-                    var index = result[proviceName]["confirmed"].length - 31 + i
-                    confirmed.push(result[proviceName]["confirmed"][index])
+                    if(result[proviceName]["confirmed"].length < 123){
+                        confirmed.push(0)
+                    }
+                    else {
+                        var index = result[proviceName]["confirmed"].length - 122 + i
+                        confirmed.push(result[proviceName]["confirmed"][index])
+                    }
+
+                    // confirmed = result[proviceName]["confirmed"]
+
+
 
                 }
-                data1[i] = confirmed
+                console.log("confimed",confirmed)
+                // data1[i] = confirmed
                 obj[String(i)] = confirmed
+                // console.log("obj",obj)
             }
             dataMap.confirm = dataFormatter(obj)
 
@@ -276,8 +295,9 @@ function myshow(boxId, typeFlag, buttonFlag) {
                         timeline: {
                             axisType: 'category',
                             autoPlay: false,
-                            playInterval: 1000,
+                            playInterval: 100,
                             data: timedata(),
+                            loop: false,
                             label: {
                                 normal: {
                                     textStyle: {
@@ -310,7 +330,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
 
                         title: {
                             text: colorTitle[typeFlag],
-                            subtext: '6月末至7月初数据',
+                            subtext: '4月初至7月底数据',
 
                             left: 'center',
                             textStyle: {
@@ -326,30 +346,39 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 borderColor: '#003366'
                             },
                             emphasis: {
-                                areaColor: '#F3B329',//鼠标选择区域颜色
+                                areaColor: '#70f329',//鼠标选择区域颜色
                                 shadowOffsetX: 0,
                                 shadowOffsetY: 0,
                                 shadowBlur: 20,
                                 borderWidth: 0,
-                                shadowColor: '#33CCFF',
+                                shadowColor: '#03CCFF',
 
                             }
+                            // emphasis: {
+                            //     areaColor: '#03B329',//鼠标选择区域颜色
+                            //     shadowOffsetX: 0,
+                            //     shadowOffsetY: 0,
+                            //     shadowBlur: 20,
+                            //     borderWidth: 0,
+                            //     shadowColor: '#03CCFF',
+                            //
+                            // }
                         },
-                        tooltip: {
-                            padding: 10,
-                            backgroundColor: '#222',
-                            borderColor: '#777',
-                            borderWidth: 1,
-                            trigger: 'item',
-
-                            formatter: function (params) {
-
-                                return params.name + '确诊病例:' + params.value;
-
-                            }
-
-
-                        },
+                        // tooltip: {
+                        //     padding: 10,
+                        //     backgroundColor: '#222',
+                        //     borderColor: '#777',
+                        //     borderWidth: 1,
+                        //     trigger: 'item',
+                        //
+                        //     formatter: function (params) {
+                        //
+                        //         return params.name + '确诊病例:' + params.value;
+                        //
+                        //     }
+                        //
+                        //
+                        // },
                         calculable: true
                         ,
                         visualMap: {
@@ -363,76 +392,60 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 color: '#00000'
                             },
                             pieces: [{
-                                gt: 1000000,
-                                label: "> 1000000 人",
-                                color: "#7f1100"
+                                gt: 2000000,
+                                label: "> 2000000 人",
+                                color: "#660000"
                             }, {
                                 gte: 500000,
-                                lte: 1000000,
-                                label: "500000 - 1000000 人",
-                                color: "#ff2828"
+                                lte: 2000000,
+                                label: "500000 - 2000000 人",
+                                color: "#990000"
                             }, {
                                 gte: 100000,
                                 lte: 500000,
                                 label: "100000 - 500000 人",
-                                color: "#ff2828"
+                                color: "#993300"
                             }, {
                                 gte: 50000,
                                 lte: 100000,
                                 label: "50000 - 100000 人",
-                                color: "#ff2828"
-                            }, {
-                                gte: 20000,
-                                lte: 50000,
-                                label: "20000 - 50000 人",
-                                color: "#ff5428"
+                                color: "#CC0000"
                             }, {
                                 gte: 10000,
-                                lte: 20000,
-                                label: "10000 - 20000 人",
-                                color: "#FF9933 "
-                            },
-                            {
-                                gte: 5000,
-                                lte: 10000,
-                                label: "5000 - 10000 人",
-                                color: "#FF9966 "
+                                lte: 50000,
+                                label: "10000 - 50000 人",
+                                color: "#FF3333"
                             }, {
                                 gte: 2000,
-                                lt: 5000,
-                                label: "1000 - 5000 人",
-                                color: "#FFCC00 "
-                            }, {
-                                gte: 1000,
-                                lte: 2000,
-                                label: "1000 - 2000 人",
-                                color: "#ff2828"
+                                lt: 10000,
+                                label: "2000 - 10000 人",
+                                color: "#FF6633"
                             }, {
                                 gte: 600,
-                                lte: 1000,
-                                label: "600 - 1000 人",
-                                color: "#ff5428"
+                                lte: 2000,
+                                label: "600 - 2000 人",
+                                color: "#FF9900"
                             }, {
                                 gte: 300,
                                 lte: 600,
                                 label: "300 - 600 人",
-                                color: "#FF9933 "
+                                color: "#FF9966"
                             },
                             {
                                 gte: 100,
                                 lte: 300,
                                 label: "100 - 300 人",
-                                color: "#FF9966 "
+                                color: "#FFCC33"
                             }, {
                                 gte: 10,
                                 lt: 100,
                                 label: "10 - 100 人",
-                                color: "#FFCC00 "
+                                color: "#f1c40f"
                             }, {
                                 gt: 0,
                                 lt: 9,
                                 label: "1-9人",
-                                color: "#ffd768"
+                                color: "#FFFF99"
                             }, {
                                 value: 0,
                                 color: "#ffffff"
@@ -442,7 +455,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                     },
                     options: []
                 }
-                for (var i = 1; i < 31; i++) {
+                for (var i = 1; i < 121; i++) {
                     resultOption.options.push({
                         series: {
                             type: 'map',
@@ -471,7 +484,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                     timeline: {
                         axisType: 'category',
                         // realtime: false,
-                        // loop: false,
+                        loop: false,
                         autoPlay: false,
                         // currentIndex: 2,
                         label: {
@@ -486,7 +499,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 }
                             }
                         },
-                        playInterval: 1000,
+                        playInterval: 100,
                         // controlStyle: {
                         //     position: 'left'
                         // },
@@ -509,7 +522,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                     baseOption: {
                         title: {
                             text: pointTitle[typeFlag],
-                            subtext: '6月末至7月初数据',
+                            subtext: '4月初至7月底数据',
 
                             left: 'center',
                             textStyle: {
@@ -542,47 +555,44 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                     borderColor: '#003366'
                                 },
                                 emphasis: {
-                                    areaColor: '#F3B329',//鼠标选择区域颜色
+                                    areaColor: '#03B329',//鼠标选择区域颜色
                                     shadowOffsetX: 0,
                                     shadowOffsetY: 0,
                                     shadowBlur: 20,
                                     borderWidth: 0,
-                                    shadowColor: '#33CCFF',
+                                    shadowColor: '#03CCFF',
 
                                 }
                             }
                         },
 
-                        itemStyle: {
-
-                            normal: {
-                                areaColor: '#777',
-                                borderColor: '#003366'
-                            },
-                            emphasis: {
-                                areaColor: '#F3B329',//鼠标选择区域颜色
-                                shadowOffsetX: 0,
-                                shadowOffsetY: 0,
-                                shadowBlur: 20,
-                                borderWidth: 0,
-                                shadowColor: '#33CCFF',
-
-                            }
-                        },
-                        tooltip: {
-                            padding: 10,
-                            backgroundColor: '#222',
-                            borderColor: '#222',
-                            borderWidth: 1,
-                            trigger: 'item',
-                            formatter: function (params) {
-                                return params.name + '确诊病例:' + params.value[2]
-
-                            }
-
-
-
-                        },
+                        // itemStyle: {
+                        //
+                        //     normal: {
+                        //         areaColor: '#777',
+                        //         borderColor: '#003366'
+                        //     },
+                        //     emphasis: {
+                        //         areaColor: '#F3B329',//鼠标选择区域颜色
+                        //         shadowOffsetX: 0,
+                        //         shadowOffsetY: 0,
+                        //         shadowBlur: 20,
+                        //         borderWidth: 0,
+                        //         shadowColor: '#33CCFF',
+                        //
+                        //     }
+                        // },
+                        // tooltip: {
+                        //     padding: 10,
+                        //     backgroundColor: '#222',
+                        //     borderColor: '#222',
+                        //     borderWidth: 1,
+                        //     trigger: 'item',
+                        //     formatter: function (params) {
+                        //         return params.name + '确诊病例:' + params.value[2]
+                        //
+                        //     }
+                        // },
                         visualMap: {
                             min: 0,
                             max: 2500,
@@ -598,7 +608,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                     },
                     options: []
                 }
-                for (var i = 1; i < 31; i++) {
+                for (var i = 1; i < 122; i++) {
                     resultOption.options.push({
                         series: {
                             name: '信息量',
@@ -661,10 +671,97 @@ function myshow(boxId, typeFlag, buttonFlag) {
 
             }
 
+            function changeName(proviceName){
+                if (proviceName == "内蒙古") {
+                    proviceName = "内蒙古自治区"
+                } else if (proviceName == "湖北") {
+                    proviceName = "湖北省"
+                } else if (proviceName == "天津") {
+                    proviceName = "天津市"
+                } else if (proviceName == "河北") {
+                    proviceName = "河北省"
+                } else if (proviceName == "山西") {
+                    proviceName = "山西省"
+                } else if (proviceName == "辽宁") {
+                    proviceName = "辽宁省"
+                } else if (proviceName == "吉林") {
+                    proviceName = "吉林省"
+                } else if (proviceName == "黑龙江") {
+                    proviceName = "黑龙江省"
+                } else if (proviceName == "上海") {
+                    proviceName = "上海市"
+                } else if (proviceName == "浙江") {
+                    proviceName = "浙江省"
+                } else if (proviceName == "安徽") {
+                    proviceName = "安徽省"
+                } else if (proviceName == "福建") {
+                    proviceName = "福建省"
+                } else if (proviceName == "江西") {
+                    proviceName = "江西省"
+                } else if (proviceName == "山东") {
+                    proviceName = "山东省"
+                } else if (proviceName == "河南") {
+                    proviceName = "河南省"
+                } else if (proviceName == "湖南") {
+                    proviceName = "湖南省"
+                } else if (proviceName == "广东") {
+                    proviceName = "广东省"
+                } else if (proviceName == "广西") {
+                    proviceName = "广西壮族自治区"
+                } else if (proviceName == "海南") {
+                    proviceName = "海南省"
+                } else if (proviceName == "重庆") {
+                    proviceName = "重庆市"
+                } else if (proviceName == "四川") {
+                    proviceName = "四川省"
+                } else if (proviceName == "贵州") {
+                    proviceName = "贵州省"
+                } else if (proviceName == "云南") {
+                    proviceName = "云南省"
+                } else if (proviceName == "西藏") {
+                    proviceName = "西藏自治区"
+                } else if (proviceName == "陕西") {
+                    proviceName = "陕西省"
+                } else if (proviceName == "甘肃") {
+                    proviceName = "甘肃省"
+                } else if (proviceName == "青海") {
+                    proviceName = "青海省"
+                } else if (proviceName == "宁夏") {
+                    proviceName = "宁夏回族自治区"
+                } else if (proviceName == "新疆") {
+                    proviceName = "新疆维吾尔自治区"
+                } else if (proviceName == "台湾") {
+                    proviceName = "台湾省"
+                } else if (proviceName == "香港") {
+                    proviceName = "香港特别行政区"
+                } else if (proviceName == "澳门") {
+                    proviceName = "澳门特别行政区"
+                } else if (proviceName == "北京") {
+                    proviceName = "北京市"
+                } else if (proviceName == "江苏") {
+                    proviceName = "江苏省"
+                } if (proviceName == "刚果金") {
+                    proviceName = "刚果（金）"
+                }
+                if (proviceName == "毛里塔尼亚") {
+                    proviceName = "毛利塔尼亚"
+                } if (proviceName == "孟加拉") {
+                    proviceName = "孟加拉国"
+                } if (proviceName == "吉尔吉斯坦") {
+                    proviceName = "吉尔吉斯斯坦"
+                } if (proviceName == "刚果布") {
+                    proviceName = "刚果（布）"
+                } if (proviceName == "阿拉伯联合酋长国") {
+                    proviceName = "阿联酋"
+                }
+                return proviceName;
+            }
+
             myChart.on('click', function (params) {
                 // var city = params.name;
                 // loadChart(city); 
                 var blockName = params.name
+                blockName = changeName(blockName)
                 // console.log("getResultData[blockName]['radarList']",getResultData[blockName]['radarList'])
                 console.log("getResultData",getResultData)
                 console.log("blockName",blockName)
