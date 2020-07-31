@@ -119,8 +119,8 @@ var geoCoordMap = []
 
 var convertData = function (data, typeFlag) {
     var res = [];
-    for (var i = 1; i < data.length; i++) {
-        // console.log(data)
+    for (var i = 0; i < data.length; i++) {
+        // console.log("data",data)
         var geoCoord = geoObject[typeFlag][data[i].name];
         if (geoCoord) {
             res.push({
@@ -595,7 +595,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 if(typeFlag == "globe")
                                     return Math.pow(val[2],1/2)/25
                                 else if(typeFlag == "china")
-                                    return Math.pow(val[2],1/2)
+                                    return Math.pow(val[2],1/2)/4
                                 else return Math.pow(val[2],1/2)*2
 
                             },
