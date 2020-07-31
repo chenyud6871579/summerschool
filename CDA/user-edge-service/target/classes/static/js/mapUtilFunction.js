@@ -379,7 +379,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                             }, {
                                 gte: 50000,
                                 lte: 100000,
-                                label: "1000 - 2000 人",
+                                label: "50000 - 100000 人",
                                 color: "#ff2828"
                             }, {
                                 gte: 20000,
@@ -521,8 +521,8 @@ function myshow(boxId, typeFlag, buttonFlag) {
                         ],
                         geo: {
                             map: mapTypeObject[typeFlag],
-                            roam: false,//不开启缩放和平移
-                            zoom: 1.23,//视角缩放比例
+                            roam: true,//不开启缩放和平移
+                            zoom: 1,//视角缩放比例
                             label: {
                                 normal: {
                                     show: false,
