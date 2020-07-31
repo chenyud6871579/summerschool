@@ -54,18 +54,17 @@
 
                             var progressBar = document.getElementById(progressBarId)
                             progressBar.classList.remove("progress-bar-success")
-
-                            // var setId = setInterval(function flush(){
-                            //     $.ajax({
-                            //         type: "get",
-                            //         url: "/progress/"+type+"/how",
-                            //         dataType:"json",
-                            //         success: function (response) {
-                            //             console.log(response)
-                            //             flushProgressBar(progressBarId, progressTextId, parseInt(response[0]), response[1],setId,type);
-                            //         }
-                            //     })
-                            // },1000);
+                            var setId = setInterval(function flush(){
+                                $.ajax({
+                                    type: "get",
+                                    url: "/progress/"+type+"/how",
+                                    dataType:"json",
+                                    success: function (response) {
+                                        console.log(response)
+                                        flushProgressBar(progressBarId, progressTextId, parseInt(response[0]), response[1],setId,type);
+                                    }
+                                })
+                            },300);
                         }
                     }
                 })

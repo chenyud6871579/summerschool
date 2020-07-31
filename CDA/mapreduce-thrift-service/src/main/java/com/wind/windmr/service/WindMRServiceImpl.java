@@ -23,12 +23,6 @@ public class WindMRServiceImpl implements WindMRService.Iface {
     @Resource
     MongoUtil mongoUtil;
 
-//    private String ipAddress = mongoUtil.getIpAddressUtil();
-//    private int ipHost = mongoUtil.getIpHostUtil();
-//    private String databaseName = mongoUtil.getDatabaseNameUtil();
-//    private String beijingTable = mongoUtil.getBeijingTableUtil();
-//    private String chinaTable;
-//    private String globeTable = "";
 
     @Resource
     private RadarMR radarMR;
