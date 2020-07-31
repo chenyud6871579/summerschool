@@ -295,7 +295,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                         timeline: {
                             axisType: 'category',
                             autoPlay: false,
-                            playInterval: 100,
+                            playInterval: 75,
                             data: timedata(),
                             loop: false,
                             label: {
@@ -499,7 +499,7 @@ function myshow(boxId, typeFlag, buttonFlag) {
                                 }
                             }
                         },
-                        playInterval: 100,
+                        playInterval: 75,
                         // controlStyle: {
                         //     position: 'left'
                         // },
