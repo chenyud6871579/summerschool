@@ -83,7 +83,7 @@
         }
 
     </script>
-    <!-- <script>
+    <script>
         window.onscroll = function (){
             var navTop = document.getElementById("navTopId");
             var sheetTitle = document.getElementById("sheetTitleId");
@@ -110,12 +110,12 @@
                 sheetBeijing.classList.add("sheet_a");
             }
         }
-    </script> -->
+    </script>
 </head>
 
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" id="navTopId">
+        <nav class="navbar navbar-fixed-top navbar-transparent" id="navTopId">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <!-- 手机屏幕，隐藏右边三块-->
@@ -126,14 +126,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/index" id="sheetTitleId">新冠疫情大数据分析</a>
+                    <a class="navbar-brand sheet_a" href="/index" id="sheetTitleId">新冠疫情大数据分析</a>
                 </div>
                 <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <!-- class="active" -->
-                        <li><a href="/globe" id="sheetWorldId">世界</a></li>
-                        <li><a href="/china" id="sheetChinaId">中国</a></li>
-                        <li><a href="/beijing" id="sheetBeijingId">北京</a></li>
+                        <li><a class="sheet_a" href="/globe" id="sheetWorldId">世界</a></li>
+                        <li><a class="sheet_a" href="/china" id="sheetChinaId">中国</a></li>
+                        <li><a class="sheet_a" href="/beijing" id="sheetBeijingId">北京</a></li>
                     </ul>
                 </div>
             </div>
@@ -302,23 +302,23 @@
          });
     </script>
     <script type="text/javascript">
-        $(function()
-        {
-            $("nav").hide();
-            var height = $("#info-title").offset().top;
-            $(window).scroll(function()
-            {
-                var this_scrollTop = $(this).scrollTop();
-                if(this_scrollTop > height - 200)
-                {
-                    $("nav").show();
-                }
-                else
-                {
-                    $("nav").hide();
-                }
-            });
-        });
+        // $(function()
+        // {
+        //     $("nav").hide();
+        //     var height = $("#info-title").offset().top;
+        //     $(window).scroll(function()
+        //     {
+        //         var this_scrollTop = $(this).scrollTop();
+        //         if(this_scrollTop > height - 200)
+        //         {
+        //             $("nav").show();
+        //         }
+        //         else
+        //         {
+        //             $("nav").hide();
+        //         }
+        //     });
+        // });
     </script>
 </body>
 
