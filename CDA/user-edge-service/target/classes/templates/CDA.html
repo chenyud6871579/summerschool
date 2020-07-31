@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>新冠疫情大数据分析</title>
+    <title>COVID-19 Data Analysis</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,6 +17,7 @@
     <!--[if lt IE 9]>
       <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <![endif]-->
 
     <script>
@@ -80,20 +81,41 @@
             }
 
         }
+
     </script>
-    <style>
-        #box1 {
-            width: 50px;
-            height: 50px;
-            background-color: #000;
+    <script>
+        window.onscroll = function (){
+            var navTop = document.getElementById("navTopId");
+            var sheetTitle = document.getElementById("sheetTitleId");
+            var sheetWorld = document.getElementById("sheetWorldId");
+            var sheetChina = document.getElementById("sheetChinaId");
+            var sheetBeijing = document.getElementById("sheetBeijingId");
+            if (document.documentElement.scrollTop){
+                navTop.classList.add("navbar-inverse");
+                navTop.classList.add("navbar-default");
+                navTop.classList.remove("navbar-transparent");
+                sheetTitle.classList.remove("sheet_a");
+                sheetWorld.classList.remove("sheet_a");
+                sheetChina.classList.remove("sheet_a");
+                sheetBeijing.classList.remove("sheet_a");
+
+
+            }else{
+                navTop.classList.remove("navbar-inverse");
+                navTop.classList.remove("navbar-default");
+                navTop.classList.add("navbar-transparent");
+                sheetTitle.classList.add("sheet_a");
+                sheetWorld.classList.add("sheet_a");
+                sheetChina.classList.add("sheet_a");
+                sheetBeijing.classList.add("sheet_a");
+            }
         }
-    </style>
+    </script>
 </head>
 
 <body>
     <div class="container-fluid">
-
-        <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+        <nav class="navbar navbar-fixed-top navbar-transparent" id="navTopId">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <!-- 手机屏幕，隐藏右边三块-->
@@ -104,14 +126,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/index">新冠疫情大数据分析</a>
+                    <a class="navbar-brand sheet_a" href="/index" id="sheetTitleId">新冠疫情大数据分析</a>
                 </div>
                 <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <!-- class="active" -->
-                        <li><a href="/globe">世界</a></li>
-                        <li><a href="/china">中国</a></li>
-                        <li><a href="/beijing">北京</a></li>
+                        <li><a class="sheet_a" href="/globe" id="sheetWorldId">世界</a></li>
+                        <li><a class="sheet_a" href="/china" id="sheetChinaId">中国</a></li>
+                        <li><a class="sheet_a" href="/beijing" id="sheetBeijingId">北京</a></li>
                     </ul>
                 </div>
             </div>
@@ -122,18 +144,19 @@
                 <div class="have_more">
                     <h6>COVID-19 Data Analysis</h6>
                     <h2>新冠疫情大数据分析</h2>
-                    <a class="btn btn-default btn_more" href="Globe.html" role="button">MORE</a>
+                    <a id="btn-more" class="btn btn-default btn_more" role="button">MORE</a>
+
                 </div>
             </div>
         </div>
 
         <div class="row info">
-            <div class="info_title">
-                <h3 style="font-weight: bold;">新冠疫情信息</h3>
+            <div id="info-title" class="info_title">
+                <h3 style="font-weight: bold; color: rgb(80, 80, 80);">新冠疫情信息</h3>
             </div>
             <div class="col-md-4">
                 <div class="info-item">
-                    <img src="picture/pic4.jpg">
+                    <img src="picture/pic4.jpg" class="message_img">
                     <div class="info-text" style="padding-top: 24px;">
                         <p>
                             COVID-19 是新型冠状病毒感染肺炎的正式命名
@@ -151,12 +174,12 @@
             </div>
             <div class="col-md-4">
                 <div class="info-item">
-                    <img src="picture/pic3.png">
+                    <img src="picture/pic3.png" class="message_img">
                     <div class="info-text" style="padding-top: 33px;">
                         <p>
                             COVID-19 席卷全球
                             <br>
-                            累计确诊人数已经超过1600万
+                            累计确诊人数已经超过1700万
                             <br>
                             累计死亡人数已经超过60万
                             <br>
@@ -167,7 +190,7 @@
             </div>
             <div class="col-md-4">
                 <div class="info-item">
-                    <img src="picture/pic2.png">
+                    <img src="picture/pic2.png" class="message_img">
                     <div class="info-text" style="padding-top: 68px;">
                         <p>
                             为了您和他人的安全，请自觉佩带口罩
@@ -242,15 +265,25 @@
             <div class="col-md-6" style="padding-left: 6%;">
                 <h3>组员：</h3>
                 <p style="line-height: 25px; color: gray;">
-                    &nbsp;&nbsp;&nbsp;陈钰鼎
+                    &nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-knight" aria-hidden="true"></span>
+                    &nbsp;&nbsp;陈钰鼎
                     <br>
-                    &nbsp;&nbsp;&nbsp;柳鑫
+                    &nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                    &nbsp;&nbsp;柳鑫
                     <br>
-                    &nbsp;&nbsp;&nbsp;孟程昊
+                    &nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                    &nbsp;&nbsp;孟程昊
                     <br>
-                    &nbsp;&nbsp;&nbsp;麦德妮亚提
+                    &nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-gift" aria-hidden="true"></span>
+                    &nbsp;&nbsp;麦德妮亚提
                     <br>
-                    &nbsp;&nbsp;&nbsp;祝鹏天
+                    &nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    &nbsp;&nbsp;祝鹏天
                 </p>
             </div>
         </div>
@@ -259,6 +292,34 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script>
+         $(function()
+         {
+             $('#btn-more').click(function()
+             {
+                $('html, body').animate({scrollTop: ($('#info-title').offset().top)}, 1000);
+             });
+         });
+    </script>
+    <script type="text/javascript">
+        // $(function()
+        // {
+        //     $("nav").hide();
+        //     var height = $("#info-title").offset().top;
+        //     $(window).scroll(function()
+        //     {
+        //         var this_scrollTop = $(this).scrollTop();
+        //         if(this_scrollTop > height - 200)
+        //         {
+        //             $("nav").show();
+        //         }
+        //         else
+        //         {
+        //             $("nav").hide();
+        //         }
+        //     });
+        // });
+    </script>
 </body>
 
 </html>

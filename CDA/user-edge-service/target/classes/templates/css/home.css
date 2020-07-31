@@ -38,6 +38,11 @@ html::-webkit-scrollbar
     padding-top: 450px;
 }
 
+.sheet_a:link
+{
+    color: rgb(225, 225, 225);
+}
+
 .btn
 {
     background-color: transparent;
@@ -82,10 +87,6 @@ html::-webkit-scrollbar
     height: 300px;
 }
 
-.tog_page
-{
-    margin-top: 50px;
-}
 
 .btn1
 {
@@ -99,4 +100,17 @@ html::-webkit-scrollbar
     color: #fff;
     background-color: green;
     border-color: green;
+}
+
+.message_img
+{
+    /* width: 100%;
+    height: 100%; */
+    transition: 0.3s;
+    overflow: hidden;
+}
+
+.message_img:hover
+{
+    transform: scale(1.05);
 }
