@@ -40,7 +40,7 @@ html::-webkit-scrollbar
 
 .sheet_a:link
 {
-    color: #000;
+    color: rgb(225, 225, 225);
 }
 
 .btn

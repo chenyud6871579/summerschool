@@ -24,9 +24,18 @@ body
     color: white;
 }
 
+.tog_page_a:visited
+{
+    color: white;
+}
+
+.graph{
+    width: 860px;
+    height: 640px;
+}
+
 .table_1
 {
-    background-color: gray;
     height: 700px;
 }
 

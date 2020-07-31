@@ -38,6 +38,11 @@ html::-webkit-scrollbar
     padding-top: 450px;
 }
 
+.sheet_a:link
+{
+    color: rgb(225, 225, 225);
+}
+
 .btn
 {
     background-color: transparent;
@@ -82,10 +87,6 @@ html::-webkit-scrollbar
     height: 300px;
 }
 
-.tog_page
-{
-    margin-top: 50px;
-}
 
 .btn1
 {
