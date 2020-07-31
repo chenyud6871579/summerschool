@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MongoUtil {
+
     @Value("${mymongo.address}")
     private String ipAddressUtil;
     @Value("${mymongo.host}")
@@ -24,9 +25,6 @@ public class MongoUtil {
     private String globeTableUtil;
 
     public MongoDatabase getDataBase(DataType type){
-
-
-
         System.out.println("开始连接 MongoDB");
         MongoClient mongoClient = new MongoClient(ipAddressUtil, ipHostUtil);
         System.out.println("连接成功");

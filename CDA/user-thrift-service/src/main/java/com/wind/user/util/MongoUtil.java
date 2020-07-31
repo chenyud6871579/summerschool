@@ -12,19 +12,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class MongoUtil {
     @Value("${mymongo.address}")
-    private static String ipAddress;
+    private String ipAddress;
     @Value("${mymongo.host}")
-    private static int ipHost;
+    private int ipHost;
     @Value("${mymongo.database}")
-    private static String databaseName;
+    private String databaseName;
     @Value("${mymongo.container.beijing}")
-    private static String beijingTable;
+    private String beijingTable;
     @Value("${mymongo.container.china}")
-    private static String chinaTable;
+    private String chinaTable;
     @Value("${mymongo.container.globe}")
-    private static String globeTable;
+    private String globeTable;
 
-    public static MongoDatabase getDataBase(DataType type){
+    public MongoDatabase getDataBase(DataType type){
 
 
 
@@ -34,7 +34,7 @@ public class MongoUtil {
         return mongoClient.getDatabase(databaseName);
     }
 
-    public static MongoCollection<Document> getCollection(DataType type){
+    public MongoCollection<Document> getCollection(DataType type){
         String tableName = null;
 
         if (type == DataType.BEIJING) {

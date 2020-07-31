@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.oracle.xmlns.internal.webservices.jaxws_databinding.XmlOneway;
 import com.wind.used.util.WindUtil;
 import com.wind.windmr.domain.po.MRBean;
 import com.wind.windmr.util.MongoDBInfo;
+import com.wind.windmr.util.MongoUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
@@ -21,11 +23,11 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,17 @@ import java.util.List;
 
 @Component
 public class RadarMR {
+
+
+//    @Resource
+//    private MongoUtil resourceMongoUtil;
+//    private static MongoUtil mongoUtil;
+//
+//    @PostConstruct
+//    public void init(){
+//        mongoUtil = resourceMongoUtil;
+//    }
+
     private static String ipAddress = MongoDBInfo.ipAddress;
     private static int ipHost = MongoDBInfo.ipHost;
     private static String databaseName = MongoDBInfo.databaseName;
@@ -150,7 +163,6 @@ public class RadarMR {
             extends Reducer<Text, MRBean, Text, Iterable<Double>> {
         @Override
         protected void reduce(Text nameText, Iterable<MRBean> mrBeans, Context context) throws IOException, InterruptedException {
-
             MRBean outMRBean = new MRBean();
             for (MRBean mrBean : mrBeans) {
                 if (mrBean.getFlag().equals("population")) {
@@ -193,6 +205,7 @@ public class RadarMR {
             MongoClient mongoClient = new MongoClient(ipAddress, ipHost);
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> mongoCollection = database.getCollection(dataType);
+
             Document updateDocument = new Document();
             updateDocument.append("$set", new Document().append("radar", radarList));
             String blockName = dataType == "Globe_new" ? "name" : "_id";
@@ -205,6 +218,7 @@ public class RadarMR {
 
     // 3. MR2-Controller
     public static void runRadarMR(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+
         // 0. 初始化 MR Job
         Configuration configuration = new Configuration();
         Job job = Job.getInstance(configuration, "Movie Lens Version 1.0");

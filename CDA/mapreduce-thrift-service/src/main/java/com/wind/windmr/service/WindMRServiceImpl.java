@@ -1,10 +1,8 @@
 package com.wind.windmr.service;
 
 import com.alibaba.fastjson.JSON;
-import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.wind.service.thrift.data.DataType;
 import com.wind.service.thrift.windmr.WindMRService;
 import com.wind.used.util.WindUtil;
@@ -12,7 +10,6 @@ import com.wind.windmr.mr.RadarMR;
 import com.wind.windmr.util.MongoUtil;
 import org.apache.thrift.TException;
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,21 +21,20 @@ import java.io.IOException;
 public class WindMRServiceImpl implements WindMRService.Iface {
 
     @Resource
-    private MongoUtil mongoUtil;
+    MongoUtil mongoUtil;
 
-    private String ipAddress = mongoUtil.getIpAddressUtil();
-    private int ipHost = mongoUtil.getIpHostUtil();
-    private String databaseName = mongoUtil.getDatabaseNameUtil();
-    private String beijingTable = mongoUtil.getBeijingTableUtil();
-    private String chinaTable = mongoUtil.getChinaTableUtil();
-    private String globeTable = mongoUtil.getGlobeTableUtil();
+//    private String ipAddress = mongoUtil.getIpAddressUtil();
+//    private int ipHost = mongoUtil.getIpHostUtil();
+//    private String databaseName = mongoUtil.getDatabaseNameUtil();
+//    private String beijingTable = mongoUtil.getBeijingTableUtil();
+//    private String chinaTable;
+//    private String globeTable = "";
 
     @Resource
     private RadarMR radarMR;
 
     @Override
     public void getLocalData(){
-
 
         String userDir = System.getProperty("user.dir");
         System.out.println("用户的当前工作目录:"+userDir);
@@ -58,13 +54,13 @@ public class WindMRServiceImpl implements WindMRService.Iface {
 //                keyName = "_id";
 //                folder = "beijing\\";
             } else if (dataType == DataType.GLOBE) {
-                tableName = globeTable;
-                fileName = globeTable;
+                tableName = mongoUtil.getGlobeTableUtil();
+                fileName = mongoUtil.getGlobeTableUtil();
                 keyName = "name";
                 folder = "globe\\";
             } else {
-                tableName = chinaTable;
-                fileName = chinaTable;
+                tableName = mongoUtil.getChinaTableUtil();
+                fileName = mongoUtil.getChinaTableUtil();
                 keyName = "_id";
                 folder = "china\\";
             }

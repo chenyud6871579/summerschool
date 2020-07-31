@@ -1,4 +1,4 @@
-mymongo1:
+mymongo:
   address: 192.168.241.7
   host: 27017
   database: covid-19-new
