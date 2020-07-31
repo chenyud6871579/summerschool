@@ -1,656 +1,682 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <script src="http://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script src="js/china.js"></script>
     <style>
-        *{margin:0;padding:0}
-        html,body{
-            width:100%;
-            height:100%;
+        * {
+            margin: 0;
+            padding: 0
         }
-        #main{
-            width:1000px;
-            height:800px;
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #main {
+            width: 1000px;
+            height: 800px;
             margin: 150px auto;
-            border:1px solid #ddd;
+            border: 1px solid #ddd;
         }
+
         /*默认长宽比0.75*/
     </style>
 </head>
+
 <body style="background-color:#000000">
-<div id="main">
+    <div id="main"></div>
+    <script type="text/javascript">
+        var dataMap = {};
+        var myChart = echarts.init(document.getElementById('main'));
+        var pList = ['湖北', '北京', '天津', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江', '上海', '江苏',
+            '浙江', '安徽', '福建', '江西', '山东', '河南', '湖南',
+            '广东', '广西', '海南', '重庆', '四川', '贵州', '云南', '西藏', '陕西', '甘肃',
+            '青海', '宁夏', '新疆', '台湾', '香港', '澳门'];
 
-</div>
-<script type="text/javascript">
-    var dataMap = {};
-    var myChart = echarts.init(document.getElementById('main'));
-    var pList = ['湖北', '北京', '天津', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江', '上海', '江苏',
-        '浙江', '安徽', '福建', '江西', '山东', '河南', '湖南',
-        '广东', '广西', '海南', '重庆', '四川', '贵州', '云南', '西藏', '陕西', '甘肃',
-        '青海', '宁夏', '新疆', '台湾', '香港', '澳门'];
+        var geoCoordMap = {
+            '西藏': [91.11, 29.97],
+            '上海': [121.48, 31.22],
+            '福建': [119.3, 26.08],
+            '浙江': [121.56, 29.86],
+            '广西': [108.33, 22.84],
 
-    var geoCoordMap = {
-        '西藏':[91.11,29.97],
-        '上海':[121.48,31.22],
-        '福建':[119.3,26.08],
-        '浙江':[121.56,29.86],
-        '广西':[108.33,22.84],
+            '广东': [113.23, 23.16],
 
-        '广东':[113.23,23.16],
+            '云南': [102.73, 25.04],
 
-        '云南':[102.73,25.04],
-
-        '海南':[110.35,20.02],
+            '海南': [110.35, 20.02],
 
 
-        '辽宁':[123.38,41.8],
+            '辽宁': [123.38, 41.8],
 
 
-        '吉林':[125.35,43.88],
+            '吉林': [125.35, 43.88],
 
-        '宁夏':[106.27,38.47],
+            '宁夏': [106.27, 38.47],
 
-        '江西':[115.89,28.68],
+            '江西': [115.89, 28.68],
 
-        '吉林':[126.57,43.87],
+            '吉林': [126.57, 43.87],
 
-        '青海':[95.74,40.56],
+            '青海': [95.74, 40.56],
 
-        '内蒙古':[111.65,40.82],
-        '四川':[104.06,30.67],
-        '山西':[113.3,40.12],
+            '内蒙古': [111.65, 40.82],
+            '四川': [104.06, 30.67],
+            '山西': [113.3, 40.12],
 
-        '陕西':[108.95,34.27],
+            '陕西': [108.95, 34.27],
 
-        '浙江':[120.58,30.01],
+            '浙江': [120.58, 30.01],
 
-        '重庆':[106.54,29.59],
+            '重庆': [106.54, 29.59],
 
-        '江苏':[118.78,32.04],
+            '江苏': [118.78, 32.04],
 
-        '贵州':[106.71,26.57],
+            '贵州': [106.71, 26.57],
 
-        '北京':[116.46,39.92],
+            '北京': [116.46, 39.92],
 
-        '新疆':[87.68,43.77],
+            '新疆': [87.68, 43.77],
 
-        '甘肃':[103.73,36.03],
+            '甘肃': [103.73, 36.03],
 
-        '天津':[117.2,39.13],
+            '天津': [117.2, 39.13],
 
-        '河南':[113.65,34.76],
-        '黑龙江':[126.63,45.75],
+            '河南': [113.65, 34.76],
+            '黑龙江': [126.63, 45.75],
 
-        '湖南':[113,28.21],
+            '湖南': [113, 28.21],
 
-        '安徽':[117.27,31.86],
-        '湖北':[114.31,30.52],
-        '河北':[114.48,38.03],
-        '台湾':[119.2,20.4],
-        '澳门':[114,23],
-        '香港':[113,22]
-    };
+            '安徽': [117.27, 31.86],
+            '湖北': [114.31, 30.52],
+            '河北': [114.48, 38.03],
+            '台湾': [119.2, 20.4],
+            '澳门': [114, 23],
+            '香港': [113, 22]
+        };
 
-    var convertData = function (data) {
-        var res = [];
-        for (var i = 0; i < data.length; i++) {
-            var geoCoord = geoCoordMap[data[i].name];
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var geoCoord = geoCoordMap[data[i].name];
 
-            if (geoCoord) {
-                res.push({
-                    name: data[i].name,
-                    value: geoCoord.concat(data[i].value),
-                    vec:data[i].value
-                });
+                if (geoCoord) {
+                    res.push({
+                        name: data[i].name,
+                        value: geoCoord.concat(data[i].value),
+                        vec: data[i].value
+                    });
+                }
             }
+
+            return res;
+
+        };
+
+        function timedata() {
+            var date = []
+            for (var i = 1; i < 17; i++) {
+                date[i] = "06-" + String(i + 14)
+            }
+            for (var j = 17; j < 31; j++) {
+                date[j] = "07" + "-" + String(j - 16)
+            }
+            return date
         }
 
-        return res;
+        function dataFormatter(obj) {
 
-    };
+            var temp;
+            for (var num = 1; num <= 30; num++) {
+                temp = obj[num];
 
-    function timedata(){
-        var date=[]
-        for(var i=1;i<17;i++){
-            date[i]="06-"+String(i+14)}
-        for(var j=17;j<31;j++){
-            date[j]="07"+"-"+String(j-16)}
-        return date
-    }
+                for (var i = 0, l = temp.length; i < l; i++) {
+                    obj[num][i] = {
+                        name: pList[i],
+                        value: temp[i],
 
-    function dataFormatter(obj) {
-
-        var temp;
-        for (var num = 1; num <= 30; num++) {
-            temp = obj[num];
-
-            for (var i = 0, l = temp.length; i < l; i++) {
-                obj[num][i] = {
-                    name : pList[i],
-                    value : temp[i],
-
+                    }
                 }
+
             }
 
+            return obj;
         }
+        function myshow() {
 
-        return obj;
-    }
-    function myshow(){
+            $.ajax({
+                type: "get",
+                url: "json/chinamap.json",
+                dataType: "json",
+                success: function (result) {
 
-    $.ajax({
-        type: "get",
-        url: "json/chinamap.json",
-        dataType: "json",
-        success: function (result) {
+                    var obj = []
+                    var data1 = []
+                    for (var i = 1; i < 31; i++) {
+                        var confirmed = []
+                        for (var item in pList) {
+                            var proviceName = pList[item];
 
-            var obj = []
-            var data1 = []
-            for (var i = 1; i < 31; i++) {
-                var confirmed = []
-                for (var item in pList) {
-                    var proviceName = pList[item];
+                            if (proviceName == "内蒙古") {
+                                proviceName = "内蒙古自治区"
+                            } else if (proviceName == "湖北") {
+                                proviceName = "湖北省"
+                            } else if (proviceName == "天津") {
+                                proviceName = "天津市"
+                            } else if (proviceName == "河北") {
+                                proviceName = "河北省"
+                            } else if (proviceName == "山西") {
+                                proviceName = "山西省"
+                            } else if (proviceName == "辽宁") {
+                                proviceName = "辽宁省"
+                            } else if (proviceName == "吉林") {
+                                proviceName = "吉林省"
+                            } else if (proviceName == "黑龙江") {
+                                proviceName = "黑龙江省"
+                            } else if (proviceName == "上海") {
+                                proviceName = "上海市"
+                            } else if (proviceName == "浙江") {
+                                proviceName = "浙江省"
+                            } else if (proviceName == "安徽") {
+                                proviceName = "安徽省"
+                            } else if (proviceName == "福建") {
+                                proviceName = "福建省"
+                            } else if (proviceName == "江西") {
+                                proviceName = "江西省"
+                            } else if (proviceName == "山东") {
+                                proviceName = "山东省"
+                            } else if (proviceName == "河南") {
+                                proviceName = "河南省"
+                            } else if (proviceName == "湖南") {
+                                proviceName = "湖南省"
+                            } else if (proviceName == "广东") {
+                                proviceName = "广东省"
+                            } else if (proviceName == "广西") {
+                                proviceName = "广西壮族自治区"
+                            } else if (proviceName == "海南") {
+                                proviceName = "海南省"
+                            } else if (proviceName == "重庆") {
+                                proviceName = "重庆市"
+                            } else if (proviceName == "四川") {
+                                proviceName = "四川省"
+                            } else if (proviceName == "贵州") {
+                                proviceName = "贵州省"
+                            } else if (proviceName == "云南") {
+                                proviceName = "云南省"
+                            } else if (proviceName == "西藏") {
+                                proviceName = "西藏自治区"
+                            } else if (proviceName == "陕西") {
+                                proviceName = "陕西省"
+                            } else if (proviceName == "甘肃") {
+                                proviceName = "甘肃省"
+                            } else if (proviceName == "青海") {
+                                proviceName = "青海省"
+                            } else if (proviceName == "宁夏") {
+                                proviceName = "宁夏回族自治区"
+                            } else if (proviceName == "新疆") {
+                                proviceName = "新疆维吾尔自治区"
+                            } else if (proviceName == "台湾") {
+                                proviceName = "台湾省"
+                            } else if (proviceName == "香港") {
+                                proviceName = "香港特别行政区"
+                            } else if (proviceName == "澳门") {
+                                proviceName = "澳门特别行政区"
+                            } else if (proviceName == "北京") {
+                                proviceName = "北京市"
+                            } else if (proviceName == "江苏") {
+                                proviceName = "江苏省"
+                            }
+                            var index = result[proviceName]["confirmed"].length - 31 + i
+                            confirmed.push(result[proviceName]["confirmed"][index])
+                        }
 
-                    if (proviceName == "内蒙古") {
-                        proviceName = "内蒙古自治区"
-                    } else if (proviceName == "湖北") {
-                        proviceName = "湖北省"
-                    } else if (proviceName == "天津") {
-                        proviceName = "天津市"
-                    } else if (proviceName == "河北") {
-                        proviceName = "河北省"
-                    } else if (proviceName == "山西") {
-                        proviceName = "山西省"
-                    } else if (proviceName == "辽宁") {
-                        proviceName = "辽宁省"
-                    } else if (proviceName == "吉林") {
-                        proviceName = "吉林省"
-                    } else if (proviceName == "黑龙江") {
-                        proviceName = "黑龙江省"
-                    } else if (proviceName == "上海") {
-                        proviceName = "上海市"
-                    } else if (proviceName == "浙江") {
-                        proviceName = "浙江省"
-                    } else if (proviceName == "安徽") {
-                        proviceName = "安徽省"
-                    } else if (proviceName == "福建") {
-                        proviceName = "福建省"
-                    } else if (proviceName == "江西") {
-                        proviceName = "江西省"
-                    } else if (proviceName == "山东") {
-                        proviceName = "山东省"
-                    } else if (proviceName == "河南") {
-                        proviceName = "河南省"
-                    } else if (proviceName == "湖南") {
-                        proviceName = "湖南省"
-                    } else if (proviceName == "广东") {
-                        proviceName = "广东省"
-                    } else if (proviceName == "广西") {
-                        proviceName = "广西壮族自治区"
-                    } else if (proviceName == "海南") {
-                        proviceName = "海南省"
-                    } else if (proviceName == "重庆") {
-                        proviceName = "重庆市"
-                    } else if (proviceName == "四川") {
-                        proviceName = "四川省"
-                    } else if (proviceName == "贵州") {
-                        proviceName = "贵州省"
-                    } else if (proviceName == "云南") {
-                        proviceName = "云南省"
-                    } else if (proviceName == "西藏") {
-                        proviceName = "西藏自治区"
-                    } else if (proviceName == "陕西") {
-                        proviceName = "陕西省"
-                    } else if (proviceName == "甘肃") {
-                        proviceName = "甘肃省"
-                    } else if (proviceName == "青海") {
-                        proviceName = "青海省"
-                    } else if (proviceName == "宁夏") {
-                        proviceName = "宁夏回族自治区"
-                    } else if (proviceName == "新疆") {
-                        proviceName = "新疆维吾尔自治区"
-                    } else if (proviceName == "台湾") {
-                        proviceName = "台湾省"
-                    } else if (proviceName == "香港") {
-                        proviceName = "香港特别行政区"
-                    } else if (proviceName == "澳门") {
-                        proviceName = "澳门特别行政区"
-                    } else if (proviceName == "北京") {
-                        proviceName = "北京市"
-                    } else if (proviceName == "江苏") {
-                        proviceName = "江苏省"
+                        data1[i] = confirmed,
+                            obj[String(i)] = confirmed
+
                     }
-                    var index = result[proviceName]["confirmed"].length - 31 + i
-                    confirmed.push(result[proviceName]["confirmed"][index])
-                }
+                    dataMap.confirm = dataFormatter(obj)
+                    console.log(obj)
 
-                data1[i] = confirmed,
-                    obj[String(i)] = confirmed
+                    var foroption = function () {
 
-            }
-            dataMap.confirm=dataFormatter(obj)
-            console.log(obj)
+                        var options = []
+                        for (var i = 1; i < 30; i++) {
+                            var seriesa = []
+                            seriesa = { date: obj[i] }
+                            options[i] = {
+                                series: seriesa,
+                            }
 
-            var foroption = function () {
 
-                var options = []
-                for (var i = 1; i < 30; i++) {
-                    var seriesa = []
-                    seriesa = {date: obj[i]}
-                    options[i] = {
-                        series: seriesa,
+                        }
+
+                        return options
+
                     }
 
 
-                }
-
-                return options
-
-            }
-
-
-            var option1 = {
-                timeline: {
-                    axisType: 'category',
-                    // realtime: false,
-                    // loop: false,
-                    autoPlay: false,
-                    // currentIndex: 2,
-                    playInterval: 1000,
-                    // controlStyle: {
-                    //     position: 'left'
-                    // },
-                    data: timedata(),
-                    label: {
-                        normal: {
-                            textStyle: {
-                                color: '#ddd'
-                            }
-                        },
-                        emphasis: {
-                            textStyle: {
-                                color: '#fff'
-                            }
-                        }
-                    },
-                    tooltip: {
-                        padding: 10,
-                        backgroundColor: '#222',
-                        borderColor: '#777',
-                        borderWidth: 1,
-                        trigger: 'item',
-
-                        formatter: function (params) {
-
-                            return params.name;
-
-                        }
-
-
-                    },
-
-                },
-
-                baseOption: {
-                    title: {
-                        text: '全国各省市新冠肺炎确诊情况图',
-                        subtext: '6月末至7月初数据',
-
-                        left: 'center',
-                        textStyle: {
-                            color: '#fff',
-                            fontSize:25
-                        }
-                    },
-
-                    itemStyle: {
-
-                        normal: {
-                            areaColor: '#f3b329',
-                            borderColor: '#003366'
-                        },
-                        emphasis: {
-                            areaColor: '#F3B329',//鼠标选择区域颜色
-                            shadowOffsetX: 0,
-                            shadowOffsetY: 0,
-                            shadowBlur: 20,
-                            borderWidth: 0,
-                            shadowColor: '#33CCFF',
-
-                        }
-                    },
-                    tooltip: {
-                        padding: 10,
-                        backgroundColor: '#222',
-                        borderColor: '#777',
-                        borderWidth: 1,
-                        trigger: 'item',
-
-                        formatter: function (params) {
-
-                            return params.name + ': ' + params.value;
-
-                        }
-
-
-                    },
-                    calculable: true
-                    ,
-                    visualMap: {
-                        min: 0,
-                        max: 68200,
-                        left: 26,
-                        bottom: 40,
-                        showLabel: !0,
-                        text: ["高", "低"],
-                        textStyle:{
-                            color:'#00000'
-                        },
-                        pieces: [{
-                            gt: 10000,
-                            label: "> 10000 人",
-                            color: "#7f1100"
-                        }, {
-                            gte: 1000,
-                            lte: 2000,
-                            label: "1000 - 2000 人",
-                            color: "#ff2828"
-                        },{
-                            gte: 600,
-                            lte: 1000,
-                            label: "600 - 1000 人",
-                            color: "#FF6347"
-                        },{
-                            gte: 300,
-                            lte: 600,
-                            label: "300 - 600 人",
-                            color: "#FF7F50"
-                        },
-                            {
-                            gte: 100,
-                            lte: 300,
-                            label: "100 - 300 人",
-                            color: "#FF9966"
-                        }, {
-                            gte: 10,
-                            lt: 100,
-                            label: "10 - 100 人",
-                            color: "#FFCC99"
-                        }, {
-                            gt: 0,
-                            lt: 9,
-                            label: "1 - 9人",
-                            color: "#FFF8DC"
-                        }, {
-                            value: 0,
-                            color: "#ffffff"
-                        }],
-                        show: !0
-                    },},
-
-                options:[{series: [{type: 'map', mapType: 'china', roam: true, data:obj[1]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[2]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[3]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[4]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[5]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[6]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[7]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[8]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[9]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[10]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[11]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[12]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[13]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[14]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[15]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[16]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[17]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[18]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[19]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[20]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[21]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[22]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[23]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[24]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[25]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[26]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[27]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[28]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[29]}]},
-                    {series: [{type: 'map', mapType: 'china', roam: true, data:obj[30]}]},
-
-
-
-                ]
-            }
-                var option2 = {
-                    animation: true,
-                    animationDuration: 1000,
-                    animationEasing: 'cubicInOut',
-                    animationDurationUpdate: 1000,
-                    animationEasingUpdate: 'cubicInOut',
-                    grid: {
-                        right: '1%',
-                        top: '15%',
-                        bottom: '10%',
-                        width: '20%'
-                    },
-
-                    backgroundColor: '#14c9ea',
-                    timeline: {
-                    axisType: 'category',
-                    // realtime: false,
-                    // loop: false,
-                    autoPlay: false,
-                    // currentIndex: 2,
-                        label: {
-                            normal: {
-                                textStyle: {
-                                    color: '#ddd'
-                                }
-                            },
-                            emphasis: {
-                                textStyle: {
-                                    color: '#fff'
-                                }
-                            }
-                        },
-                    playInterval: 1000,
-                    // controlStyle: {
-                    //     position: 'left'
-                    // },
-                        textStyle: {
-                            color: '#fff'
-                        },
-                    data: timedata(),
-                    tooltip: {
-                        padding: 10,
-                        backgroundColor: '#222',
-                        borderColor: '#777',
-                        borderWidth: 1,
-                        trigger: 'item',
-
-                        formatter: function (params) {
-
-                            return params.name;
-
-                        }
-
-
-                    },
-
-                },
-
-                baseOption: {
-                    title: {
-                        text: '全国各省市新冠肺炎确诊情况点状图',
-                        subtext: '6月末至7月初数据',
-
-                        left: 'center',
-                        textStyle: {
-                            fontSize:25,
-                            color: '#fff'
-                        }
-                    },
-                    series: [{
-                        name: '信息量',
-                        type: 'scatter',
-                        map:'china',
-                        geoIndex: 0,
-                        coordinateSystem: 'geo',
-
-
-                        showAllSymbol: true,
-
-                        symbolSize:function(val){
-                            console.log(val)
-                            if(val[2]>=10000)
-                                return val[2]/800
-                                else if(val[2]>=1400&&val[2]<3000)
-                                    return val[2]/40
-                                else if(val[2]>=1000&&val[2]<1400)
-                                return val[2]/40
-                                else if(val[2]>=500&&val[2]<1000)
-                                    return val[2]/30
-                                else if(val[2]>100&&val[2]<500)
-                                    return val[2]/18
-                                else if(val[2]>10&&val[2]<100)
-                                    return val[2]/5
-                            else return val[2]
-                        },
-
-                        label:{
-                            textStyle: {
-                                fontSize: 20
-                            }
-                        },
-                    }
-                    ],
-                    geo: {
-                        map: 'china',
-                        roam: false,//不开启缩放和平移
-                        zoom: 1.23,//视角缩放比例
-                        label: {
-                            normal: {
-                                show: false,
-                                fontSize: '12',
-                                color: '#fff',
-                                itemStyle:{
-                                    normal:{
-                                        areaStyle:{color:'#fff'}
+                    var option1 = {
+                        timeline: {
+                            axisType: 'category',
+                            // realtime: false,
+                            // loop: false,
+                            autoPlay: false,
+                            // currentIndex: 2,
+                            playInterval: 1000,
+                            // controlStyle: {
+                            //     position: 'left'
+                            // },
+                            data: timedata(),
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        color: '#ddd'
+                                    }
+                                },
+                                emphasis: {
+                                    textStyle: {
+                                        color: '#fff'
                                     }
                                 }
-                            }
-                        },
-                        itemStyle:  {
-
-                            normal: {
-                               areaColor:'#808080',
-                                borderColor: '#003366'
                             },
-                            emphasis: {
-                                areaColor: '#F3B329',//鼠标选择区域颜色
-                                shadowOffsetX: 0,
-                                shadowOffsetY: 0,
-                                shadowBlur: 20,
-                                borderWidth: 0,
-                                shadowColor: '#33CCFF',
+                            tooltip: {
+                                padding: 10,
+                                backgroundColor: '#222',
+                                borderColor: '#777',
+                                borderWidth: 1,
+                                trigger: 'item',
 
+                                formatter: function (params) {
+
+                                    return params.name;
+
+                                }
+
+
+                            },
+
+                        },
+
+                        baseOption: {
+                            title: {
+                                text: '全国各省市新冠肺炎确诊情况图',
+                                subtext: '6月末至7月初数据',
+
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 25
+                                }
+                            },
+
+                            itemStyle: {
+
+                                normal: {
+                                    areaColor: '#f3b329',
+                                    borderColor: '#003366'
+                                },
+                                emphasis: {
+                                    areaColor: '#F3B329',//鼠标选择区域颜色
+                                    shadowOffsetX: 0,
+                                    shadowOffsetY: 0,
+                                    shadowBlur: 20,
+                                    borderWidth: 0,
+                                    shadowColor: '#33CCFF',
+
+                                }
+                            },
+                            tooltip: {
+                                padding: 10,
+                                backgroundColor: '#222',
+                                borderColor: '#777',
+                                borderWidth: 1,
+                                trigger: 'item',
+
+                                formatter: function (params) {
+
+                                    return params.name + ': ' + params.value;
+
+                                }
+
+
+                            },
+                            calculable: true
+                            ,
+                            visualMap: {
+                                min: 0,
+                                max: 68200,
+                                left: 26,
+                                bottom: 40,
+                                showLabel: !0,
+                                text: ["高", "低"],
+                                textStyle: {
+                                    color: '#00000'
+                                },
+                                pieces: [{
+                                    gt: 10000,
+                                    label: "> 10000 人",
+                                    color: "#7f1100"
+                                },
+                                {
+                                    gte: 6000,
+                                    lte: 10000,
+                                    label: "6000 - 10000 人",
+                                    color: "#ff2828"
+                                }, 
+                                {
+                                    gte: 3000,
+                                    lte: 6000,
+                                    label: "3000 - 6000 人",
+                                    color: "#ff2828"
+                                }, 
+                                {
+                                    gte: 1000,
+                                    lte: 3000,
+                                    label: "1000 - 3000 人",
+                                    color: "#ff2828"
+                                }, 
+                                {
+                                    gte: 600,
+                                    lte: 1000,
+                                    label: "600 - 1000 人",
+                                    color: "#FF6347"
+                                },
+                                {
+                                    gte: 300,
+                                    lte: 600,
+                                    label: "300 - 600 人",
+                                    color: "#FF7F50"
+                                },
+                                {
+                                    gte: 100,
+                                    lte: 300,
+                                    label: "100 - 300 人",
+                                    color: "#FF9966"
+                                }, {
+                                    gte: 10,
+                                    lt: 100,
+                                    label: "10 - 100 人",
+                                    color: "#FFCC99"
+                                }, {
+                                    gt: 0,
+                                    lt: 9,
+                                    label: "1 - 9人",
+                                    color: "#FFF8DC"
+                                }, {
+                                    value: 0,
+                                    color: "#ffffff"
+                                }],
+                                show: !0
+                            },
+                        },
+
+                        options: [{ series: [{ type: 'map', mapType: 'china', roam: true, data: obj[1] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[2] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[3] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[4] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[5] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[6] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[7] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[8] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[9] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[10] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[11] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[12] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[13] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[14] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[15] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[16] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[17] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[18] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[19] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[20] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[21] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[22] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[23] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[24] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[25] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[26] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[27] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[28] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[29] }] },
+                        { series: [{ type: 'map', mapType: 'china', roam: true, data: obj[30] }] },
+
+
+
+                        ]
+                    }
+                    var option2 = {
+                        animation: true,
+                        animationDuration: 1000,
+                        animationEasing: 'cubicInOut',
+                        animationDurationUpdate: 1000,
+                        animationEasingUpdate: 'cubicInOut',
+                        grid: {
+                            right: '1%',
+                            top: '15%',
+                            bottom: '10%',
+                            width: '20%'
+                        },
+
+                        backgroundColor: '#14c9ea',
+                        timeline: {
+                            axisType: 'category',
+                            // realtime: false,
+                            // loop: false,
+                            autoPlay: false,
+                            // currentIndex: 2,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        color: '#ddd'
+                                    }
+                                },
+                                emphasis: {
+                                    textStyle: {
+                                        color: '#fff'
+                                    }
+                                }
+                            },
+                            playInterval: 1000,
+                            // controlStyle: {
+                            //     position: 'left'
+                            // },
+                            textStyle: {
+                                color: '#fff'
+                            },
+                            data: timedata(),
+                            tooltip: {
+                                padding: 10,
+                                backgroundColor: '#222',
+                                borderColor: '#777',
+                                borderWidth: 1,
+                                trigger: 'item',
+
+                                formatter: function (params) {
+
+                                    return params.name;
+
+                                }
+
+
+                            },
+
+                        },
+
+                        baseOption: {
+                            title: {
+                                text: '全国各省市新冠肺炎确诊情况点状图',
+                                subtext: '6月末至7月初数据',
+
+                                left: 'center',
+                                textStyle: {
+                                    fontSize: 25,
+                                    color: '#fff'
+                                }
+                            },
+                            series: [{
+                                name: '信息量',
+                                type: 'scatter',
+                                map: 'china',
+                                geoIndex: 0,
+                                coordinateSystem: 'geo',
+
+
+                                showAllSymbol: true,
+
+                                symbolSize: function (val) {
+                                    console.log(val)
+                                    if (val[2] >= 10000)
+                                        return val[2] / 800
+                                    else if (val[2] >= 1400 && val[2] < 3000)
+                                        return val[2] / 40
+                                    else if (val[2] >= 1000 && val[2] < 1400)
+                                        return val[2] / 40
+                                    else if (val[2] >= 500 && val[2] < 1000)
+                                        return val[2] / 30
+                                    else if (val[2] > 100 && val[2] < 500)
+                                        return val[2] / 18
+                                    else if (val[2] > 10 && val[2] < 100)
+                                        return val[2] / 5
+                                    else return val[2]
+                                },
+
+                                label: {
+                                    textStyle: {
+                                        fontSize: 20
+                                    }
+                                },
                             }
-                        }
-                    },
+                            ],
+                            geo: {
+                                map: 'china',
+                                roam: false,//不开启缩放和平移
+                                zoom: 1.23,//视角缩放比例
+                                label: {
+                                    normal: {
+                                        show: false,
+                                        fontSize: '12',
+                                        color: '#fff',
+                                        itemStyle: {
+                                            normal: {
+                                                areaStyle: { color: '#fff' }
+                                            }
+                                        }
+                                    }
+                                },
+                                itemStyle: {
 
-                    itemStyle: {
+                                    normal: {
+                                        areaColor: '#808080',
+                                        borderColor: '#003366'
+                                    },
+                                    emphasis: {
+                                        areaColor: '#F3B329',//鼠标选择区域颜色
+                                        shadowOffsetX: 0,
+                                        shadowOffsetY: 0,
+                                        shadowBlur: 20,
+                                        borderWidth: 0,
+                                        shadowColor: '#33CCFF',
 
-                        normal: {
-                            areaColor: '#777',
-                            borderColor: '#003366'
+                                    }
+                                }
+                            },
+
+                            itemStyle: {
+
+                                normal: {
+                                    areaColor: '#777',
+                                    borderColor: '#003366'
+                                },
+                                emphasis: {
+                                    areaColor: '#F3B329',//鼠标选择区域颜色
+                                    shadowOffsetX: 0,
+                                    shadowOffsetY: 0,
+                                    shadowBlur: 20,
+                                    borderWidth: 0,
+                                    shadowColor: '#33CCFF',
+
+                                }
+                            },
+                            tooltip: {
+                                padding: 10,
+                                backgroundColor: '#222',
+                                borderColor: '#222',
+                                borderWidth: 1,
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    return params.name + ': ' + params.value[2]
+
+                                }
+
+
+
+                            },
+                            visualMap: {
+                                min: 0,
+                                max: 2500,
+                                left: 'left',
+                                top: 'bottom',
+                                text: ['高', '低'],           // 文本，默认为数值文本
+                                calculable: true,
+                                inRange: {
+                                    color: ['#e2fdf8', '#cff1ea']
+
+                                },
+                            },
                         },
-                        emphasis: {
-                            areaColor: '#F3B329',//鼠标选择区域颜色
-                            shadowOffsetX: 0,
-                            shadowOffsetY: 0,
-                            shadowBlur: 20,
-                            borderWidth: 0,
-                            shadowColor: '#33CCFF',
+                        options: [{ series: [{ data: convertData(obj[1]) }] },
+                        { series: [{ data: convertData(obj[2]) }] },
+                        { series: [{ data: convertData(obj[3]) }] },
+                        { series: [{ data: convertData(obj[4]) }] },
+                        { series: [{ data: convertData(obj[5]) }] },
+                        { series: [{ data: convertData(obj[6]) }] },
+                        { series: [{ data: convertData(obj[7]) }] },
+                        { series: [{ data: convertData(obj[8]) }] },
+                        { series: [{ data: convertData(obj[9]) }] },
+                        { series: [{ data: convertData(obj[10]) }] },
+                        { series: [{ data: convertData(obj[11]) }] },
+                        { series: [{ data: convertData(obj[12]) }] },
+                        { series: [{ data: convertData(obj[13]) }] },
+                        { series: [{ data: convertData(obj[14]) }] },
+                        { series: [{ data: convertData(obj[15]) }] },
+                        { series: [{ data: convertData(obj[16]) }] },
+                        { series: [{ data: convertData(obj[17]) }] },
+                        { series: [{ data: convertData(obj[18]) }] },
+                        { series: [{ data: convertData(obj[19]) }] },
+                        { series: [{ data: convertData(obj[20]) }] },
+                        { series: [{ data: convertData(obj[21]) }] },
+                        { series: [{ data: convertData(obj[22]) }] },
+                        { series: [{ data: convertData(obj[23]) }] },
+                        { series: [{ data: convertData(obj[24]) }] },
+                        { series: [{ data: convertData(obj[25]) }] },
+                        { series: [{ data: convertData(obj[26]) }] },
+                        { series: [{ data: convertData(obj[27]) }] },
+                        { series: [{ data: convertData(obj[28]) }] },
+                        { series: [{ data: convertData(obj[29]) }] },
+                        { series: [{ data: convertData(obj[30]) }] },
 
-                        }
-                    },
-                    tooltip: {
-                        padding: 10,
-                        backgroundColor: '#222',
-                        borderColor: '#222',
-                        borderWidth: 1,
-                        trigger: 'item',
-                        formatter: function (params) {
-                            return params.name+': '+params.value[2]
+                        ]
+                    }
+                    myChart.setOption(option1);
 
-                        }
-
-
-
-                    },
-                    visualMap: {
-                        min: 0,
-                        max: 2500,
-                        left: 'left',
-                        top: 'bottom',
-                        text: ['高', '低'],           // 文本，默认为数值文本
-                        calculable: true,
-                        inRange: {
-                            color: ['#e2fdf8', '#cff1ea']
-
-                        },
-                    },
                 },
-                options: [{series: [{ data:convertData(obj[1])}]},
-                    {series: [{ data:convertData(obj[2])}]},
-                    {series: [{ data:convertData(obj[3])}]},
-                    {series: [{ data:convertData(obj[4])}]},
-                    {series: [{ data:convertData(obj[5])}]},
-                    {series: [{ data:convertData(obj[6])}]},
-                    {series: [{ data:convertData(obj[7])}]},
-                    {series: [{ data:convertData(obj[8])}]},
-                    {series: [{ data:convertData(obj[9])}]},
-                    {series: [{ data:convertData(obj[10])}]},
-                    {series: [{ data:convertData(obj[11])}]},
-                    {series: [{ data:convertData(obj[12])}]},
-                    {series: [{ data:convertData(obj[13])}]},
-                    {series: [{ data:convertData(obj[14])}]},
-                    {series: [{ data:convertData(obj[15])}]},
-                    {series: [{ data:convertData(obj[16])}]},
-                    {series: [{ data:convertData(obj[17])}]},
-                    {series: [{ data:convertData(obj[18])}]},
-                    {series: [{ data:convertData(obj[19])}]},
-                    {series: [{ data:convertData(obj[20])}]},
-                    {series: [{ data:convertData(obj[21])}]},
-                    {series: [{ data:convertData(obj[22])}]},
-                    {series: [{ data:convertData(obj[23])}]},
-                    {series: [{ data:convertData(obj[24])}]},
-                    {series: [{ data:convertData(obj[25])}]},
-                    {series: [{data:convertData(obj[26])}]},
-                    {series: [{ data:convertData(obj[27])}]},
-                    {series: [{ data:convertData(obj[28])}]},
-                    {series: [{ data:convertData(obj[29])}]},
-                    {series: [{ data:convertData(obj[30])}]},
-
-                ]}
-                myChart.setOption(option1);
-
-            },
-    }
-
-    )
-
             }
 
-                    myshow();
+            )
+
+        }
+
+        myshow();
 
     </script>
 
