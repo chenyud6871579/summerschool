@@ -120,7 +120,7 @@ var geoCoordMap = []
 var convertData = function (data, typeFlag) {
     var res = [];
     for (var i = 0; i < data.length; i++) {
-        console.log("data",data)
+        // console.log("data",data)
         var geoCoord = geoObject[typeFlag][data[i].name];
         if (geoCoord) {
             res.push({

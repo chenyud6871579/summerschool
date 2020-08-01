@@ -23,12 +23,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,10 +36,8 @@ public class RadarMR {
     private static String ipAddress = MongoDBInfo.ipAddress;
     private static int ipHost = MongoDBInfo.ipHost;
     private static String databaseName = MongoDBInfo.databaseName;
-
     private static String hadoopHome = MongoDBInfo.hadoopHome;
     private static String hadoopTmp = MongoDBInfo.hadoopTmp;
-
     private static String dataType;
 
     public static List<Double> getRadarList(long population,
